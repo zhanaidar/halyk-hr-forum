@@ -44,7 +44,7 @@ async def home():
             <h1>{config.ORG_NAME}</h1>
             <h2>Система HR тестирования</h2>
             <div class="status">✅ Сервер работает на Railway!</div>
-            <p>Версия: 1.0.0 (базовая)</p>
+            <p>Версия: 1.0.1 (автодеплой работает!)</p>
         </div>
     </body>
     </html>
