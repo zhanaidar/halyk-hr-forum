@@ -4,10 +4,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Database
-DATABASE_URL = os.getenv(
-    "DATABASE_URL",
-    "postgresql://postgres:kGFByeRdyKocxTIdhhtTMKBdOcbWXaJO@postgres.railway.internal:5432/railway"
-)
+DATABASE_URL = os.getenv("DATABASE_URL", "")
 
 # Anthropic API
 ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY", "")
