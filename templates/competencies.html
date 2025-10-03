@@ -168,10 +168,8 @@
         function App() {
             const [competencies, setCompetencies] = useState([]);
             const [loading, setLoading] = useState(true);
-            const [profileName, setProfileName] = useState('');
             
             const urlParams = new URLSearchParams(window.location.search);
-            const userId = urlParams.get('user_id');
             const profileId = urlParams.get('profile_id');
 
             useEffect(() => {
@@ -179,8 +177,25 @@
             }, []);
 
             const loadCompetencies = async () => {
+                const token = localStorage.getItem('halyk_token');
+                if (!token) {
+                    window.location.href = '/';
+                    return;
+                }
+                
                 try {
-                    const response = await fetch(`/api/competencies/${profileId}?user_id=${userId}`);
+                    const response = await fetch(`/api/competencies/${profileId}`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+                    
+                    if (response.status === 401) {
+                        localStorage.clear();
+                        window.location.href = '/';
+                        return;
+                    }
+                    
                     const data = await response.json();
                     setCompetencies(data.competencies);
                 } catch (error) {
@@ -216,16 +231,18 @@
 
             const handleCompetencyClick = async (comp) => {
                 if (comp.status === 'completed') {
-                    // Показать результаты
                     window.location.href = `/results?user_test_id=${comp.user_test_id}`;
                 } else {
-                    // Начать или продолжить тест
+                    const token = localStorage.getItem('halyk_token');
+                    
                     try {
                         const response = await fetch('/api/start-test', {
                             method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
+                            headers: { 
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${token}`
+                            },
                             body: JSON.stringify({
-                                user_id: parseInt(userId),
                                 competency_id: comp.id
                             })
                         });
@@ -244,7 +261,7 @@
 
             return (
                 <div>
-                    <button className="back-btn" onClick={() => window.history.back()}>
+                    <button className="back-btn" onClick={() => window.location.href = '/'}>
                         ← Назад к профессиям
                     </button>
 

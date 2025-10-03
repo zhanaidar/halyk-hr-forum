@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request, HTTPException
+from fastapi import FastAPI, Request, HTTPException, Header, Depends
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -19,21 +19,33 @@ import config
 import anthropic
 
 # Инициализируем Claude client
-# claude_client = anthropic.Anthropic(api_key=config.ANTHROPIC_API_KEY)
-
 import httpx
 
-# В функции generate_ai_recommendation:
 http_client = httpx.Client(timeout=30.0)
 claude_client = anthropic.Anthropic(
     api_key=config.ANTHROPIC_API_KEY,
     http_client=http_client
 )
 
+from auth import create_access_token, verify_token
+
+# Dependency для проверки токена
+async def get_current_user(authorization: Optional[str] = Header(None)):
+    """Получить текущего пользователя из JWT токена"""
+    if not authorization or not authorization.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    
+    token = authorization.replace("Bearer ", "")
+    user_data = verify_token(token)
+    
+    if not user_data:
+        raise HTTPException(status_code=401, detail="Invalid token")
+    
+    return user_data
+
 async def generate_ai_recommendation(user_test_id: int):
     """Генерация AI рекомендации на основе результатов теста"""
     try:
-        
         async with get_db_connection() as conn:
             async with conn.cursor() as cur:
                 # Получаем данные теста
@@ -56,7 +68,7 @@ async def generate_ai_recommendation(user_test_id: int):
                 
                 score, max_score, competency, name, surname = test_data
                 
-                # НОВОЕ: Получаем детали ответов С ТЕМАМИ
+                # Получаем детали ответов С ТЕМАМИ
                 await cur.execute("""
                     SELECT 
                         q.level,
@@ -146,10 +158,6 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-# Static files and templates
-# app.mount("/static", StaticFiles(directory="static"), name="static")
-# templates = Jinja2Templates(directory="templates")
-
 # ===== PYDANTIC MODELS =====
 
 class UserRegister(BaseModel):
@@ -160,17 +168,18 @@ class UserRegister(BaseModel):
     job_title: Optional[str] = None
 
 class ProfileSelect(BaseModel):
-    user_id: int
     profile_id: int
 
 class TestStart(BaseModel):
-    user_id: int
     competency_id: int
 
 class AnswerSubmit(BaseModel):
     user_test_id: int
     question_id: int
-    user_answer: int  # 1, 2, 3, или 4
+    user_answer: int
+
+class LoginRequest(BaseModel):
+    phone: str
 
 # ===== HOMEPAGE =====
 @app.get("/", response_class=HTMLResponse)
@@ -178,15 +187,6 @@ async def home():
     """Главная страница"""
     with open('templates/index.html', 'r', encoding='utf-8') as f:
         return HTMLResponse(content=f.read())
-    
-# @app.get("/", response_class=HTMLResponse)
-# async def home(request: Request):
-#     """Главная страница"""
-#     return templates.TemplateResponse("index.html", {
-#         "request": request,
-#         "org_name": config.ORG_NAME,
-#         "org_color": config.ORG_PRIMARY_COLOR
-#     })
 
 @app.get("/competencies", response_class=HTMLResponse)
 async def competencies_page():
@@ -204,7 +204,35 @@ async def test_page():
 async def health():
     return {"status": "ok", "service": "halyk-hr-forum"}
 
-# ===== API: РЕГИСТРАЦИЯ =====
+# ===== API: АУТЕНТИФИКАЦИЯ (ПУБЛИЧНЫЕ) =====
+
+@app.post("/api/login")
+async def login(request: LoginRequest):
+    """Вход по номеру телефона"""
+    try:
+        async with get_db_connection() as conn:
+            async with conn.cursor() as cur:
+                await cur.execute(
+                    "SELECT id, name, surname FROM users WHERE phone = %s",
+                    (request.phone,)
+                )
+                user = await cur.fetchone()
+                
+                if user:
+                    # Генерируем JWT токен
+                    token = create_access_token(user_id=user[0], phone=request.phone)
+                    
+                    return {
+                        "status": "found",
+                        "user_id": user[0],
+                        "name": user[1],
+                        "surname": user[2],
+                        "token": token
+                    }
+                else:
+                    return {"status": "not_found"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/api/register")
 async def register_user(user: UserRegister):
@@ -219,11 +247,18 @@ async def register_user(user: UserRegister):
                 )
                 user_id = (await cur.fetchone())[0]
         
-        return {"status": "success", "user_id": user_id}
+        # Генерируем JWT токен
+        token = create_access_token(user_id=user_id, phone=user.phone)
+        
+        return {
+            "status": "success",
+            "user_id": user_id,
+            "token": token
+        }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-# ===== API: ПРОФИЛИ =====
+# ===== API: ПРОФИЛИ (ПУБЛИЧНЫЙ) =====
 
 @app.get("/api/profiles")
 async def get_profiles():
@@ -245,9 +280,13 @@ async def get_profiles():
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+# ===== API: ЗАЩИЩЕННЫЕ ENDPOINTS =====
+
 @app.post("/api/select-profile")
-async def select_profile(data: ProfileSelect):
-    """Пользователь выбирает профессию"""
+async def select_profile(data: ProfileSelect, current_user: dict = Depends(get_current_user)):
+    """Пользователь выбирает профессию (защищено)"""
+    user_id = current_user["user_id"]
+    
     try:
         async with get_db_connection() as conn:
             async with conn.cursor() as cur:
@@ -256,22 +295,21 @@ async def select_profile(data: ProfileSelect):
                        VALUES (%s, %s)
                        ON CONFLICT DO NOTHING
                        RETURNING id""",
-                    (data.user_id, data.profile_id)
+                    (user_id, data.profile_id)
                 )
         
         return {"status": "success"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-# ===== API: КОМПЕТЕНЦИИ =====
-
 @app.get("/api/competencies/{profile_id}")
-async def get_competencies(profile_id: int, user_id: int):
-    """Получить компетенции профиля со статусами прохождения"""
+async def get_competencies(profile_id: int, current_user: dict = Depends(get_current_user)):
+    """Получить компетенции профиля (защищено)"""
+    user_id = current_user["user_id"]
+    
     try:
         async with get_db_connection() as conn:
             async with conn.cursor() as cur:
-                # Получаем компетенции с информацией о прохождении
                 await cur.execute("""
                     SELECT 
                         c.id,
@@ -292,8 +330,8 @@ async def get_competencies(profile_id: int, user_id: int):
         competencies = []
         for row in rows:
             status = "not_started"
-            if row[5]:  # started_at
-                if row[4]:  # completed_at
+            if row[5]:
+                if row[4]:
                     status = "completed"
                 else:
                     status = "in_progress"
@@ -311,11 +349,11 @@ async def get_competencies(profile_id: int, user_id: int):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-# ===== API: ТЕСТЫ =====
-
 @app.post("/api/start-test")
-async def start_test(data: TestStart):
-    """Начать тест компетенции"""
+async def start_test(data: TestStart, current_user: dict = Depends(get_current_user)):
+    """Начать тест компетенции (защищено)"""
+    user_id = current_user["user_id"]
+    
     try:
         async with get_db_connection() as conn:
             async with conn.cursor() as cur:
@@ -323,7 +361,7 @@ async def start_test(data: TestStart):
                 await cur.execute(
                     """SELECT id FROM user_tests 
                        WHERE user_id = %s AND competency_id = %s""",
-                    (data.user_id, data.competency_id)
+                    (user_id, data.competency_id)
                 )
                 existing = await cur.fetchone()
                 
@@ -334,7 +372,7 @@ async def start_test(data: TestStart):
                     await cur.execute(
                         """INSERT INTO user_tests (user_id, competency_id, max_score)
                            VALUES (%s, %s, 6) RETURNING id""",
-                        (data.user_id, data.competency_id)
+                        (user_id, data.competency_id)
                     )
                     user_test_id = (await cur.fetchone())[0]
         
@@ -343,17 +381,24 @@ async def start_test(data: TestStart):
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/api/test/{user_test_id}/questions")
-async def get_test_questions(user_test_id: int):
-    """Получить вопросы для теста (2 темы × 3 вопроса)"""
+async def get_test_questions(user_test_id: int, current_user: dict = Depends(get_current_user)):
+    """Получить вопросы для теста (защищено)"""
+    user_id = current_user["user_id"]
+    
     try:
         async with get_db_connection() as conn:
             async with conn.cursor() as cur:
-                # Получаем competency_id
+                # Проверяем что тест принадлежит пользователю
                 await cur.execute(
-                    "SELECT competency_id FROM user_tests WHERE id = %s",
+                    "SELECT user_id, competency_id FROM user_tests WHERE id = %s",
                     (user_test_id,)
                 )
-                competency_id = (await cur.fetchone())[0]
+                test_data = await cur.fetchone()
+                
+                if not test_data or test_data[0] != user_id:
+                    raise HTTPException(status_code=403, detail="Access denied")
+                
+                competency_id = test_data[1]
                 
                 # Получаем 2 темы с вопросами
                 await cur.execute("""
@@ -396,11 +441,23 @@ async def get_test_questions(user_test_id: int):
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/api/submit-answer")
-async def submit_answer(data: AnswerSubmit):
-    """Отправить ответ на вопрос"""
+async def submit_answer(data: AnswerSubmit, current_user: dict = Depends(get_current_user)):
+    """Отправить ответ на вопрос (защищено)"""
+    user_id = current_user["user_id"]
+    
     try:
         async with get_db_connection() as conn:
             async with conn.cursor() as cur:
+                # Проверяем что тест принадлежит пользователю
+                await cur.execute(
+                    "SELECT user_id FROM user_tests WHERE id = %s",
+                    (data.user_test_id,)
+                )
+                test_user = await cur.fetchone()
+                
+                if not test_user or test_user[0] != user_id:
+                    raise HTTPException(status_code=403, detail="Access denied")
+                
                 # Получаем правильный ответ
                 await cur.execute(
                     "SELECT correct_answer FROM questions WHERE id = %s",
@@ -423,11 +480,23 @@ async def submit_answer(data: AnswerSubmit):
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/api/complete-test/{user_test_id}")
-async def complete_test(user_test_id: int):
-    """Завершить тест и подсчитать результат"""
+async def complete_test(user_test_id: int, current_user: dict = Depends(get_current_user)):
+    """Завершить тест и подсчитать результат (защищено)"""
+    user_id = current_user["user_id"]
+    
     try:
         async with get_db_connection() as conn:
             async with conn.cursor() as cur:
+                # Проверяем что тест принадлежит пользователю
+                await cur.execute(
+                    "SELECT user_id FROM user_tests WHERE id = %s",
+                    (user_test_id,)
+                )
+                test_user = await cur.fetchone()
+                
+                if not test_user or test_user[0] != user_id:
+                    raise HTTPException(status_code=403, detail="Access denied")
+                
                 # Подсчитываем баллы
                 await cur.execute(
                     """SELECT COUNT(*) FROM test_answers 
@@ -465,53 +534,17 @@ async def complete_test(user_test_id: int):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-# @app.post("/api/complete-test/{user_test_id}")
-# async def complete_test(user_test_id: int):
-#     """Завершить тест и подсчитать результат"""
-#     try:
-#         async with get_db_connection() as conn:
-#             async with conn.cursor() as cur:
-#                 # Подсчитываем баллы
-#                 await cur.execute(
-#                     """SELECT COUNT(*) FROM test_answers 
-#                        WHERE user_test_id = %s AND is_correct = true""",
-#                     (user_test_id,)
-#                 )
-#                 score = (await cur.fetchone())[0]
-                
-#                 # Обновляем user_tests
-#                 await cur.execute(
-#                     """UPDATE user_tests 
-#                        SET score = %s, completed_at = NOW()
-#                        WHERE id = %s""",
-#                     (score, user_test_id)
-#                 )
-        
-#         # Определяем уровень
-#         if score >= 5:
-#             level = "Senior"
-#         elif score >= 3:
-#             level = "Middle"
-#         else:
-#             level = "Junior"
-        
-#         return {
-#             "status": "success",
-#             "score": score,
-#             "max_score": 6,
-#             "level": level
-#         }
-#     except Exception as e:
-#         raise HTTPException(status_code=500, detail=str(e))
-
 @app.get("/api/results/{user_test_id}")
-async def get_results(user_test_id: int):
-    """Получить результаты теста"""
+async def get_results(user_test_id: int, current_user: dict = Depends(get_current_user)):
+    """Получить результаты теста (защищено)"""
+    user_id = current_user["user_id"]
+    
     try:
         async with get_db_connection() as conn:
             async with conn.cursor() as cur:
                 await cur.execute("""
                     SELECT 
+                        ut.user_id,
                         ut.score,
                         ut.max_score,
                         ut.completed_at,
@@ -528,7 +561,10 @@ async def get_results(user_test_id: int):
                 if not row:
                     raise HTTPException(status_code=404, detail="Test not found")
                 
-                score = row[0]
+                if row[0] != user_id:
+                    raise HTTPException(status_code=403, detail="Access denied")
+                
+                score = row[1]
                 if score >= 5:
                     level = "Senior"
                 elif score >= 3:
@@ -538,11 +574,11 @@ async def get_results(user_test_id: int):
         
         return {
             "status": "success",
-            "score": row[0],
-            "max_score": row[1],
+            "score": row[1],
+            "max_score": row[2],
             "level": level,
-            "competency_name": row[3],
-            "recommendation": row[4]
+            "competency_name": row[4],
+            "recommendation": row[5]
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

@@ -212,8 +212,18 @@
             }, []);
 
             const loadQuestions = async () => {
+                const token = localStorage.getItem('halyk_token');
+                if (!token) {
+                    window.location.href = '/';
+                    return;
+                }
+
                 try {
-                    const response = await fetch(`/api/test/${userTestId}/questions`);
+                    const response = await fetch(`/api/test/${userTestId}/questions`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
                     const data = await response.json();
                     setQuestions(data.questions);
                 } catch (error) {
@@ -225,12 +235,17 @@
 
             const handleAnswer = async () => {
                 if (selectedAnswer === null) return;
+                
+                const token = localStorage.getItem('halyk_token');
 
                 try {
                     // Отправляем ответ
                     await fetch('/api/submit-answer', {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
+                        headers: { 
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
                         body: JSON.stringify({
                             user_test_id: parseInt(userTestId),
                             question_id: questions[currentIndex].question_id,
@@ -245,7 +260,10 @@
                     } else {
                         // Завершение теста
                         const completeResponse = await fetch(`/api/complete-test/${userTestId}`, {
-                            method: 'POST'
+                            method: 'POST',
+                            headers: {
+                                'Authorization': `Bearer ${token}`
+                            }
                         });
                         const resultData = await completeResponse.json();
                         setResult(resultData);
@@ -274,7 +292,6 @@
                             </div>
                             <div className="level-badge">{result.level}</div>
                             
-                            {/* ДОБАВЬ ЭТО: */}
                             {result.recommendation && (
                                 <div style={{
                                     marginTop: '30px',
@@ -303,29 +320,6 @@
                     </div>
                 );
             }
-            // if (completed) {
-            //     return (
-            //         <div className="test-container">
-            //             <div className="completion">
-            //                 <h2>Тест завершен! 🎉</h2>
-            //                 <div className="score-display">
-            //                     {result.score}/{result.max_score}
-            //                 </div>
-            //                 <div className="level-badge">{result.level}</div>
-            //                 <p style={{marginTop: '20px', color: '#666', fontSize: '18px'}}>
-            //                     Отличная работа! Возвращайтесь к списку компетенций.
-            //                 </p>
-            //                 <button 
-            //                     className="btn" 
-            //                     onClick={() => window.history.back()}
-            //                     style={{marginTop: '30px'}}
-            //                 >
-            //                     Вернуться к компетенциям
-            //                 </button>
-            //             </div>
-            //         </div>
-            //     );
-            // }
 
             const currentQuestion = questions[currentIndex];
             const progress = ((currentIndex + 1) / questions.length) * 100;
