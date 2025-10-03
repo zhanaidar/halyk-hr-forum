@@ -12,7 +12,8 @@ psycopg[pool,binary]==3.2.10
 sqlalchemy==2.0.35
 
 # AI API
-anthropic==0.34.1
+# anthropic==0.34.1
+anthropic==0.39.0
 
 # Utilities
 python-dotenv==1.0.1
