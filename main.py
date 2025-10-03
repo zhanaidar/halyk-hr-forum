@@ -19,12 +19,20 @@ import config
 import anthropic
 
 # Инициализируем Claude client
-claude_client = anthropic.Anthropic(api_key=config.ANTHROPIC_API_KEY)
+# claude_client = anthropic.Anthropic(api_key=config.ANTHROPIC_API_KEY)
+
+import httpx
+
+# В функции generate_ai_recommendation:
+http_client = httpx.Client(timeout=30.0)
+claude_client = anthropic.Anthropic(
+    api_key=config.ANTHROPIC_API_KEY,
+    http_client=http_client
+)
 
 async def generate_ai_recommendation(user_test_id: int):
     """Генерация AI рекомендации на основе результатов теста"""
     try:
-        # claude_client = anthropic.Anthropic(api_key=config.ANTHROPIC_API_KEY)
         
         async with get_db_connection() as conn:
             async with conn.cursor() as cur:
