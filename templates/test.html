@@ -234,13 +234,14 @@
             };
 
             const handleAnswer = async () => {
-                if (selectedAnswer === null) return;
+                if (selectedAnswer === null || loading) return;
                 
+                setLoading(true);
                 const token = localStorage.getItem('halyk_token');
 
                 try {
                     // Отправляем ответ
-                    await fetch('/api/submit-answer', {
+                    const response = await fetch('/api/submit-answer', {
                         method: 'POST',
                         headers: { 
                             'Content-Type': 'application/json',
@@ -253,10 +254,20 @@
                         })
                     });
 
+                    const data = await response.json();
+                    
+                    // Проверяем не дубликат ли это
+                    if (data.status === 'already_answered') {
+                        alert('Вы уже ответили на этот вопрос');
+                        setLoading(false);
+                        return;
+                    }
+
                     // Переход к следующему вопросу или завершение
                     if (currentIndex < questions.length - 1) {
                         setCurrentIndex(currentIndex + 1);
                         setSelectedAnswer(null);
+                        setLoading(false);
                     } else {
                         // Завершение теста
                         const completeResponse = await fetch(`/api/complete-test/${userTestId}`, {
@@ -268,9 +279,11 @@
                         const resultData = await completeResponse.json();
                         setResult(resultData);
                         setCompleted(true);
+                        setLoading(false);
                     }
                 } catch (error) {
                     alert('Ошибка отправки ответа');
+                    setLoading(false);
                 }
             };
 
@@ -291,6 +304,23 @@
                                 {result.score}/{result.max_score}
                             </div>
                             <div className="level-badge">{result.level}</div>
+                            
+                            {!result.recommendation && (
+                                <div style={{
+                                    marginTop: '30px',
+                                    padding: '20px',
+                                    background: '#f0fdf7',
+                                    borderRadius: '12px',
+                                    border: '2px solid #1DB584'
+                                }}>
+                                    <h3 style={{color: '#1DB584', marginBottom: '12px'}}>
+                                        ⏳ Генерация AI рекомендации...
+                                    </h3>
+                                    <p style={{color: '#666', fontSize: '16px'}}>
+                                        Пожалуйста подождите, Claude анализирует ваши результаты
+                                    </p>
+                                </div>
+                            )}
                             
                             {result.recommendation && (
                                 <div style={{
@@ -364,9 +394,9 @@
                         <button 
                             className="btn" 
                             onClick={handleAnswer}
-                            disabled={selectedAnswer === null}
+                            disabled={selectedAnswer === null || loading}
                         >
-                            {currentIndex < questions.length - 1 ? 'Следующий вопрос' : 'Завершить тест'}
+                            {loading ? '⏳ Отправка...' : (currentIndex < questions.length - 1 ? 'Следующий вопрос' : 'Завершить тест')}
                         </button>
                     </div>
                 </div>

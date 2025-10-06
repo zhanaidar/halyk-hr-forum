@@ -487,15 +487,44 @@ async def complete_test(user_test_id: int, current_user: dict = Depends(get_curr
     try:
         async with get_db_connection() as conn:
             async with conn.cursor() as cur:
-                # Проверяем что тест принадлежит пользователю
+                # Проверяем что тест принадлежит пользователю и не завершен ли уже
                 await cur.execute(
-                    "SELECT user_id FROM user_tests WHERE id = %s",
+                    "SELECT user_id, completed_at, score FROM user_tests WHERE id = %s",
                     (user_test_id,)
                 )
-                test_user = await cur.fetchone()
+                test_data = await cur.fetchone()
                 
-                if not test_user or test_user[0] != user_id:
+                if not test_data:
+                    raise HTTPException(status_code=404, detail="Test not found")
+                
+                if test_data[0] != user_id:
                     raise HTTPException(status_code=403, detail="Access denied")
+                
+                # Если тест уже завершен - возвращаем существующий результат
+                if test_data[1] is not None:
+                    # Получаем существующую рекомендацию
+                    await cur.execute(
+                        "SELECT recommendation_text FROM ai_recommendations WHERE user_test_id = %s",
+                        (user_test_id,)
+                    )
+                    rec_row = await cur.fetchone()
+                    recommendation = rec_row[0] if rec_row else None
+                    
+                    score = test_data[2]
+                    if score >= 5:
+                        level = "Senior"
+                    elif score >= 3:
+                        level = "Middle"
+                    else:
+                        level = "Junior"
+                    
+                    return {
+                        "status": "already_completed",
+                        "score": score,
+                        "max_score": 6,
+                        "level": level,
+                        "recommendation": recommendation
+                    }
                 
                 # Подсчитываем баллы
                 await cur.execute(
