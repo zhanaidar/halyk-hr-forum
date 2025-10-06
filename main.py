@@ -7,6 +7,7 @@ from contextlib import asynccontextmanager
 from typing import Optional, List
 import sys
 import os
+from fastapi.staticfiles import StaticFiles
 
 # Fix для Windows asyncio
 if sys.platform == 'win32':
@@ -158,6 +159,8 @@ app = FastAPI(
     lifespan=lifespan
 )
 
+# Static
+app.mount("/static", StaticFiles(directory="static"), name="static")
 # ===== PYDANTIC MODELS =====
 
 class UserRegister(BaseModel):
@@ -198,6 +201,12 @@ async def competencies_page():
 async def test_page():
     """Страница прохождения теста"""
     with open('templates/test.html', 'r', encoding='utf-8') as f:
+        return HTMLResponse(content=f.read())
+    
+@app.get("/results", response_class=HTMLResponse)
+async def results_page():
+    """Страница результатов теста"""
+    with open('templates/results.html', 'r', encoding='utf-8') as f:
         return HTMLResponse(content=f.read())
 
 @app.get("/health")

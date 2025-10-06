@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Результаты теста - Halyk HR Forum</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1DB584 0%, #0a7d5a 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        #root {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .results-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        }
+
+        .completion {
+            text-align: center;
+        }
+
+        .completion h2 {
+            color: #1DB584;
+            margin-bottom: 20px;
+            font-size: 32px;
+        }
+
+        .competency-name {
+            color: #666;
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+
+        .score-display {
+            font-size: 64px;
+            font-weight: 700;
+            color: #1DB584;
+            margin: 30px 0;
+        }
+
+        .level-badge {
+            display: inline-block;
+            padding: 12px 32px;
+            background: #1DB584;
+            color: white;
+            border-radius: 30px;
+            font-size: 24px;
+            font-weight: 600;
+            margin: 20px 0;
+        }
+
+        .recommendation-box {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f0fdf7;
+            border-radius: 12px;
+            border: 2px solid #1DB584;
+            text-align: left;
+        }
+
+        .recommendation-box h3 {
+            color: #1DB584;
+            margin-bottom: 12px;
+        }
+
+        .recommendation-box p {
+            color: #333;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .loading-box {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f0fdf7;
+            border-radius: 12px;
+            border: 2px solid #1DB584;
+        }
+
+        .loading-box h3 {
+            color: #1DB584;
+            margin-bottom: 12px;
+        }
+
+        .loading-box p {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 16px;
+            background: #1DB584;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 30px;
+        }
+
+        .btn:hover {
+            background: #16a073;
+            transform: translateY(-2px);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px;
+            color: #666;
+        }
+
+        .error {
+            text-align: center;
+            padding: 60px;
+            color: #f44336;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        function App() {
+            const [result, setResult] = useState(null);
+            const [loading, setLoading] = useState(true);
+            const [error, setError] = useState(null);
+            
+            const urlParams = new URLSearchParams(window.location.search);
+            const userTestId = urlParams.get('user_test_id');
+
+            useEffect(() => {
+                loadResults();
+            }, []);
+
+            const loadResults = async () => {
+                const token = localStorage.getItem('halyk_token');
+                if (!token) {
+                    window.location.href = '/';
+                    return;
+                }
+
+                try {
+                    const response = await fetch(`/api/results/${userTestId}`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+
+                    if (response.status === 401) {
+                        localStorage.clear();
+                        window.location.href = '/';
+                        return;
+                    }
+
+                    if (response.status === 403 || response.status === 404) {
+                        setError('Тест не найден или доступ запрещен');
+                        setLoading(false);
+                        return;
+                    }
+
+                    const data = await response.json();
+                    setResult(data);
+                } catch (err) {
+                    setError('Ошибка загрузки результатов');
+                } finally {
+                    setLoading(false);
+                }
+            };
+
+            if (loading) {
+                return (
+                    <div className="results-container">
+                        <div className="loading">Загрузка результатов...</div>
+                    </div>
+                );
+            }
+
+            if (error) {
+                return (
+                    <div className="results-container">
+                        <div className="error">{error}</div>
+                        <button className="btn" onClick={() => window.location.href = '/'}>
+                            На главную
+                        </button>
+                    </div>
+                );
+            }
+
+            return (
+                <div className="results-container">
+                    <div className="completion">
+                        <h2>Тест завершен!</h2>
+                        <p className="competency-name">{result.competency_name}</p>
+                        
+                        <div className="score-display">
+                            {result.score}/{result.max_score}
+                        </div>
+                        <div className="level-badge">{result.level}</div>
+                        
+                        {!result.recommendation && (
+                            <div className="loading-box">
+                                <h3>Генерация AI рекомендации...</h3>
+                                <p>Пожалуйста подождите, Claude анализирует ваши результаты</p>
+                            </div>
+                        )}
+                        
+                        {result.recommendation && (
+                            <div className="recommendation-box">
+                                <h3>💡 Рекомендация AI</h3>
+                                <p>{result.recommendation}</p>
+                            </div>
+                        )}
+                        
+                        <button 
+                            className="btn" 
+                            onClick={() => window.history.back()}
+                        >
+                            Вернуться к компетенциям
+                        </button>
+                    </div>
+                </div>
+            );
+        }
+
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>

@@ -25,13 +25,22 @@
             overflow: hidden;
         }
         .header {
-            background: #1DB584;
-            color: white;
+            background: white;
+            color: #333;
             padding: 40px;
             text-align: center;
+            border-bottom: 3px solid #1DB584;
         }
-        .header h1 { font-size: 2.5rem; margin-bottom: 10px; }
-        .header p { font-size: 1.2rem; opacity: 0.9; }
+        .header img {
+            max-width: 400px;
+            width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+        }
+        .header p { 
+            font-size: 1.2rem;
+            color: #666;
+        }
         .content { padding: 40px; }
         .form-group { margin-bottom: 24px; }
         .form-group label {
@@ -242,7 +251,7 @@
             return (
                 <div className="container">
                     <div className="header">
-                        <h1>Халык банк</h1>
+                        <img src="/static/images/Halyk_LogoName.png" alt="Халык банк" />
                         <p>Система оценки компетенций IT-специалистов</p>
                     </div>
 
