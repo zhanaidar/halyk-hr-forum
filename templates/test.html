@@ -55,6 +55,45 @@
             margin-top: 8px;
             color: #666;
             font-size: 14px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .competencies-stats {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border: 2px solid #e0e0e0;
+        }
+
+        .competencies-stats h3 {
+            color: #333;
+            margin-bottom: 16px;
+            font-size: 16px;
+        }
+
+        .competency-stat {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .competency-stat:last-child {
+            border-bottom: none;
+        }
+
+        .competency-name {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .competency-progress {
+            font-weight: 600;
+            color: #1DB584;
+            font-size: 14px;
         }
 
         .question {
@@ -101,6 +140,16 @@
             color: #333;
             line-height: 1.6;
             margin-bottom: 24px;
+        }
+
+        .topic-name {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 16px;
+            padding: 8px 12px;
+            background: #f0fdf7;
+            border-left: 3px solid #1DB584;
+            border-radius: 4px;
         }
 
         .options {
@@ -203,6 +252,7 @@
             const [loading, setLoading] = useState(true);
             const [completed, setCompleted] = useState(false);
             const [result, setResult] = useState(null);
+            const [progress, setProgress] = useState(null);
             
             const urlParams = new URLSearchParams(window.location.search);
             const userTestId = urlParams.get('user_test_id');
@@ -210,6 +260,16 @@
             useEffect(() => {
                 loadQuestions();
             }, []);
+
+            useEffect(() => {
+                // Находим первый неотвеченный вопрос
+                if (questions.length > 0) {
+                    const firstUnanswered = questions.findIndex(q => !q.is_answered);
+                    if (firstUnanswered !== -1) {
+                        setCurrentIndex(firstUnanswered);
+                    }
+                }
+            }, [questions]);
 
             const loadQuestions = async () => {
                 const token = localStorage.getItem('halyk_token');
@@ -225,7 +285,15 @@
                         }
                     });
                     const data = await response.json();
+                    
+                    // Если тест завершён - редирект на результаты
+                    if (data.progress && data.progress.total.answered === data.progress.total.total) {
+                        window.location.href = `/results?user_test_id=${userTestId}`;
+                        return;
+                    }
+                    
                     setQuestions(data.questions);
+                    setProgress(data.progress);
                 } catch (error) {
                     alert('Ошибка загрузки вопросов');
                 } finally {
@@ -241,7 +309,7 @@
 
                 try {
                     // Отправляем ответ
-                    const response = await fetch('/api/submit-answer', {
+                    await fetch('/api/submit-answer', {
                         method: 'POST',
                         headers: { 
                             'Content-Type': 'application/json',
@@ -254,14 +322,8 @@
                         })
                     });
 
-                    const data = await response.json();
-                    
-                    // Проверяем не дубликат ли это
-                    if (data.status === 'already_answered') {
-                        alert('Вы уже ответили на этот вопрос');
-                        setLoading(false);
-                        return;
-                    }
+                    // Обновляем вопросы и прогресс
+                    await loadQuestions();
 
                     // Переход к следующему вопросу или завершение
                     if (currentIndex < questions.length - 1) {
@@ -287,7 +349,7 @@
                 }
             };
 
-            if (loading) {
+            if (loading && questions.length === 0) {
                 return (
                     <div className="test-container">
                         <div className="loading">Загрузка вопросов...</div>
@@ -341,10 +403,10 @@
                             
                             <button 
                                 className="btn" 
-                                onClick={() => window.history.back()}
+                                onClick={() => window.location.href = '/'}
                                 style={{marginTop: '30px'}}
                             >
-                                Вернуться к компетенциям
+                                На главную
                             </button>
                         </div>
                     </div>
@@ -352,16 +414,20 @@
             }
 
             const currentQuestion = questions[currentIndex];
-            const progress = ((currentIndex + 1) / questions.length) * 100;
+            const overallProgress = progress ? 
+                ((progress.total.answered / progress.total.total) * 100) : 0;
 
             return (
                 <div className="test-container">
                     <div className="progress">
                         <div className="progress-bar">
-                            <div className="progress-fill" style={{width: `${progress}%`}}></div>
+                            <div className="progress-fill" style={{width: `${overallProgress}%`}}></div>
                         </div>
                         <div className="progress-text">
-                            Вопрос {currentIndex + 1} из {questions.length}
+                            <span>Вопрос {currentIndex + 1} из {questions.length}</span>
+                            <span>
+                                Отвечено: {progress?.total.answered || 0}/{progress?.total.total || 24}
+                            </span>
                         </div>
                     </div>
 
@@ -375,6 +441,10 @@
                             </span>
                         </div>
 
+                        <div className="topic-name">
+                            📚 {currentQuestion.topic_name}
+                        </div>
+
                         <div className="question-text">
                             {currentQuestion.question_text}
                         </div>
@@ -384,7 +454,7 @@
                                 <div
                                     key={index}
                                     className={`option ${selectedAnswer === index + 1 ? 'selected' : ''}`}
-                                    onClick={() => setSelectedAnswer(index + 1)}
+                                    onClick={() => !currentQuestion.is_answered && setSelectedAnswer(index + 1)}
                                 >
                                     {option}
                                 </div>
@@ -394,11 +464,27 @@
                         <button 
                             className="btn" 
                             onClick={handleAnswer}
-                            disabled={selectedAnswer === null || loading}
+                            disabled={selectedAnswer === null || loading || currentQuestion.is_answered}
                         >
-                            {loading ? '⏳ Отправка...' : (currentIndex < questions.length - 1 ? 'Следующий вопрос' : 'Завершить тест')}
+                            {loading ? '⏳ Отправка...' : 
+                             currentQuestion.is_answered ? 'Уже отвечен' :
+                             (currentIndex < questions.length - 1 ? 'Следующий вопрос' : 'Завершить тест')}
                         </button>
                     </div>
+
+                    {progress && progress.competencies && (
+                        <div className="competencies-stats">
+                            <h3>📊 Прогресс по компетенциям</h3>
+                            {progress.competencies.map(comp => (
+                                <div key={comp.id} className="competency-stat">
+                                    <span className="competency-name">{comp.name}</span>
+                                    <span className="competency-progress">
+                                        {comp.answered}/{comp.correct}/{comp.total}
+                                    </span>
+                                </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
             );
         }

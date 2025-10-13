@@ -43,7 +43,7 @@
             font-size: 32px;
         }
 
-        .competency-name {
+        .specialization-name {
             color: #666;
             font-size: 18px;
             margin-bottom: 30px;
@@ -135,6 +135,46 @@
             padding: 60px;
             color: #f44336;
         }
+
+        .competencies-stats {
+            margin-top: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            border: 2px solid #e0e0e0;
+            text-align: left;
+        }
+
+        .competencies-stats h3 {
+            color: #333;
+            margin-bottom: 16px;
+            font-size: 18px;
+        }
+
+        .competency-stat {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .competency-stat:last-child {
+            border-bottom: none;
+        }
+
+        .competency-name {
+            color: #666;
+            font-size: 14px;
+            flex: 1;
+        }
+
+        .competency-progress {
+            font-weight: 600;
+            color: #1DB584;
+            font-size: 14px;
+            margin-left: 12px;
+        }
     </style>
 </head>
 <body>
@@ -147,6 +187,7 @@
             const [result, setResult] = useState(null);
             const [loading, setLoading] = useState(true);
             const [error, setError] = useState(null);
+            const [progress, setProgress] = useState(null);
             
             const urlParams = new URLSearchParams(window.location.search);
             const userTestId = urlParams.get('user_test_id');
@@ -183,6 +224,18 @@
 
                     const data = await response.json();
                     setResult(data);
+                    
+                    // Загружаем прогресс по компетенциям отдельным запросом
+                    const progressResponse = await fetch(`/api/test/${userTestId}/questions`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+                    
+                    if (progressResponse.ok) {
+                        const progressData = await progressResponse.json();
+                        setProgress(progressData.progress);
+                    }
                 } catch (err) {
                     setError('Ошибка загрузки результатов');
                 } finally {
@@ -213,7 +266,7 @@
                 <div className="results-container">
                     <div className="completion">
                         <h2>Тест завершен!</h2>
-                        <p className="competency-name">{result.competency_name}</p>
+                        <p className="specialization-name">{result.specialization_name}</p>
                         
                         <div className="score-display">
                             {result.score}/{result.max_score}
@@ -222,7 +275,7 @@
                         
                         {!result.recommendation && (
                             <div className="loading-box">
-                                <h3>Генерация AI рекомендации...</h3>
+                                <h3>⏳ Генерация AI рекомендации...</h3>
                                 <p>Пожалуйста подождите, Claude анализирует ваши результаты</p>
                             </div>
                         )}
@@ -234,11 +287,25 @@
                             </div>
                         )}
                         
+                        {progress && progress.competencies && (
+                            <div className="competencies-stats">
+                                <h3>📊 Детали по компетенциям</h3>
+                                {progress.competencies.map(comp => (
+                                    <div key={comp.id} className="competency-stat">
+                                        <span className="competency-name">{comp.name}</span>
+                                        <span className="competency-progress">
+                                            {comp.answered}/{comp.correct}/{comp.total}
+                                        </span>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                        
                         <button 
                             className="btn" 
-                            onClick={() => window.history.back()}
+                            onClick={() => window.location.href = '/'}
                         >
-                            Вернуться к компетенциям
+                            На главную
                         </button>
                     </div>
                 </div>

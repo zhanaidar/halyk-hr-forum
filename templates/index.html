@@ -108,7 +108,7 @@
             box-shadow: 0 8px 24px rgba(29, 181, 132, 0.2);
         }
         .profile-card h3 { color: #1DB584; margin-bottom: 8px; }
-        .profile-card p { color: #666; font-size: 14px; }
+        .profile-card p { color: #888; font-size: 14px; }
         .logout-btn {
             background: #dc3545;
             width: auto;
@@ -117,6 +117,98 @@
             margin-bottom: 20px;
         }
         .logout-btn:hover { background: #c82333; }
+        .back-btn {
+            background: #6c757d;
+            width: auto;
+            padding: 8px 16px;
+            font-size: 14px;
+            margin-bottom: 20px;
+            margin-right: 10px;
+        }
+        .back-btn:hover { background: #5a6268; }
+        .section-title {
+            font-size: 24px;
+            color: #333;
+            margin: 40px 0 20px 0;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        .section-title:first-child {
+            margin-top: 0;
+        }
+        .test-card {
+            background: white;
+            border: 3px solid #e0e0e0;
+            border-radius: 16px;
+            padding: 24px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+        .test-card:hover {
+            border-color: #1DB584;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(29, 181, 132, 0.2);
+        }
+        .test-card.completed {
+            border-color: #1DB584;
+            background: linear-gradient(135deg, #fff 0%, #e8f5f1 100%);
+        }
+        .test-card.in-progress {
+            border-color: #ffa726;
+            background: linear-gradient(135deg, #fff 0%, #fff8e1 100%);
+        }
+        .status-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            color: white;
+        }
+        .status-badge.completed {
+            background: #1DB584;
+        }
+        .status-badge.in-progress {
+            background: #ffa726;
+        }
+        .status-badge.not-started {
+            background: #999;
+        }
+        .test-card h4 {
+            color: #333;
+            font-size: 18px;
+            margin-bottom: 8px;
+            padding-right: 100px;
+            font-weight: 600;
+        }
+        .test-card .profile-name {
+            color: #888;
+            font-size: 12px;
+            margin-bottom: 12px;
+        }
+        .test-score {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1DB584;
+            margin: 12px 0 8px 0;
+        }
+        .test-level {
+            display: inline-block;
+            padding: 6px 16px;
+            background: #1DB584;
+            color: white;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
     </style>
 </head>
 <body>
@@ -132,16 +224,19 @@
                 name: '', surname: '', phone: '', company: '', job_title: ''
             });
             const [profiles, setProfiles] = useState([]);
+            const [selectedProfile, setSelectedProfile] = useState(null);
+            const [specializations, setSpecializations] = useState([]);
+            const [myTests, setMyTests] = useState([]);
             const [loading, setLoading] = useState(false);
             const [userName, setUserName] = useState('');
 
             useEffect(() => {
-                // Проверяем есть ли токен при загрузке
                 const token = localStorage.getItem('halyk_token');
                 if (token) {
                     const name = localStorage.getItem('halyk_user_name');
                     setUserName(name || '');
                     loadProfiles();
+                    loadMyTests();
                 }
             }, []);
 
@@ -159,15 +254,14 @@
                     const data = await response.json();
                     
                     if (data.status === 'found') {
-                        // Сохраняем токен
                         localStorage.setItem('halyk_token', data.token);
                         localStorage.setItem('halyk_user_id', data.user_id);
                         localStorage.setItem('halyk_user_name', data.name + ' ' + data.surname);
                         
                         setUserName(data.name + ' ' + data.surname);
                         loadProfiles();
+                        loadMyTests();
                     } else {
-                        // Новый пользователь - регистрация
                         setFormData({...formData, phone});
                         setStep('register');
                     }
@@ -192,13 +286,13 @@
                     const data = await response.json();
                     
                     if (data.status === 'success') {
-                        // Сохраняем токен
                         localStorage.setItem('halyk_token', data.token);
                         localStorage.setItem('halyk_user_id', data.user_id);
                         localStorage.setItem('halyk_user_name', formData.name + ' ' + formData.surname);
                         
                         setUserName(formData.name + ' ' + formData.surname);
                         loadProfiles();
+                        loadMyTests();
                     }
                 } catch (error) {
                     alert('Ошибка регистрации: ' + error.message);
@@ -212,30 +306,83 @@
                     const response = await fetch('/api/profiles');
                     const data = await response.json();
                     setProfiles(data.profiles);
-                    setStep('profiles');
+                    setStep('dashboard');
                 } catch (error) {
                     alert('Ошибка загрузки профессий');
                 }
             };
 
+            const loadMyTests = async () => {
+                const token = localStorage.getItem('halyk_token');
+                try {
+                    const response = await fetch('/api/my-specializations', {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+                    const data = await response.json();
+                    setMyTests(data.specializations || []);
+                } catch (error) {
+                    console.error('Ошибка загрузки тестов');
+                }
+            };
+
             const handleSelectProfile = async (profile) => {
+                setSelectedProfile(profile);
+
+                if (profile.has_specializations) {
+                    setLoading(true);
+                    try {
+                        const response = await fetch(`/api/profiles/${profile.id}/specializations`);
+                        const data = await response.json();
+                        setSpecializations(data.specializations);
+                        setStep('specializations');
+                    } catch (error) {
+                        alert('Ошибка загрузки специализаций');
+                    } finally {
+                        setLoading(false);
+                    }
+                } else {
+                    const response = await fetch(`/api/profiles/${profile.id}/specializations`);
+                    const data = await response.json();
+                    if (data.specializations.length > 0) {
+                        handleSelectSpecialization(data.specializations[0]);
+                    }
+                }
+            };
+
+            const handleSelectSpecialization = async (specialization) => {
                 const token = localStorage.getItem('halyk_token');
 
                 try {
-                    await fetch('/api/select-profile', {
+                    await fetch('/api/select-specialization', {
                         method: 'POST',
                         headers: { 
                             'Content-Type': 'application/json',
                             'Authorization': `Bearer ${token}`
                         },
-                        body: JSON.stringify({
-                            profile_id: profile.id
-                        })
+                        body: JSON.stringify({ specialization_id: specialization.id })
                     });
 
-                    window.location.href = `/competencies?profile_id=${profile.id}`;
+                    const testResponse = await fetch('/api/start-test', {
+                        method: 'POST',
+                        headers: { 
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify({ specialization_id: specialization.id })
+                    });
+
+                    const testData = await testResponse.json();
+                    window.location.href = `/test?user_test_id=${testData.user_test_id}`;
                 } catch (error) {
-                    alert('Ошибка выбора профессии');
+                    alert('Ошибка запуска теста');
+                }
+            };
+
+            const handleTestClick = (test) => {
+                if (test.status === 'completed') {
+                    window.location.href = `/results?user_test_id=${test.user_test_id}`;
+                } else {
+                    window.location.href = `/test?user_test_id=${test.user_test_id}`;
                 }
             };
 
@@ -246,6 +393,23 @@
                 setStep('phone');
                 setPhone('');
                 setUserName('');
+                setMyTests([]);
+            };
+
+            const getStatusText = (status) => {
+                switch(status) {
+                    case 'completed': return '✅ Завершено';
+                    case 'in_progress': return '⏳ В процессе';
+                    case 'not_started': return '🔒 Не начато';
+                    default: return '';
+                }
+            };
+
+            const getLevel = (score, maxScore) => {
+                const percentage = (score / maxScore) * 100;
+                if (percentage >= 80) return 'Senior';
+                if (percentage >= 50) return 'Middle';
+                return 'Junior';
             };
 
             return (
@@ -331,7 +495,7 @@
                             </form>
                         )}
 
-                        {step === 'profiles' && (
+                        {step === 'dashboard' && (
                             <>
                                 <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px'}}>
                                     <h2 style={{color: '#333'}}>Добро пожаловать, {userName}!</h2>
@@ -339,6 +503,44 @@
                                         Выйти
                                     </button>
                                 </div>
+
+                                {myTests.length > 0 && (
+                                    <>
+                                        <h3 className="section-title">📊 Мои тесты</h3>
+                                        <div className="profiles-grid">
+                                            {myTests.map(test => (
+                                                <div
+                                                    key={test.id}
+                                                    className={`test-card ${test.status}`}
+                                                    onClick={() => handleTestClick(test)}
+                                                >
+                                                    <span className={`status-badge ${test.status}`}>
+                                                        {getStatusText(test.status)}
+                                                    </span>
+                                                    <h4>{test.name}</h4>
+                                                    <p className="profile-name">{test.profile_name}</p>
+                                                    {test.status === 'completed' && test.score !== null && (
+                                                        <>
+                                                            <div className="test-score">
+                                                                {test.score}/{test.max_score}
+                                                            </div>
+                                                            <div className="test-level">
+                                                                {getLevel(test.score, test.max_score)}
+                                                            </div>
+                                                        </>
+                                                    )}
+                                                    {test.status === 'in_progress' && (
+                                                        <p style={{color: '#ff9800', fontWeight: 600, fontSize: '15px'}}>
+                                                            Продолжить →
+                                                        </p>
+                                                    )}
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </>
+                                )}
+
+                                <h3 className="section-title">🎯 Выбрать новый тест</h3>
                                 <p style={{marginBottom: '20px', color: '#666'}}>Выберите профессию для тестирования</p>
                                 <div className="profiles-grid">
                                     {profiles.map(profile => (
@@ -348,7 +550,36 @@
                                             onClick={() => handleSelectProfile(profile)}
                                         >
                                             <h3>{profile.name}</h3>
-                                            <p>{profile.specialization}</p>
+                                            <p>{profile.has_specializations ? 'Выберите специализацию →' : 'Начать тест →'}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                            </>
+                        )}
+
+                        {step === 'specializations' && (
+                            <>
+                                <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px'}}>
+                                    <div>
+                                        <button className="btn back-btn" onClick={() => setStep('dashboard')}>
+                                            ← Назад
+                                        </button>
+                                        <button className="btn logout-btn" onClick={handleLogout}>
+                                            Выйти
+                                        </button>
+                                    </div>
+                                </div>
+                                <h2 style={{color: '#333', marginBottom: '10px'}}>{selectedProfile.name}</h2>
+                                <p style={{marginBottom: '20px', color: '#666'}}>Выберите специализацию</p>
+                                <div className="profiles-grid">
+                                    {specializations.map(spec => (
+                                        <div
+                                            key={spec.id}
+                                            className="profile-card"
+                                            onClick={() => handleSelectSpecialization(spec)}
+                                        >
+                                            <h3>{spec.name}</h3>
+                                            <p>Начать тест →</p>
                                         </div>
                                     ))}
                                 </div>
