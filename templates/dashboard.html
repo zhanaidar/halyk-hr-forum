@@ -22,43 +22,40 @@
 
         .header {
             background: white;
-            padding: 30px;
+            padding: 20px;
             text-align: center;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
         .header img {
-            max-width: 350px;
+            max-width: 280px;
             height: auto;
         }
 
         .header h1 {
             color: #1DB584;
-            font-size: 36px;
-            margin-top: 15px;
+            font-size: 28px;
+            margin-top: 10px;
         }
 
         .content {
             flex: 1;
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             justify-content: center;
-            padding: 40px 40px 20px 40px;
+            padding: 20px 15px 10px 15px;
             position: relative;
+            overflow-y: auto;
         }
 
         .screen {
             width: 100%;
-            max-width: 1600px;
+            max-width: 1000px;
             background: white;
-            border-radius: 24px;
-            padding: 50px;
+            border-radius: 20px;
+            padding: 30px 20px;
             box-shadow: 0 8px 32px rgba(0,0,0,0.2);
             animation: fadeIn 0.5s ease-in;
-            position: absolute;
-            top: 40px;
-            left: 50%;
-            transform: translateX(-50%);
         }
 
         @keyframes fadeIn {
@@ -69,37 +66,37 @@
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 40px;
-            margin-bottom: 50px;
+            gap: 15px;
+            margin-bottom: 30px;
         }
 
         .stat-card {
             text-align: center;
-            padding: 30px;
+            padding: 20px 10px;
             background: #f8f9fa;
-            border-radius: 16px;
+            border-radius: 12px;
         }
 
         .stat-card h3 {
-            font-size: 24px;
+            font-size: 16px;
             color: #666;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
 
         .stat-card .number {
-            font-size: 72px;
+            font-size: 56px;
             font-weight: 700;
             color: #1DB584;
         }
 
         .levels-section {
-            margin-top: 40px;
+            margin-top: 30px;
         }
 
         .levels-section h2 {
-            font-size: 32px;
+            font-size: 24px;
             color: #333;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             text-align: center;
         }
 
@@ -107,14 +104,14 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 25px 40px;
+            padding: 18px 25px;
             background: #f8f9fa;
             border-radius: 12px;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
         .level-item .level-name {
-            font-size: 32px;
+            font-size: 26px;
             font-weight: 600;
         }
 
@@ -123,40 +120,40 @@
         .level-item.junior .level-name { color: #4caf50; }
 
         .level-item .level-count {
-            font-size: 48px;
+            font-size: 40px;
             font-weight: 700;
             color: #1DB584;
         }
 
         .two-columns {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
         }
 
         .column {
             background: #f8f9fa;
             border-radius: 16px;
-            padding: 30px;
-            height: 650px;
+            padding: 25px 20px;
+            max-height: 750px;
             overflow-y: auto;
         }
 
         .column h2 {
-            font-size: 32px;
+            font-size: 26px;
             color: #333;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             text-align: center;
             position: sticky;
             top: 0;
             background: #f8f9fa;
-            padding-bottom: 20px;
+            padding-bottom: 15px;
             z-index: 10;
         }
 
         .top-item {
-            padding: 20px;
-            margin-bottom: 15px;
+            padding: 15px;
+            margin-bottom: 12px;
             background: white;
             border-radius: 12px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
@@ -165,60 +162,58 @@
         .top-item.rank-1,
         .top-item.rank-2,
         .top-item.rank-3 {
-            padding: 30px;
-            margin-bottom: 25px;
+            padding: 25px;
+            margin-bottom: 20px;
         }
 
         .top-item .rank {
-            font-size: 28px;
-            margin-bottom: 10px;
-        }
-
-        .top-item.rank-1 .rank { font-size: 54px; }
-        .top-item.rank-2 .rank { font-size: 48px; }
-        .top-item.rank-3 .rank { font-size: 42px; }
-
-        .top-item .name {
             font-size: 24px;
-            font-weight: 600;
-            color: #333;
             margin-bottom: 8px;
         }
 
-        .top-item.rank-1 .name { font-size: 54px; }
-        .top-item.rank-2 .name { font-size: 48px; }
-        .top-item.rank-3 .name { font-size: 42px; }
+        .top-item.rank-1 .rank { font-size: 48px; }
+        .top-item.rank-2 .rank { font-size: 42px; }
+        .top-item.rank-3 .rank { font-size: 36px; }
 
-        .top-item .score {
-            font-size: 36px;
-            font-weight: 700;
-            color: #1DB584;
-            margin: 10px 0;
+        .top-item .name {
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 6px;
         }
 
-        .top-item.rank-1 .score { font-size: 48px; }
-        .top-item.rank-2 .score { font-size: 48px; }
-        .top-item.rank-3 .score { font-size: 48px; }
+        .top-item.rank-1 .name { font-size: 44px; }
+        .top-item.rank-2 .name { font-size: 38px; }
+        .top-item.rank-3 .name { font-size: 32px; }
+
+        .top-item .score {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1DB584;
+            margin: 8px 0;
+        }
+
+        .top-item.rank-1 .score { font-size: 40px; }
+        .top-item.rank-2 .score { font-size: 40px; }
+        .top-item.rank-3 .score { font-size: 36px; }
 
         .top-item .spec {
-            font-size: 18px;
+            font-size: 16px;
             color: #666;
         }
 
-        .top-item.rank-1 .spec { font-size: 24px; }
-        .top-item.rank-2 .spec { font-size: 24px; }
-        .top-item.rank-3 .spec { font-size: 24px; }
+        .top-item.rank-1 .spec { font-size: 20px; }
+        .top-item.rank-2 .spec { font-size: 20px; }
+        .top-item.rank-3 .spec { font-size: 18px; }
 
         .footer {
             background: white;
-            padding: 20px;
+            padding: 15px;
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 100px;
+            gap: 60px;
             box-shadow: 0 -4px 12px rgba(0,0,0,0.1);
-            position: relative;
-            z-index: 100;
         }
 
         .qr-block {
@@ -226,15 +221,15 @@
         }
 
         .qr-block img {
-            width: 180px;
-            height: 180px;
+            width: 140px;
+            height: 140px;
             border: 3px solid #1DB584;
             border-radius: 12px;
         }
 
         .qr-block p {
-            margin-top: 10px;
-            font-size: 20px;
+            margin-top: 8px;
+            font-size: 16px;
             font-weight: 600;
             color: #333;
         }
@@ -244,17 +239,17 @@
         }
 
         ::-webkit-scrollbar {
-            width: 8px;
+            width: 6px;
         }
 
         ::-webkit-scrollbar-track {
             background: #f1f1f1;
-            border-radius: 4px;
+            border-radius: 3px;
         }
 
         ::-webkit-scrollbar-thumb {
             background: #1DB584;
-            border-radius: 4px;
+            border-radius: 3px;
         }
     </style>
 </head>
