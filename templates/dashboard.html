@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Halyk HR Forum - Dashboard</title>
+    <title>Halyk OIY Tech - Dashboard</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+
         * {
             margin: 0;
             padding: 0;
@@ -12,316 +14,451 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #1DB584 0%, #0a7d5a 100%);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(180deg, #0a1f1a 0%, #051310 100%);
+            color: white;
             height: 100vh;
             overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .header {
-            background: white;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-
-        .header img {
-            max-width: 280px;
-            height: auto;
-        }
-
-        .header h1 {
-            color: #1DB584;
-            font-size: 28px;
-            margin-top: 10px;
-        }
-
-        .content {
-            flex: 1;
-            display: flex;
-            align-items: flex-start;
-            justify-content: center;
-            padding: 20px 15px 10px 15px;
             position: relative;
-            overflow-y: auto;
         }
 
-        .screen {
-            width: 100%;
-            max-width: 1000px;
-            background: white;
-            border-radius: 20px;
-            padding: 30px 20px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-            animation: fadeIn 0.5s ease-in;
+        /* Футуристичный фон */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(29, 181, 132, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(29, 181, 132, 0.08) 0%, transparent 50%);
+            pointer-events: none;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* Анимированные линии */
+        .lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            overflow: hidden;
+            pointer-events: none;
+            opacity: 0.3;
         }
 
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin-bottom: 30px;
+        .line {
+            position: absolute;
+            width: 1px;
+            height: 100%;
+            background: linear-gradient(180deg, transparent 0%, #1DB584 50%, transparent 100%);
+            animation: lineMove 4s ease-in-out infinite;
         }
 
-        .stat-card {
-            text-align: center;
-            padding: 20px 10px;
-            background: #f8f9fa;
-            border-radius: 12px;
+        .line:nth-child(1) { left: 10%; animation-delay: 0s; }
+        .line:nth-child(2) { left: 25%; animation-delay: 0.8s; }
+        .line:nth-child(3) { left: 45%; animation-delay: 1.6s; }
+        .line:nth-child(4) { left: 60%; animation-delay: 0.4s; }
+        .line:nth-child(5) { left: 75%; animation-delay: 1.2s; }
+        .line:nth-child(6) { left: 90%; animation-delay: 2s; }
+
+        @keyframes lineMove {
+            0%, 100% { transform: translateY(-100%); opacity: 0; }
+            50% { opacity: 1; }
         }
 
-        .stat-card h3 {
-            font-size: 16px;
-            color: #666;
-            margin-bottom: 10px;
+        /* Точки на фоне */
+        .dots {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: radial-gradient(circle, #1DB584 1px, transparent 1px);
+            background-size: 50px 50px;
+            opacity: 0.15;
+            pointer-events: none;
         }
 
-        .stat-card .number {
-            font-size: 56px;
-            font-weight: 700;
-            color: #1DB584;
-        }
-
-        .levels-section {
-            margin-top: 30px;
-        }
-
-        .levels-section h2 {
-            font-size: 24px;
-            color: #333;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .level-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 18px 25px;
-            background: #f8f9fa;
-            border-radius: 12px;
-            margin-bottom: 12px;
-        }
-
-        .level-item .level-name {
-            font-size: 26px;
-            font-weight: 600;
-        }
-
-        .level-item.senior .level-name { color: #f44336; }
-        .level-item.middle .level-name { color: #ff9800; }
-        .level-item.junior .level-name { color: #4caf50; }
-
-        .level-item .level-count {
-            font-size: 40px;
-            font-weight: 700;
-            color: #1DB584;
-        }
-
-        .two-columns {
+        .container {
+            position: relative;
+            z-index: 1;
+            height: 100vh;
             display: flex;
             flex-direction: column;
-            gap: 25px;
+            padding: 40px;
         }
 
-        .column {
-            background: #f8f9fa;
-            border-radius: 16px;
-            padding: 25px 20px;
-            max-height: 750px;
-            overflow-y: auto;
-        }
-
-        .column h2 {
-            font-size: 26px;
-            color: #333;
-            margin-bottom: 20px;
+        /* Хедер */
+        .header {
             text-align: center;
-            position: sticky;
-            top: 0;
-            background: #f8f9fa;
-            padding-bottom: 15px;
-            z-index: 10;
+            margin-bottom: 50px;
         }
 
-        .top-item {
-            padding: 15px;
-            margin-bottom: 12px;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
-
-        .top-item.rank-1,
-        .top-item.rank-2,
-        .top-item.rank-3 {
-            padding: 25px;
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
             margin-bottom: 20px;
         }
 
-        .top-item .rank {
-            font-size: 24px;
+        .logo-text {
+            font-size: 48px;
+            font-weight: 700;
+            color: white;
+            letter-spacing: -1px;
+        }
+
+        .logo-divider {
+            width: 2px;
+            height: 50px;
+            background: #1DB584;
+        }
+
+        .logo-visa {
+            font-size: 48px;
+            font-weight: 700;
+            color: white;
+        }
+
+        .title {
+            font-size: 36px;
+            font-weight: 700;
+            background: linear-gradient(90deg, #1DB584 0%, #2dd4a0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             margin-bottom: 8px;
         }
 
-        .top-item.rank-1 .rank { font-size: 48px; }
-        .top-item.rank-2 .rank { font-size: 42px; }
-        .top-item.rank-3 .rank { font-size: 36px; }
-
-        .top-item .name {
+        .subtitle {
             font-size: 20px;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 6px;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 400;
         }
 
-        .top-item.rank-1 .name { font-size: 44px; }
-        .top-item.rank-2 .name { font-size: 38px; }
-        .top-item.rank-3 .name { font-size: 32px; }
+        /* Основная статистика */
+        .stats-main {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 40px;
+        }
 
-        .top-item .score {
+        .stat-card {
+            background: rgba(29, 181, 132, 0.08);
+            border: 1px solid rgba(29, 181, 132, 0.2);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #1DB584, transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { transform: translateX(-100%); }
+            50% { transform: translateX(100%); }
+        }
+
+        .stat-card:hover {
+            background: rgba(29, 181, 132, 0.12);
+            transform: translateY(-5px);
+        }
+
+        .stat-label {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .stat-value {
+            font-size: 72px;
+            font-weight: 800;
+            color: #1DB584;
+            line-height: 1;
+            text-shadow: 0 0 30px rgba(29, 181, 132, 0.5);
+        }
+
+        /* Уровни */
+        .levels-section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
             font-size: 28px;
             font-weight: 700;
+            margin-bottom: 25px;
+            text-align: center;
             color: #1DB584;
-            margin: 8px 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
-        .top-item.rank-1 .score { font-size: 40px; }
-        .top-item.rank-2 .score { font-size: 40px; }
-        .top-item.rank-3 .score { font-size: 36px; }
-
-        .top-item .spec {
-            font-size: 16px;
-            color: #666;
+        .levels-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
         }
 
-        .top-item.rank-1 .spec { font-size: 20px; }
-        .top-item.rank-2 .spec { font-size: 20px; }
-        .top-item.rank-3 .spec { font-size: 18px; }
+        .level-card {
+            background: rgba(29, 181, 132, 0.08);
+            border: 1px solid rgba(29, 181, 132, 0.2);
+            border-radius: 16px;
+            padding: 25px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
 
-        .footer {
-            background: white;
-            padding: 15px;
+        .level-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--level-color);
+            box-shadow: 0 0 20px var(--level-color);
+        }
+
+        .level-card.senior { --level-color: #ff4757; }
+        .level-card.middle { --level-color: #ffa502; }
+        .level-card.junior { --level-color: #2ed573; }
+
+        .level-icon {
+            font-size: 42px;
+            margin-bottom: 10px;
+        }
+
+        .level-name {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .level-count {
+            font-size: 56px;
+            font-weight: 800;
+            color: var(--level-color);
+            text-shadow: 0 0 20px var(--level-color);
+        }
+
+        /* Топы */
+        .tops-section {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            flex: 1;
+        }
+
+        .top-block {
+            background: rgba(29, 181, 132, 0.06);
+            border: 1px solid rgba(29, 181, 132, 0.15);
+            border-radius: 20px;
+            padding: 25px;
+            overflow: hidden;
+        }
+
+        .top-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #1DB584;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .top-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(29, 181, 132, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 12px;
             display: flex;
-            justify-content: center;
             align-items: center;
-            gap: 60px;
-            box-shadow: 0 -4px 12px rgba(0,0,0,0.1);
+            gap: 20px;
+            transition: all 0.3s ease;
         }
 
-        .qr-block {
+        .top-item:hover {
+            background: rgba(29, 181, 132, 0.1);
+            transform: translateX(5px);
+        }
+
+        .top-item.rank-1 {
+            background: linear-gradient(90deg, rgba(255, 215, 0, 0.15), rgba(29, 181, 132, 0.05));
+            border-color: rgba(255, 215, 0, 0.4);
+        }
+
+        .top-item.rank-2 {
+            background: linear-gradient(90deg, rgba(192, 192, 192, 0.15), rgba(29, 181, 132, 0.05));
+            border-color: rgba(192, 192, 192, 0.4);
+        }
+
+        .top-item.rank-3 {
+            background: linear-gradient(90deg, rgba(205, 127, 50, 0.15), rgba(29, 181, 132, 0.05));
+            border-color: rgba(205, 127, 50, 0.4);
+        }
+
+        .rank-badge {
+            font-size: 36px;
+            font-weight: 800;
+            min-width: 50px;
             text-align: center;
         }
 
-        .qr-block img {
-            width: 140px;
-            height: 140px;
-            border: 3px solid #1DB584;
-            border-radius: 12px;
+        .top-item.rank-1 .rank-badge { font-size: 48px; }
+
+        .top-content {
+            flex: 1;
         }
 
-        .qr-block p {
-            margin-top: 8px;
+        .top-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 5px;
+        }
+
+        .top-item.rank-1 .top-name { font-size: 26px; }
+
+        .top-detail {
             font-size: 16px;
-            font-weight: 600;
-            color: #333;
+            color: rgba(255, 255, 255, 0.6);
         }
 
-        .hidden {
-            display: none;
+        .top-score {
+            font-size: 32px;
+            font-weight: 800;
+            color: #1DB584;
+            text-shadow: 0 0 15px rgba(29, 181, 132, 0.5);
         }
 
-        ::-webkit-scrollbar {
-            width: 6px;
+        .top-item.rank-1 .top-score { font-size: 40px; }
+
+        /* Анимация появления */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 3px;
+        .stat-card, .level-card, .top-item {
+            animation: fadeInUp 0.6s ease-out backwards;
         }
 
-        ::-webkit-scrollbar-thumb {
-            background: #1DB584;
-            border-radius: 3px;
-        }
+        .stat-card:nth-child(1) { animation-delay: 0.1s; }
+        .stat-card:nth-child(2) { animation-delay: 0.2s; }
+        .stat-card:nth-child(3) { animation-delay: 0.3s; }
+
+        .level-card:nth-child(1) { animation-delay: 0.4s; }
+        .level-card:nth-child(2) { animation-delay: 0.5s; }
+        .level-card:nth-child(3) { animation-delay: 0.6s; }
     </style>
 </head>
 <body>
-    <div class="header">
-        <img src="/static/images/Halyk_LogoName.png" alt="Халык банк">
-        <h1>Статистика участников HR Форума</h1>
+    <!-- Фоновые эффекты -->
+    <div class="lines">
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
     </div>
+    <div class="dots"></div>
 
-    <div class="content">
-        <!-- ЭКРАН 1: Статистика по людям -->
-        <div class="screen" id="screen1">
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <h3>👥 Зарегистрировано</h3>
-                    <div class="number" id="totalUsers">0</div>
-                </div>
-                <div class="stat-card">
-                    <h3>✅ Завершили тест</h3>
-                    <div class="number" id="completedTests">0</div>
-                </div>
-                <div class="stat-card">
-                    <h3>⏳ Проходят сейчас</h3>
-                    <div class="number" id="inProgress">0</div>
-                </div>
+    <div class="container">
+        <!-- Хедер -->
+        <div class="header">
+            <div class="logo">
+                <div class="logo-text">Halyk</div>
+                <div class="logo-divider"></div>
+                <div class="logo-visa">VISA</div>
             </div>
+            <h1 class="title">OIY Tech Forum</h1>
+            <p class="subtitle">Digital era for everyone</p>
+        </div>
 
-            <div class="levels-section">
-                <h2>📈 РАСПРЕДЕЛЕНИЕ ПО УРОВНЯМ</h2>
-                <div class="level-item senior">
-                    <span class="level-name">🥇 Senior</span>
-                    <span class="level-count" id="seniorCount">0</span>
+        <!-- Основная статистика -->
+        <div class="stats-main">
+            <div class="stat-card">
+                <div class="stat-label">👥 Зарегистрировано</div>
+                <div class="stat-value" id="totalUsers">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">✅ Прошли тест</div>
+                <div class="stat-value" id="completedTests">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">⏳ Проходят сейчас</div>
+                <div class="stat-value" id="inProgress">0</div>
+            </div>
+        </div>
+
+        <!-- Уровни -->
+        <div class="levels-section">
+            <h2 class="section-title">📈 Распределение по уровням</h2>
+            <div class="levels-grid">
+                <div class="level-card senior">
+                    <div class="level-icon">🥇</div>
+                    <div class="level-name">Senior</div>
+                    <div class="level-count" id="seniorCount">0</div>
                 </div>
-                <div class="level-item middle">
-                    <span class="level-name">🥈 Middle</span>
-                    <span class="level-count" id="middleCount">0</span>
+                <div class="level-card middle">
+                    <div class="level-icon">🥈</div>
+                    <div class="level-name">Middle</div>
+                    <div class="level-count" id="middleCount">0</div>
                 </div>
-                <div class="level-item junior">
-                    <span class="level-name">🥉 Junior</span>
-                    <span class="level-count" id="juniorCount">0</span>
+                <div class="level-card junior">
+                    <div class="level-icon">🥉</div>
+                    <div class="level-name">Junior</div>
+                    <div class="level-count" id="juniorCount">0</div>
                 </div>
             </div>
         </div>
 
-        <!-- ЭКРАН 2: Топы -->
-        <div class="screen hidden" id="screen2">
-            <div class="two-columns">
-                <div class="column">
-                    <h2>🏆 ТОП-20 ЛУЧШИХ</h2>
-                    <div id="topResults"></div>
-                </div>
-                <div class="column">
-                    <h2>📚 ПОПУЛЯРНЫЕ СПЕЦИАЛИЗАЦИИ</h2>
-                    <div id="topSpecializations"></div>
-                </div>
+        <!-- Топы -->
+        <div class="tops-section">
+            <!-- ТОП-3 по баллам -->
+            <div class="top-block">
+                <h3 class="top-title">🏆 ТОП-3 по баллам</h3>
+                <div id="topResults"></div>
             </div>
-        </div>
-    </div>
 
-    <div class="footer">
-        <div class="qr-block">
-            <img src="/static/images/qr_registration.png" alt="QR Регистрация">
-            <p>Регистрация</p>
-        </div>
-        <div class="qr-block">
-            <img src="/static/images/qr_results.png" alt="QR Результаты">
-            <p>Результаты</p>
+            <!-- ТОП-3 специализаций -->
+            <div class="top-block">
+                <h3 class="top-title">📚 ТОП-3 специализаций</h3>
+                <div id="topSpecializations"></div>
+            </div>
         </div>
     </div>
 
     <script>
-        let currentScreen = 1;
         let stats = null;
 
         async function fetchStats() {
@@ -329,76 +466,97 @@
                 const response = await fetch('/api/dashboard/stats');
                 stats = await response.json();
                 console.log('📊 Loaded stats:', stats);
-                updateScreen();
+                updateDashboard();
             } catch (error) {
-                console.error('❌ Ошибка загрузки статистики:', error);
+                console.error('❌ Ошибка загрузки:', error);
+                // Тестовые данные для демо
+                stats = {
+                    users: { total: 156, completed: 89, in_progress: 23 },
+                    levels: { Senior: 12, Middle: 45, Junior: 32 },
+                    top_results: [
+                        { name: "Айдар Ержанов", score: 24, max_score: 24, specialization: "Backend Developer" },
+                        { name: "Камила Нурланова", score: 23, max_score: 24, specialization: "Frontend Developer" },
+                        { name: "Дархан Сейтов", score: 22, max_score: 24, specialization: "DevOps Engineer" }
+                    ],
+                    top_specializations: [
+                        { name: "Backend Developer", count: 45 },
+                        { name: "Frontend Developer", count: 38 },
+                        { name: "Data Analyst", count: 29 }
+                    ]
+                };
+                updateDashboard();
             }
         }
 
-        function updateScreen() {
+        function animateValue(element, end, duration = 2000) {
+            const start = 0;
+            const range = end - start;
+            const startTime = performance.now();
+
+            function update(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+                const current = Math.floor(start + range * easeOutQuart);
+                
+                element.textContent = current;
+
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                }
+            }
+
+            requestAnimationFrame(update);
+        }
+
+        function updateDashboard() {
             if (!stats) return;
 
-            // Обновляем экран 1
-            document.getElementById('totalUsers').textContent = stats.users.total;
-            document.getElementById('completedTests').textContent = stats.users.completed;
-            document.getElementById('inProgress').textContent = stats.users.in_progress;
-            document.getElementById('seniorCount').textContent = stats.levels.Senior;
-            document.getElementById('middleCount').textContent = stats.levels.Middle;
-            document.getElementById('juniorCount').textContent = stats.levels.Junior;
+            // Анимация цифр
+            animateValue(document.getElementById('totalUsers'), stats.users.total);
+            animateValue(document.getElementById('completedTests'), stats.users.completed);
+            animateValue(document.getElementById('inProgress'), stats.users.in_progress);
+            animateValue(document.getElementById('seniorCount'), stats.levels.Senior);
+            animateValue(document.getElementById('middleCount'), stats.levels.Middle);
+            animateValue(document.getElementById('juniorCount'), stats.levels.Junior);
 
-            // Обновляем топ результатов
-            const topResultsHTML = stats.top_results.map((item, index) => {
+            // ТОП-3 по баллам
+            const topResultsHTML = stats.top_results.slice(0, 3).map((item, index) => {
                 const rank = index + 1;
-                const rankClass = rank <= 3 ? `rank-${rank}` : '';
-                const medal = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : `${rank}.`;
+                const medal = rank === 1 ? '🥇' : rank === 2 ? '🥈' : '🥉';
                 
                 return `
-                    <div class="top-item ${rankClass}">
-                        <div class="rank">${medal}</div>
-                        <div class="name">${item.name}</div>
-                        <div class="score">${item.score}/${item.max_score}</div>
-                        <div class="spec">${item.specialization}</div>
+                    <div class="top-item rank-${rank}">
+                        <div class="rank-badge">${medal}</div>
+                        <div class="top-content">
+                            <div class="top-name">${item.name}</div>
+                            <div class="top-detail">${item.specialization}</div>
+                        </div>
+                        <div class="top-score">${item.score}/${item.max_score}</div>
                     </div>
                 `;
             }).join('');
             document.getElementById('topResults').innerHTML = topResultsHTML;
 
-            // Обновляем топ специализаций
-            const topSpecsHTML = stats.top_specializations.map((item, index) => {
+            // ТОП-3 специализаций
+            const topSpecsHTML = stats.top_specializations.slice(0, 3).map((item, index) => {
                 const rank = index + 1;
-                const rankClass = rank <= 3 ? `rank-${rank}` : '';
-                const medal = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : `${rank}.`;
+                const medal = rank === 1 ? '🥇' : rank === 2 ? '🥈' : '🥉';
                 
                 return `
-                    <div class="top-item ${rankClass}">
-                        <div class="rank">${medal}</div>
-                        <div class="name">${item.name}</div>
-                        <div class="score">${item.count} тестов</div>
+                    <div class="top-item rank-${rank}">
+                        <div class="rank-badge">${medal}</div>
+                        <div class="top-content">
+                            <div class="top-name">${item.name}</div>
+                        </div>
+                        <div class="top-score">${item.count}</div>
                     </div>
                 `;
             }).join('');
             document.getElementById('topSpecializations').innerHTML = topSpecsHTML;
         }
 
-        function switchScreen() {
-            const screen1 = document.getElementById('screen1');
-            const screen2 = document.getElementById('screen2');
-
-            if (currentScreen === 1) {
-                screen1.classList.add('hidden');
-                screen2.classList.remove('hidden');
-                currentScreen = 2;
-            } else {
-                screen2.classList.add('hidden');
-                screen1.classList.remove('hidden');
-                currentScreen = 1;
-            }
-        }
-
-        // Переключение экранов каждые 5 секунд
-        setInterval(switchScreen, 5000);
-
-        // Обновление данных каждые 10 секунд
+        // Обновление каждые 10 секунд
         setInterval(fetchStats, 10000);
 
         // Первая загрузка
