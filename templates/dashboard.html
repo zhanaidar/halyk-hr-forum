@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Halyk HR Forum - Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1DB584 0%, #0a7d5a 100%);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: white;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .header img {
+            max-width: 350px;
+            height: auto;
+        }
+
+        .header h1 {
+            color: #1DB584;
+            font-size: 36px;
+            margin-top: 15px;
+        }
+
+        .content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 40px 20px 40px;
+            position: relative;
+        }
+
+        .screen {
+            width: 100%;
+            max-width: 1600px;
+            background: white;
+            border-radius: 24px;
+            padding: 50px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            animation: fadeIn 0.5s ease-in;
+            position: absolute;
+            top: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 16px;
+        }
+
+        .stat-card h3 {
+            font-size: 24px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .stat-card .number {
+            font-size: 72px;
+            font-weight: 700;
+            color: #1DB584;
+        }
+
+        .levels-section {
+            margin-top: 40px;
+        }
+
+        .levels-section h2 {
+            font-size: 32px;
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .level-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 40px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            margin-bottom: 15px;
+        }
+
+        .level-item .level-name {
+            font-size: 32px;
+            font-weight: 600;
+        }
+
+        .level-item.senior .level-name { color: #f44336; }
+        .level-item.middle .level-name { color: #ff9800; }
+        .level-item.junior .level-name { color: #4caf50; }
+
+        .level-item .level-count {
+            font-size: 48px;
+            font-weight: 700;
+            color: #1DB584;
+        }
+
+        .two-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .column {
+            background: #f8f9fa;
+            border-radius: 16px;
+            padding: 30px;
+            height: 650px;
+            overflow-y: auto;
+        }
+
+        .column h2 {
+            font-size: 32px;
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            background: #f8f9fa;
+            padding-bottom: 20px;
+            z-index: 10;
+        }
+
+        .top-item {
+            padding: 20px;
+            margin-bottom: 15px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .top-item.rank-1,
+        .top-item.rank-2,
+        .top-item.rank-3 {
+            padding: 30px;
+            margin-bottom: 25px;
+        }
+
+        .top-item .rank {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .top-item.rank-1 .rank { font-size: 54px; }
+        .top-item.rank-2 .rank { font-size: 48px; }
+        .top-item.rank-3 .rank { font-size: 42px; }
+
+        .top-item .name {
+            font-size: 24px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .top-item.rank-1 .name { font-size: 54px; }
+        .top-item.rank-2 .name { font-size: 48px; }
+        .top-item.rank-3 .name { font-size: 42px; }
+
+        .top-item .score {
+            font-size: 36px;
+            font-weight: 700;
+            color: #1DB584;
+            margin: 10px 0;
+        }
+
+        .top-item.rank-1 .score { font-size: 48px; }
+        .top-item.rank-2 .score { font-size: 48px; }
+        .top-item.rank-3 .score { font-size: 48px; }
+
+        .top-item .spec {
+            font-size: 18px;
+            color: #666;
+        }
+
+        .top-item.rank-1 .spec { font-size: 24px; }
+        .top-item.rank-2 .spec { font-size: 24px; }
+        .top-item.rank-3 .spec { font-size: 24px; }
+
+        .footer {
+            background: white;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 100px;
+            box-shadow: 0 -4px 12px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 100;
+        }
+
+        .qr-block {
+            text-align: center;
+        }
+
+        .qr-block img {
+            width: 180px;
+            height: 180px;
+            border: 3px solid #1DB584;
+            border-radius: 12px;
+        }
+
+        .qr-block p {
+            margin-top: 10px;
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #1DB584;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="/static/images/Halyk_LogoName.png" alt="Халык банк">
+        <h1>Статистика участников HR Форума</h1>
+    </div>
+
+    <div class="content">
+        <!-- ЭКРАН 1: Статистика по людям -->
+        <div class="screen" id="screen1">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>👥 Зарегистрировано</h3>
+                    <div class="number" id="totalUsers">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>✅ Завершили тест</h3>
+                    <div class="number" id="completedTests">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>⏳ Проходят сейчас</h3>
+                    <div class="number" id="inProgress">0</div>
+                </div>
+            </div>
+
+            <div class="levels-section">
+                <h2>📈 РАСПРЕДЕЛЕНИЕ ПО УРОВНЯМ</h2>
+                <div class="level-item senior">
+                    <span class="level-name">🥇 Senior</span>
+                    <span class="level-count" id="seniorCount">0</span>
+                </div>
+                <div class="level-item middle">
+                    <span class="level-name">🥈 Middle</span>
+                    <span class="level-count" id="middleCount">0</span>
+                </div>
+                <div class="level-item junior">
+                    <span class="level-name">🥉 Junior</span>
+                    <span class="level-count" id="juniorCount">0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ЭКРАН 2: Топы -->
+        <div class="screen hidden" id="screen2">
+            <div class="two-columns">
+                <div class="column">
+                    <h2>🏆 ТОП-20 ЛУЧШИХ</h2>
+                    <div id="topResults"></div>
+                </div>
+                <div class="column">
+                    <h2>📚 ПОПУЛЯРНЫЕ СПЕЦИАЛИЗАЦИИ</h2>
+                    <div id="topSpecializations"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="qr-block">
+            <img src="/static/images/qr_registration.png" alt="QR Регистрация">
+            <p>Регистрация</p>
+        </div>
+        <div class="qr-block">
+            <img src="/static/images/qr_results.png" alt="QR Результаты">
+            <p>Результаты</p>
+        </div>
+    </div>
+
+    <script>
+        let currentScreen = 1;
+        let stats = null;
+
+        async function fetchStats() {
+            try {
+                const response = await fetch('/api/dashboard/stats');
+                stats = await response.json();
+                console.log('📊 Loaded stats:', stats);
+                updateScreen();
+            } catch (error) {
+                console.error('❌ Ошибка загрузки статистики:', error);
+            }
+        }
+
+        function updateScreen() {
+            if (!stats) return;
+
+            // Обновляем экран 1
+            document.getElementById('totalUsers').textContent = stats.users.total;
+            document.getElementById('completedTests').textContent = stats.users.completed;
+            document.getElementById('inProgress').textContent = stats.users.in_progress;
+            document.getElementById('seniorCount').textContent = stats.levels.Senior;
+            document.getElementById('middleCount').textContent = stats.levels.Middle;
+            document.getElementById('juniorCount').textContent = stats.levels.Junior;
+
+            // Обновляем топ результатов
+            const topResultsHTML = stats.top_results.map((item, index) => {
+                const rank = index + 1;
+                const rankClass = rank <= 3 ? `rank-${rank}` : '';
+                const medal = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : `${rank}.`;
+                
+                return `
+                    <div class="top-item ${rankClass}">
+                        <div class="rank">${medal}</div>
+                        <div class="name">${item.name}</div>
+                        <div class="score">${item.score}/${item.max_score}</div>
+                        <div class="spec">${item.specialization}</div>
+                    </div>
+                `;
+            }).join('');
+            document.getElementById('topResults').innerHTML = topResultsHTML;
+
+            // Обновляем топ специализаций
+            const topSpecsHTML = stats.top_specializations.map((item, index) => {
+                const rank = index + 1;
+                const rankClass = rank <= 3 ? `rank-${rank}` : '';
+                const medal = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : `${rank}.`;
+                
+                return `
+                    <div class="top-item ${rankClass}">
+                        <div class="rank">${medal}</div>
+                        <div class="name">${item.name}</div>
+                        <div class="score">${item.count} тестов</div>
+                    </div>
+                `;
+            }).join('');
+            document.getElementById('topSpecializations').innerHTML = topSpecsHTML;
+        }
+
+        function switchScreen() {
+            const screen1 = document.getElementById('screen1');
+            const screen2 = document.getElementById('screen2');
+
+            if (currentScreen === 1) {
+                screen1.classList.add('hidden');
+                screen2.classList.remove('hidden');
+                currentScreen = 2;
+            } else {
+                screen2.classList.add('hidden');
+                screen1.classList.remove('hidden');
+                currentScreen = 1;
+            }
+        }
+
+        // Переключение экранов каждые 5 секунд
+        setInterval(switchScreen, 5000);
+
+        // Обновление данных каждые 10 секунд
+        setInterval(fetchStats, 10000);
+
+        // Первая загрузка
+        fetchStats();
+    </script>
+</body>
+</html>

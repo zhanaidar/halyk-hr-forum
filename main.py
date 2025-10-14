@@ -208,6 +208,12 @@ async def results_page():
     with open('templates/results.html', 'r', encoding='utf-8') as f:
         return HTMLResponse(content=f.read())
 
+@app.get("/dash", response_class=HTMLResponse)
+async def dashboard_page():
+    """Публичный дашборд для форума"""
+    with open('templates/dashboard.html', 'r', encoding='utf-8') as f:
+        return HTMLResponse(content=f.read())
+
 @app.get("/health")
 async def health():
     return {"status": "ok", "service": "halyk-hr-forum"}
@@ -693,6 +699,122 @@ async def get_results(user_test_id: int, current_user: dict = Depends(get_curren
             "specialization_name": row[4],
             "recommendation": row[5]
         }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/dashboard/stats")
+async def get_dashboard_stats():
+    """Статистика для публичного дашборда"""
+    try:
+        async with get_db_connection() as conn:
+            async with conn.cursor() as cur:
+                # Всего уникальных пользователей
+                await cur.execute("SELECT COUNT(DISTINCT id) FROM users")
+                total_users = (await cur.fetchone())[0]
+                
+                # Уникальные пользователи с хотя бы 1 завершённым тестом
+                await cur.execute("""
+                    SELECT COUNT(DISTINCT user_id) 
+                    FROM user_specialization_tests 
+                    WHERE completed_at IS NOT NULL
+                """)
+                completed_users = (await cur.fetchone())[0]
+                
+                # Уникальные пользователи, ответившие >= 10 вопросов но не завершившие
+                # И НЕ завершившие НИКАКИЕ другие тесты
+                await cur.execute("""
+                    SELECT COUNT(DISTINCT ut.user_id)
+                    FROM user_specialization_tests ut
+                    WHERE ut.completed_at IS NULL
+                    AND EXISTS (
+                        SELECT 1 
+                        FROM test_answers ta 
+                        WHERE ta.user_test_id = ut.id
+                        GROUP BY ta.user_test_id
+                        HAVING COUNT(*) >= 10
+                    )
+                    AND NOT EXISTS (
+                        SELECT 1
+                        FROM user_specialization_tests ut2
+                        WHERE ut2.user_id = ut.user_id
+                        AND ut2.completed_at IS NOT NULL
+                    )
+                """)
+                in_progress = (await cur.fetchone())[0]
+                
+                # Распределение по уровням
+                await cur.execute("""
+                    SELECT 
+                        CASE 
+                            WHEN (score::float / max_score * 100) >= 80 THEN 'Senior'
+                            WHEN (score::float / max_score * 100) >= 50 THEN 'Middle'
+                            ELSE 'Junior'
+                        END as level,
+                        COUNT(*) as count
+                    FROM user_specialization_tests
+                    WHERE completed_at IS NOT NULL
+                    GROUP BY level
+                """)
+                levels_data = await cur.fetchall()
+                levels = {row[0]: row[1] for row in levels_data}
+                
+                # Топ-20 лучших результатов
+                await cur.execute("""
+                    SELECT 
+                        u.name,
+                        u.surname,
+                        ut.score,
+                        ut.max_score,
+                        s.name as specialization
+                    FROM user_specialization_tests ut
+                    JOIN users u ON u.id = ut.user_id
+                    JOIN specializations s ON s.id = ut.specialization_id
+                    WHERE ut.completed_at IS NOT NULL
+                    ORDER BY ut.score DESC, ut.completed_at ASC
+                    LIMIT 20
+                """)
+                top_results_data = await cur.fetchall()
+                top_results = [
+                    {
+                        "name": f"{row[0]} {row[1]}",
+                        "score": row[2],
+                        "max_score": row[3],
+                        "specialization": row[4]
+                    }
+                    for row in top_results_data
+                ]
+                
+                # Все специализации по популярности
+                await cur.execute("""
+                    SELECT 
+                        s.name,
+                        COUNT(ut.id) as test_count
+                    FROM specializations s
+                    LEFT JOIN user_specialization_tests ut ON ut.specialization_id = s.id 
+                        AND ut.completed_at IS NOT NULL
+                    GROUP BY s.id, s.name
+                    ORDER BY test_count DESC
+                """)
+                specializations_data = await cur.fetchall()
+                top_specializations = [
+                    {"name": row[0], "count": row[1]}
+                    for row in specializations_data
+                ]
+                
+                return {
+                    "users": {
+                        "total": total_users,
+                        "completed": completed_users,
+                        "in_progress": in_progress
+                    },
+                    "levels": {
+                        "Senior": levels.get("Senior", 0),
+                        "Middle": levels.get("Middle", 0),
+                        "Junior": levels.get("Junior", 0)
+                    },
+                    "top_results": top_results,
+                    "top_specializations": top_specializations
+                }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
