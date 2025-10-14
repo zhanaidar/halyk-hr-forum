@@ -183,6 +183,9 @@ class AnswerSubmit(BaseModel):
 class LoginRequest(BaseModel):
     phone: str
 
+class SQLQuery(BaseModel):
+    query: str
+
 # ===== HTML PAGES =====
 @app.get("/", response_class=HTMLResponse)
 async def home():
@@ -212,6 +215,18 @@ async def results_page():
 async def dashboard_page():
     """Публичный дашборд для форума"""
     with open('templates/dashboard.html', 'r', encoding='utf-8') as f:
+        return HTMLResponse(content=f.read())
+    
+@app.get("/hr", response_class=HTMLResponse)
+async def hr_login_page():
+    """HR панель - страница входа"""
+    with open('templates/hr_login.html', 'r', encoding='utf-8') as f:
+        return HTMLResponse(content=f.read())
+
+@app.get("/hr/panel", response_class=HTMLResponse)
+async def hr_panel_page():
+    """HR панель - главная страница"""
+    with open('templates/hr_panel.html', 'r', encoding='utf-8') as f:
         return HTMLResponse(content=f.read())
 
 @app.get("/health")
@@ -817,6 +832,97 @@ async def get_dashboard_stats():
                 }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+# ===== API: HR PANEL =====
+
+HR_PASSWORD = "159753"  # Простой пароль для HR
+
+@app.post("/api/hr/login")
+async def hr_login(password: str):
+    """Вход в HR панель"""
+    if password == HR_PASSWORD:
+        # Создаём простой токен
+        token = create_access_token(user_id=0, phone="hr_admin")
+        return {"status": "success", "token": token}
+    else:
+        raise HTTPException(status_code=401, detail="Неверный пароль")
+
+@app.get("/api/hr/tables")
+async def get_hr_tables():
+    """Получить список таблиц с первыми 5 строками"""
+    tables = [
+        "users",
+        "profiles", 
+        "specializations",
+        "competencies",
+        "topics",
+        "questions",
+        "user_specialization_selections",
+        "user_specialization_tests",
+        "user_test_topics",
+        "test_answers",
+        "ai_recommendations"
+    ]
+    
+    result = {}
+    
+    try:
+        async with get_db_connection() as conn:
+            async with conn.cursor() as cur:
+                for table in tables:
+                    # Получаем первые 5 строк
+                    await cur.execute(f"SELECT * FROM {table} LIMIT 5")
+                    rows = await cur.fetchall()
+                    
+                    # Получаем названия колонок
+                    await cur.execute(f"""
+                        SELECT column_name 
+                        FROM information_schema.columns 
+                        WHERE table_name = '{table}'
+                        ORDER BY ordinal_position
+                    """)
+                    columns = [row[0] for row in await cur.fetchall()]
+                    
+                    result[table] = {
+                        "columns": columns,
+                        "rows": rows
+                    }
+        
+        return result
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/hr/sql")
+async def execute_hr_sql(data: SQLQuery):
+    """Выполнить SQL запрос (только SELECT)"""
+    query = data.query
+    # Проверка безопасности - только SELECT
+    query_lower = query.lower().strip()
+    if not query_lower.startswith("select"):
+        raise HTTPException(status_code=400, detail="Только SELECT запросы разрешены")
+    
+    # Запрещённые слова
+    forbidden = ["insert", "update", "delete", "drop", "create", "alter", "truncate"]
+    if any(word in query_lower for word in forbidden):
+        raise HTTPException(status_code=400, detail="Запрещённые команды обнаружены")
+    
+    try:
+        async with get_db_connection() as conn:
+            async with conn.cursor() as cur:
+                await cur.execute(query)
+                rows = await cur.fetchall()
+                
+                # Получаем названия колонок из курсора
+                columns = [desc[0] for desc in cur.description] if cur.description else []
+                
+                return {
+                    "columns": columns,
+                    "rows": rows,
+                    "count": len(rows)
+                }
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Ошибка SQL: {str(e)}")
+
 
 if __name__ == "__main__":
     import uvicorn

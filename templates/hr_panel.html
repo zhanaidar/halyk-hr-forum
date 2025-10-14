@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR Panel - База данных</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+        }
+
+        .header {
+            background: white;
+            padding: 20px 40px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            color: #1DB584;
+            font-size: 24px;
+        }
+
+        .logout-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .logout-btn:hover {
+            background: #c82333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+
+        .section {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+        .table-item {
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+
+        .table-header {
+            background: #f8f9fa;
+            padding: 15px 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+        }
+
+        .table-header:hover {
+            background: #e9ecef;
+        }
+
+        .table-header h3 {
+            color: #1DB584;
+            font-size: 18px;
+        }
+
+        .table-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+
+        .table-content.open {
+            max-height: 1000px;
+        }
+
+        .table-content table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table-content th,
+        .table-content td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .table-content th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .table-content td {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .sql-section textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            resize: vertical;
+        }
+
+        .sql-buttons {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #1DB584;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #16a073;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .sql-result {
+            margin-top: 20px;
+            overflow-x: auto;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .arrow {
+            transition: transform 0.3s;
+        }
+
+        .arrow.open {
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🔐 HR Panel - База данных</h1>
+        <button class="logout-btn" onclick="logout()">Выйти</button>
+    </div>
+
+    <div class="container">
+        <!-- Таблицы БД -->
+        <div class="section">
+            <h2>📁 Таблицы базы данных (первые 5 строк)</h2>
+            <div id="tables-container"></div>
+        </div>
+
+        <!-- SQL консоль -->
+        <div class="section sql-section">
+            <h2>💻 SQL Консоль</h2>
+            <textarea id="sqlQuery" placeholder="SELECT * FROM users LIMIT 10"></textarea>
+            <div class="sql-buttons">
+                <button class="btn btn-primary" onclick="executeSQL()">▶ Выполнить</button>
+                <button class="btn btn-secondary" onclick="clearSQL()">🗑 Очистить</button>
+                <button class="btn btn-secondary" onclick="exportToCSV()" id="exportBtn" style="display:none">📥 Экспорт CSV</button>
+            </div>
+            <div class="error-message" id="sqlError"></div>
+            <div class="sql-result" id="sqlResult"></div>
+        </div>
+    </div>
+
+    <script>
+        // Проверка токена
+        const token = localStorage.getItem('hr_token');
+        if (!token) {
+            window.location.href = '/hr';
+        }
+
+        let tablesData = {};
+        let lastQueryResult = null; // Сохраняем последний результат для экспорта
+
+        async function loadTables() {
+            try {
+                const response = await fetch('/api/hr/tables');
+                tablesData = await response.json();
+                renderTables();
+            } catch (error) {
+                console.error('Ошибка загрузки таблиц:', error);
+            }
+        }
+
+        function renderTables() {
+            const container = document.getElementById('tables-container');
+            const tableNames = Object.keys(tablesData);
+
+            container.innerHTML = tableNames.map(tableName => `
+                <div class="table-item">
+                    <div class="table-header" onclick="toggleTable('${tableName}')">
+                        <h3>📊 ${tableName}</h3>
+                        <span class="arrow" id="arrow-${tableName}">▼</span>
+                    </div>
+                    <div class="table-content" id="content-${tableName}">
+                        ${renderTable(tableName)}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderTable(tableName) {
+            const data = tablesData[tableName];
+            if (!data || !data.rows || data.rows.length === 0) {
+                return '<p style="padding: 20px; color: #999;">Нет данных</p>';
+            }
+
+            return `
+                <table>
+                    <thead>
+                        <tr>
+                            ${data.columns.map(col => `<th>${col}</th>`).join('')}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${data.rows.map(row => `
+                            <tr>
+                                ${row.map(cell => `<td>${cell !== null ? cell : 'NULL'}</td>`).join('')}
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        }
+
+        function toggleTable(tableName) {
+            const content = document.getElementById(`content-${tableName}`);
+            const arrow = document.getElementById(`arrow-${tableName}`);
+            
+            content.classList.toggle('open');
+            arrow.classList.toggle('open');
+        }
+
+        async function executeSQL() {
+            const query = document.getElementById('sqlQuery').value.trim();
+            const errorDiv = document.getElementById('sqlError');
+            const resultDiv = document.getElementById('sqlResult');
+
+            if (!query) {
+                errorDiv.textContent = 'Введите SQL запрос';
+                errorDiv.style.display = 'block';
+                return;
+            }
+
+            errorDiv.style.display = 'none';
+            resultDiv.innerHTML = '<p style="color: #999;">Выполнение...</p>';
+
+            try {
+                const response = await fetch('/api/hr/sql', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ query })
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.detail);
+                }
+
+                const data = await response.json();
+
+                if (data.rows.length === 0) {
+                    resultDiv.innerHTML = '<p style="color: #999; padding: 20px;">Нет результатов</p>';
+                    document.getElementById('exportBtn').style.display = 'none';
+                    return;
+                }
+
+                // Сохраняем результат для экспорта
+                lastQueryResult = data;
+                document.getElementById('exportBtn').style.display = 'inline-block';
+
+                resultDiv.innerHTML = `
+                    <p style="margin-bottom: 15px; color: #1DB584; font-weight: 600;">
+                        ✅ Найдено строк: ${data.count}
+                    </p>
+                    <table>
+                        <thead>
+                            <tr>
+                                ${data.columns.map(col => `<th>${col}</th>`).join('')}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${data.rows.map(row => `
+                                <tr>
+                                    ${row.map(cell => `<td>${cell !== null ? cell : 'NULL'}</td>`).join('')}
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+            } catch (error) {
+                errorDiv.textContent = error.message;
+                errorDiv.style.display = 'block';
+                resultDiv.innerHTML = '';
+            }
+        }
+
+        function clearSQL() {
+            document.getElementById('sqlQuery').value = '';
+            document.getElementById('sqlResult').innerHTML = '';
+            document.getElementById('sqlError').style.display = 'none';
+        }
+
+        function exportToCSV() {
+            if (!lastQueryResult) {
+                alert('Нет данных для экспорта');
+                return;
+            }
+
+            // Формируем CSV
+            let csv = '';
+            
+            // Заголовки
+            csv += lastQueryResult.columns.join(',') + '\n';
+            
+            // Данные
+            lastQueryResult.rows.forEach(row => {
+                const escapedRow = row.map(cell => {
+                    if (cell === null) return 'NULL';
+                    const str = String(cell);
+                    if (str.includes(',') || str.includes('"') || str.includes('\n')) {
+                        return '"' + str.replace(/"/g, '""') + '"';
+                    }
+                    return str;
+                });
+                csv += escapedRow.join(',') + '\n';
+            });
+
+            // Скачиваем файл с BOM для правильной кодировки в Excel
+            const BOM = '\uFEFF';
+            const blob = new Blob([BOM + csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            
+            link.setAttribute('href', url);
+            link.setAttribute('download', `export_${Date.now()}.csv`);
+            link.style.visibility = 'hidden';
+            
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function logout() {
+            localStorage.removeItem('hr_token');
+            window.location.href = '/hr';
+        }
+
+        // Загрузка таблиц при старте
+        loadTables();
+    </script>
+</body>
+</html>
