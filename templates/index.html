@@ -61,6 +61,20 @@
             outline: none;
             border-color: #1DB584;
         }
+        .form-group input.error {
+            border-color: #dc3545;
+        }
+        .form-hint {
+            color: #666;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+        .form-error {
+            color: #dc3545;
+            font-size: 12px;
+            margin-top: 4px;
+            font-weight: 600;
+        }
         .btn {
             width: 100%;
             padding: 16px;
@@ -219,7 +233,8 @@
 
         function App() {
             const [step, setStep] = useState('phone');
-            const [phone, setPhone] = useState('');
+            const [phone, setPhone] = useState('+');
+            const [phoneError, setPhoneError] = useState('');
             const [formData, setFormData] = useState({
                 name: '', surname: '', phone: '', company: '', job_title: ''
             });
@@ -240,8 +255,48 @@
                 }
             }, []);
 
+            // ===== ВАЛИДАЦИЯ ТЕЛЕФОНА =====
+            const handlePhoneChange = (e) => {
+                let value = e.target.value;
+                
+                // Всегда начинается с +
+                if (!value.startsWith('+')) {
+                    value = '+' + value.replace(/\+/g, '');
+                }
+                
+                // Только + и цифры
+                value = '+' + value.slice(1).replace(/\D/g, '');
+                
+                // Максимум 12 символов (+7 + 10 цифр)
+                if (value.length <= 12) {
+                    setPhone(value);
+                    setPhoneError('');
+                }
+            };
+
+            const validatePhone = (phoneValue) => {
+                // Проверка формата: +77001234567 (ровно 12 символов)
+                if (phoneValue.length !== 12) {
+                    return 'Телефон должен содержать 12 символов';
+                }
+                
+                if (!/^\+\d{11}$/.test(phoneValue)) {
+                    return 'Неверный формат телефона';
+                }
+                
+                return '';
+            };
+
             const handlePhoneSubmit = async (e) => {
                 e.preventDefault();
+                
+                // Валидация перед отправкой
+                const error = validatePhone(phone);
+                if (error) {
+                    setPhoneError(error);
+                    return;
+                }
+                
                 setLoading(true);
 
                 try {
@@ -274,6 +329,14 @@
 
             const handleRegister = async (e) => {
                 e.preventDefault();
+                
+                // Валидация телефона в форме регистрации
+                const error = validatePhone(formData.phone);
+                if (error) {
+                    alert('Некорректный формат телефона: ' + error);
+                    return;
+                }
+                
                 setLoading(true);
 
                 try {
@@ -391,9 +454,10 @@
                 localStorage.removeItem('halyk_user_id');
                 localStorage.removeItem('halyk_user_name');
                 setStep('phone');
-                setPhone('');
+                setPhone('+');
                 setUserName('');
                 setMyTests([]);
+                setPhoneError('');
             };
 
             const getStatusText = (status) => {
@@ -429,10 +493,17 @@
                                     <input
                                         type="tel"
                                         value={phone}
-                                        onChange={(e) => setPhone(e.target.value)}
+                                        onChange={handlePhoneChange}
+                                        maxLength={12}
                                         required
-                                        placeholder="+7 (___) ___-__-__"
+                                        placeholder="+77001234567"
+                                        className={phoneError ? 'error' : ''}
                                     />
+                                    {phoneError ? (
+                                        <div className="form-error">{phoneError}</div>
+                                    ) : (
+                                        <div className="form-hint">Формат: +77001234567 (12 символов)</div>
+                                    )}
                                 </div>
 
                                 <button type="submit" className="btn" disabled={loading}>
