@@ -1,0 +1,62 @@
+{
+  "profile": "Mobile разработчик",
+  "specialization": "Android",
+  "file_name": "Mobile_Android",
+  "competencies": [
+    {
+      "competency": "Знание языка программирования Java",
+      "type": "CORE",
+      "importance": 85,
+      "themes": [
+        "ООП в Java: классы, интерфейсы, наследование и полиморфизм",
+        "Многопоточность и concurrency: Thread, Executor, synchronized, volatile",
+        "Коллекции Java: List, Set, Map, их реализации и применение",
+        "Generics, аннотации и рефлексия в Java"
+      ]
+    },
+    {
+      "competency": "Знание языка программирования Kotlin",
+      "type": "CORE",
+      "importance": 90,
+      "themes": [
+        "Основы синтаксиса Kotlin: типы данных, null-safety, функции и лямбда-выражения",
+        "Объектно-ориентированное программирование в Kotlin: классы, наследование, интерфейсы и data classes",
+        "Корутины и асинхронное программирование: suspend функции, scope, dispatchers и flow",
+        "Продвинутые возможности Kotlin: extension functions, sealed classes, generics и delegation"
+      ]
+    },
+    {
+      "competency": "Знание Android SDK, Jetpack Compose",
+      "type": "CORE",
+      "importance": 90,
+      "themes": [
+        "Lifecycle и State Management в Jetpack Compose",
+        "Архитектура компонентов Android Jetpack (ViewModel, LiveData, Navigation)",
+        "Работа с UI в Compose: Modifiers, Layout и Custom Components",
+        "Интеграция Jetpack Compose с существующим View-based кодом и работа с Side Effects"
+      ]
+    },
+    {
+      "competency": "Знание Android Guidelines, Material Design",
+      "type": "DAILY",
+      "importance": 70,
+      "themes": [
+        "Основные принципы Material Design 3: цветовые схемы, типографика и adaptive layouts",
+        "Компоненты навигации: Navigation Drawer, Bottom Navigation, Top App Bar и их правильное применение",
+        "Адаптивный дизайн и responsive layouts: breakpoints, window size classes и поддержка различных форм-факторов",
+        "Motion design и анимации: transitions, shared element transitions и правила использования duration и easing"
+      ]
+    },
+    {
+      "competency": "Навыки работы с Android Studio",
+      "type": "DAILY",
+      "importance": 65,
+      "themes": [
+        "Настройка и оптимизация сборки проекта (Gradle, Build Variants, Build Types)",
+        "Работа с инструментами отладки и профилирования (Debugger, Profiler, Logcat)",
+        "Использование Layout Inspector и Navigation Editor для разработки UI",
+        "Рефакторинг кода и управление зависимостями через Android Studio"
+      ]
+    }
+  ]
+}

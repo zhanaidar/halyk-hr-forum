@@ -1,0 +1,62 @@
+{
+  "profile": "Backend разработчик",
+  "specialization": "Golang Backend",
+  "file_name": "Backend_Golang",
+  "competencies": [
+    {
+      "competency": "Навыки работы с Golang",
+      "type": "CORE",
+      "importance": 90,
+      "themes": [
+        "Concurrency и goroutines: channels, sync-пакет, race conditions, контекст выполнения",
+        "Работа с интерфейсами, структурами и методами: композиция, встраивание, type assertions",
+        "Управление памятью и производительность: garbage collector, профилирование, оптимизация аллокаций",
+        "Обработка ошибок и panic recovery: error wrapping, custom errors, defer, best practices"
+      ]
+    },
+    {
+      "competency": "Concurrency (горутины, каналы, синхронизация)",
+      "type": "CORE",
+      "importance": 85,
+      "themes": [
+        "Goroutines: жизненный цикл, планировщик (scheduler), runtime и управление ресурсами",
+        "Channels: типы каналов, буферизация, паттерны использования и deadlock prevention",
+        "Синхронизация: sync.Mutex, sync.RWMutex, sync.WaitGroup, sync.Once и их применение",
+        "Продвинутые паттерны конкурентности: worker pools, context cancellation, select statement и race conditions"
+      ]
+    },
+    {
+      "competency": "Event-Driven Architecture",
+      "type": "DAILY",
+      "importance": 70,
+      "themes": [
+        "Message Brokers и паттерны обмена сообщениями (RabbitMQ, Kafka, NATS)",
+        "Event Sourcing и CQRS паттерны в Golang приложениях",
+        "Обработка ошибок и retry механизмы в асинхронных системах",
+        "Saga паттерн и распределенные транзакции в микросервисной архитектуре"
+      ]
+    },
+    {
+      "competency": "Проектирование REST/gRPC API",
+      "type": "CORE",
+      "importance": 85,
+      "themes": [
+        "Принципы REST API: HTTP методы, коды ответов, versioning и resource naming",
+        "Проектирование gRPC сервисов: Protocol Buffers, streaming, error handling и interceptors",
+        "Архитектура API: идемпотентность, pagination, filtering, rate limiting и authentication",
+        "Оптимизация и масштабирование: connection pooling, batch operations, caching strategies и load balancing"
+      ]
+    },
+    {
+      "competency": "Тестирование и работа с legacy кодом",
+      "type": "DAILY",
+      "importance": 65,
+      "themes": [
+        "Написание unit и integration тестов для Golang приложений с использованием testify и gomock",
+        "Рефакторинг legacy кода: работа с технических долгом и стратегии постепенной модернизации",
+        "Покрытие legacy кода тестами: техники характеризационного тестирования и работа с зависимостями",
+        "Использование table-driven tests и benchmark тестов для оптимизации производительности legacy систем"
+      ]
+    }
+  ]
+}

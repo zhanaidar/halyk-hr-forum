@@ -1,0 +1,742 @@
+{
+  "profile": "DevOps Engineer",
+  "specialization": "DevOps",
+  "file_name": "DevOps_Engineer",
+  "competencies": [
+    {
+      "competency": "Контейнеризация и оркестрация (Docker, Kubernetes)",
+      "type": "CORE",
+      "importance": 90,
+      "themes": [
+        {
+          "theme": "Основы Docker: образы, контейнеры, Dockerfile и многоступенчатые сборки",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какая директива Dockerfile определяет базовый образ для сборки контейнера?",
+              "correct_answer": "FROM",
+              "var_1": "BASE",
+              "var_2": "FROM",
+              "var_3": "CONTAINER",
+              "var_4": "IMAGE",
+              "correct_position": 2
+            },
+            {
+              "level": "Middle",
+              "question": "В чем преимущество многоступенчатой сборки Docker при создании образа Java-приложения для банковской системы?",
+              "correct_answer": "Уменьшение размера финального образа за счет исключения build-зависимостей и JDK",
+              "var_1": "Уменьшение размера финального образа за счет исключения build-зависимостей и JDK",
+              "var_2": "Ускорение процесса сборки через параллельное выполнение независимых стадий контейнера",
+              "var_3": "Автоматическое кэширование слоев Docker для ускорения повторных деплоев приложения",
+              "var_4": "Повышение безопасности через изоляцию сборочных артефактов между разными stage",
+              "correct_position": 1
+            },
+            {
+              "level": "Senior",
+              "question": "Почему использование COPY вместо ADD предпочтительнее в Dockerfile для продуктивных банковских приложений, и в каких случаях ADD оправдан?",
+              "correct_answer": "COPY предсказуем и безопасен, ADD только для автораспаковки tar-архивов или загрузки URL",
+              "var_1": "COPY предсказуем и безопасен, ADD только для автораспаковки tar-архивов или загрузки URL",
+              "var_2": "ADD обеспечивает лучшую производительность при копировании больших файлов в production образы",
+              "var_3": "COPY используют для локальных файлов, ADD для удаленных ресурсов из корпоративных репозиториев",
+              "var_4": "ADD предпочтителен для банковских систем из-за встроенной проверки контрольных сумм файлов",
+              "correct_position": 1
+            }
+          ]
+        },
+        {
+          "theme": "Архитектура Kubernetes: поды, сервисы, деплойменты и управление конфигурациями",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой минимальный объект развертывания приложений в Kubernetes содержит один или несколько контейнеров?",
+              "correct_answer": "Pod (под)",
+              "var_1": "Pod (под)",
+              "var_2": "ReplicaSet (реплика-сет)",
+              "var_3": "Deployment (деплоймент)",
+              "var_4": "Container (контейнер)",
+              "correct_position": 1
+            },
+            {
+              "level": "Middle",
+              "question": "В банковском приложении нужно обеспечить доступ к базе данных только внутри кластера. Какой тип Service использовать?",
+              "correct_answer": "ClusterIP для внутрикластерного доступа",
+              "var_1": "NodePort для внешнего доступа",
+              "var_2": "ClusterIP для внутрикластерного доступа",
+              "var_3": "ExternalName для DNS-резолвинга",
+              "var_4": "LoadBalancer с внутренним IP",
+              "correct_position": 2
+            },
+            {
+              "level": "Senior",
+              "question": "Телеком-оператор испытывает частые сбои при обновлении микросервиса биллинга из-за долгого запуска приложения. Какие параметры Pod и стратегию Deployment настроить для безопасного zero-downtime deployment?",
+              "correct_answer": "Увеличить initialDelaySeconds в readinessProbe, использовать RollingUpdate с minReadySeconds и maxUnavailable=0",
+              "var_1": "Использовать Recreate strategy с preStop hook и увеличить terminationGracePeriodSeconds до 60 секунд",
+              "var_2": "Настроить livenessProbe с failureThreshold=1, использовать Blue-Green deployment через Service selector",
+              "var_3": "Установить maxSurge=100% в RollingUpdate, добавить startupProbe с periodSeconds=1 для быстрой проверки",
+              "var_4": "Увеличить initialDelaySeconds в readinessProbe, использовать RollingUpdate с minReadySeconds и maxUnavailable=0",
+              "correct_position": 4
+            }
+          ]
+        },
+        {
+          "theme": "Networking и Service Mesh: сетевые политики, Ingress, CNI плагины",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой тип объекта Kubernetes используется для маршрутизации внешнего HTTP/HTTPS трафика к сервисам внутри кластера?",
+              "correct_answer": "Ingress",
+              "var_1": "Ingress",
+              "var_2": "NodePort",
+              "var_3": "LoadBalancer",
+              "var_4": "ClusterIP",
+              "correct_position": 1
+            },
+            {
+              "level": "Middle",
+              "question": "В банковской инфраструктуре необходимо запретить трафик между namespace payments и namespace logs. Какой объект Kubernetes следует использовать для реализации этого требования?",
+              "correct_answer": "NetworkPolicy с egress правилами для payments namespace",
+              "var_1": "Service с type ClusterIP и selector по namespace",
+              "var_2": "PodSecurityPolicy с ограничениями для обоих namespace",
+              "var_3": "Ingress Controller с аннотациями для изоляции трафика",
+              "var_4": "NetworkPolicy с egress правилами для payments namespace",
+              "correct_position": 4
+            },
+            {
+              "level": "Senior",
+              "question": "В телеком компании микросервисная архитектура на Kubernetes испытывает проблемы с observability и mTLS между 200+ сервисами. Почему внедрение Istio предпочтительнее самостоятельной реализации через sidecar контейнеры?",
+              "correct_answer": "Централизованное управление политиками, автоматическая ротация сертификатов, встроенная телеметрия и распределенный трейсинг без изменения кода приложений",
+              "var_1": "Централизованное управление политиками, автоматическая ротация сертификатов, встроенная телеметрия и распределенный трейсинг без изменения кода приложений",
+              "var_2": "Istio использует eBPF вместо iptables для перехвата трафика, что снижает latency на 40% по сравнению с обычными sidecar",
+              "var_3": "Istio обеспечивает нативную интеграцию с CNI плагинами Calico и Cilium для автоматической маршрутизации трафика между подами",
+              "var_4": "Встроенная поддержка gRPC load balancing на уровне L7, автоматическое service discovery через CoreDNS и circuit breaker паттерны",
+              "correct_position": 1
+            }
+          ]
+        },
+        {
+          "theme": "Мониторинг, логирование и отказоустойчивость контейнеризованных приложений",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой параметр в Dockerfile отвечает за проверку здоровья контейнера?",
+              "correct_answer": "HEALTHCHECK",
+              "var_1": "EXPOSE",
+              "var_2": "LIVENESS",
+              "var_3": "MONITOR",
+              "var_4": "HEALTHCHECK",
+              "correct_position": 4
+            },
+            {
+              "level": "Middle",
+              "question": "Какой тип Probe в Kubernetes следует использовать для проверки готовности микросервиса принимать трафик после инициализации базы данных?",
+              "correct_answer": "readinessProbe",
+              "var_1": "readinessProbe",
+              "var_2": "livenessProbe",
+              "var_3": "healthCheckProbe",
+              "var_4": "startupProbe",
+              "correct_position": 1
+            },
+            {
+              "level": "Senior",
+              "question": "Как обеспечить отказоустойчивый сбор логов из ephemeral контейнеров в Kubernetes при высокой нагрузке банковской системы с требованием zero log loss?",
+              "correct_answer": "Использовать sidecar с persistent volume и буферизацией через fluent-bit с disk buffer",
+              "var_1": "Использовать sidecar с persistent volume и буферизацией через fluent-bit с disk buffer",
+              "var_2": "Применить hostPath volume для логов с centralized logging через rsyslog на каждой ноде",
+              "var_3": "Использовать stdout/stderr с Docker json-file driver и retention policy для долгосрочного хранения",
+              "var_4": "Настроить DaemonSet с fluentd и отправкой напрямую в Elasticsearch с увеличенным heap",
+              "correct_position": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "competency": "CI/CD пайплайны (GitLab CI, Jenkins, GitHub Actions)",
+      "type": "CORE",
+      "importance": 90,
+      "themes": [
+        {
+          "theme": "Основы построения CI/CD пайплайнов: стадии, джобы, артефакты и зависимости",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Что такое артефакт в контексте CI/CD пайплайна и для чего он используется?",
+              "correct_answer": "Файл или директория, передаваемые между джобами для использования на следующих стадиях",
+              "var_1": "Файл или директория, передаваемые между джобами для использования на следующих стадиях",
+              "var_2": "Конфигурационный файл с описанием переменных окружения для разных стадий",
+              "var_3": "Логи выполнения джобов, сохраняемые для анализа ошибок и отладки",
+              "var_4": "Скомпилированный образ приложения, сохраняемый в Docker Registry для deployment",
+              "correct_position": 1
+            },
+            {
+              "level": "Middle",
+              "question": "В GitLab CI необходимо передать результаты тестов между стадиями, но логи сборки не нужны. Какие директивы использовать и в чем разница между artifacts и cache?",
+              "correct_answer": "Artifacts для передачи между стадиями, cache для зависимостей; artifacts долговечны, cache временный",
+              "var_1": "Artifacts для временных файлов, cache для долгосрочного хранения между пайплайнами",
+              "var_2": "Cache для передачи между стадиями, artifacts для Docker образов; cache быстрее",
+              "var_3": "Artifacts для передачи между стадиями, cache для зависимостей; artifacts долговечны, cache временный",
+              "var_4": "Dependencies для результатов тестов, artifacts для логов; dependencies привязаны к джобам",
+              "correct_position": 3
+            },
+            {
+              "level": "Senior",
+              "question": "При развертывании банковского приложения в Jenkins пайплайн занимает 45 минут из-за последовательного выполнения тестов. Как оптимизировать архитектуру пайплайна с учетом требований регулятора о трейсабилити всех изменений?",
+              "correct_answer": "Параллельные matrix-джобы для тестов, centralized artifact storage, сохранение stage view и audit logs",
+              "var_1": "Параллельные matrix-джобы для тестов, centralized artifact storage, сохранение stage view и audit logs",
+              "var_2": "Sequential execution с detailed logging, webhook notifications в Jira, архивирование билдов в Nexus",
+              "var_3": "Distributed builds через Jenkins agents, rollback механизм, интеграция с системой мониторинга и алертинга",
+              "var_4": "Кеширование Docker layers, skip tests при hotfix, Jenkins Blue Ocean для визуализации изменений",
+              "correct_position": 1
+            }
+          ]
+        },
+        {
+          "theme": "Управление секретами и переменными окружения в GitLab CI, Jenkins и GitHub Actions",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой тип переменной в GitLab CI используется для хранения конфиденциальных данных, таких как пароли к базам данных банковских систем?",
+              "correct_answer": "Masked и Protected переменные в CI/CD Settings",
+              "var_1": "Masked и Protected переменные в CI/CD Settings",
+              "var_2": "Custom Environment Variables с префиксом SECURE_ в .gitlab-ci.yml",
+              "var_3": "Environment Variables в разделе Repository Settings проекта",
+              "var_4": "Секретные переменные типа File в группе проекта",
+              "correct_position": 1
+            },
+            {
+              "level": "Middle",
+              "question": "В чем ключевое различие между использованием HashiCorp Vault и встроенных Secrets в GitHub Actions для управления учетными данными к production-среде банка?",
+              "correct_answer": "Vault обеспечивает централизованное управление, аудит, ротацию секретов и динамическую генерацию credentials",
+              "var_1": "Vault интегрируется с Kubernetes natively, GitHub Actions использует environment-based переменные",
+              "var_2": "Vault обеспечивает централизованное управление, аудит, ротацию секретов и динамическую генерацию credentials",
+              "var_3": "GitHub Actions обеспечивает автоматическое шифрование секретов, Vault требует настройки политик доступа",
+              "var_4": "GitHub Secrets предоставляет шифрование на уровне репозитория, Vault требует дополнительной инфраструктуры",
+              "correct_position": 2
+            },
+            {
+              "level": "Senior",
+              "question": "Как спроектировать архитектуру управления секретами для мультирегионального банка с требованиями ЦБ РК, используя Jenkins и внешний секрет-менеджер, чтобы минимизировать blast radius при компрометации?",
+              "correct_answer": "Использовать namespace isolation, short-lived токены с RBAC, separate Vault instances per region, audit logging и автоматическую ротацию",
+              "var_1": "Использовать namespace isolation, short-lived токены с RBAC, separate Vault instances per region, audit logging и автоматическую ротацию",
+              "var_2": "HashiCorp Vault Enterprise с global replication, dynamic secrets через AppRole, секреты в Jenkins credentials plugin с master encryption key",
+              "var_3": "Централизованный Jenkins с единым Vault кластером, long-lived токенами в credential store, encrypted environment variables и daily backup",
+              "var_4": "Kubernetes Secrets с sealed-secrets controller, single Vault cluster federation, Jenkins shared libraries для инжекта креденшелов через withCredentials",
+              "correct_position": 1
+            }
+          ]
+        },
+        {
+          "theme": "Оптимизация времени выполнения пайплайнов: кеширование, параллелизация и условное выполнение",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какая директива в GitLab CI позволяет кешировать зависимости между запусками пайплайна?",
+              "correct_answer": "cache с указанием paths и key",
+              "var_1": "variables с cache_policy и storage параметрами",
+              "var_2": "cache с указанием paths и key",
+              "var_3": "store с определением paths и retention period",
+              "var_4": "artifacts с указанием dependencies и expire_in",
+              "correct_position": 2
+            },
+            {
+              "level": "Middle",
+              "question": "В Jenkins Pipeline для микросервисного банковского приложения тесты занимают 40 минут последовательно. Какой подход использовать для параллелизации тестов разных сервисов?",
+              "correct_answer": "Использовать parallel блок с независимыми stage для каждого сервиса",
+              "var_1": "Использовать parallel блок с независимыми stage для каждого сервиса",
+              "var_2": "Разделить stage на несколько node с общим workspace",
+              "var_3": "Настроить matrix strategy в declarative pipeline для всех тестов",
+              "var_4": "Использовать downstream jobs с параметризованной сборкой для сервисов",
+              "correct_position": 1
+            },
+            {
+              "level": "Senior",
+              "question": "В телеком-компании GitLab CI пайплайн для монорепозитория с 15 сервисами выполняется 35 минут. Как оптимизировать архитектуру для сборки только измененных компонентов при сохранении integrity checks?",
+              "correct_answer": "Условное выполнение через rules с git diff, кеш артефактов, параллельные jobs по компонентам, обязательный финальный integration stage",
+              "var_1": "Условное выполнение через rules с git diff, кеш артефактов, параллельные jobs по компонентам, обязательный финальный integration stage",
+              "var_2": "Использование GitLab динамических child pipelines с trigger strategy, полное кеширование зависимостей без селективных правил сборки",
+              "var_3": "Настройка workflow rules с changes only, Docker layer caching, отключение интеграционных тестов для feature веток",
+              "var_4": "Разбиение монорепозитория на отдельные репозитории с независимыми пайплайнами и общим registry для артефактов компонентов",
+              "correct_position": 1
+            }
+          ]
+        },
+        {
+          "theme": "Стратегии деплоя и rollback: Blue-Green, Canary, Rolling deployments в CI/CD",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Что такое Blue-Green deployment и какие два окружения используются в этой стратегии?",
+              "correct_answer": "Стратегия с двумя идентичными окружениями: активное (Blue) и резервное (Green).",
+              "var_1": "Метод деплоя с разделением трафика между Blue и Green окружениями постепенно.",
+              "var_2": "Два сервера с балансировщиком: Blue для HTTP, Green для HTTPS трафика.",
+              "var_3": "Стратегия с двумя идентичными окружениями: активное (Blue) и резервное (Green).",
+              "var_4": "Стратегия с тремя окружениями: Blue (production), Green (staging), Yellow (testing).",
+              "correct_position": 3
+            },
+            {
+              "level": "Middle",
+              "question": "Какую стратегию деплоя выбрать для мобильного банкинга с 2 млн пользователей, если требуется минимизировать риск при обновлении платёжного модуля?",
+              "correct_answer": "Canary deployment с постепенным увеличением трафика на новую версию.",
+              "var_1": "Blue-Green deployment с мгновенным переключением всего трафика на новую версию.",
+              "var_2": "Recreate deployment с кратковременным простоем для гарантированной консистентности данных.",
+              "var_3": "Rolling deployment с одновременным обновлением всех подов в кластере.",
+              "var_4": "Canary deployment с постепенным увеличением трафика на новую версию.",
+              "correct_position": 4
+            },
+            {
+              "level": "Senior",
+              "question": "Как спроектировать rollback механизм для Blue-Green деплоя банковского API с активными транзакциями и изменениями схемы БД в GitLab CI?",
+              "correct_answer": "Использовать backward-compatible миграции, сохранять обе версии схемы, реверс через переключение DNS/Load Balancer.",
+              "var_1": "Создать снапшоты базы данных перед деплоем, откат через восстановление из бэкапа и смену DNS.",
+              "var_2": "Применять forward-only миграции с feature flags, rollback через GitLab CI pipeline revert и restart pods.",
+              "var_3": "Использовать backward-compatible миграции, сохранять обе версии схемы, реверс через переключение DNS/Load Balancer.",
+              "var_4": "Хранить версии схемы в отдельных базах данных, переключение через connection string в environment variables.",
+              "correct_position": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "competency": "Инфраструктура как код (Terraform, Ansible)",
+      "type": "CORE",
+      "importance": 85,
+      "themes": [
+        {
+          "theme": "Управление состоянием и удаленными бэкендами в Terraform (S3, Consul, Terraform Cloud)",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой файл Terraform создает при инициализации локального бэкенда для хранения состояния инфраструктуры?",
+              "correct_answer": "terraform.tfstate",
+              "var_1": "state.tf",
+              "var_2": "terraform.tfstate",
+              "var_3": "terraform.lock.hcl",
+              "var_4": "backend.tfstate",
+              "correct_position": 2
+            },
+            {
+              "level": "Middle",
+              "question": "Почему для банковской инфраструктуры в команде из 8 DevOps-инженеров следует использовать удаленный бэкенд S3 вместо локального?",
+              "correct_answer": "Обеспечивает совместную работу, блокировку состояния и централизованное хранение",
+              "var_1": "Обеспечивает совместную работу, блокировку состояния и централизованное хранение",
+              "var_2": "Локальный бэкенд создает конфликты версий terraform providers",
+              "var_3": "S3 автоматически валидирует синтаксис конфигурационных файлов",
+              "var_4": "Удаленный бэкенд ускоряет выполнение terraform apply команд",
+              "correct_position": 1
+            },
+            {
+              "level": "Senior",
+              "question": "Как спроектировать структуру S3 бэкендов для мультирегиональной банковской инфраструктуры с разделением prod/dev окружений и требованиями compliance к изоляции данных?",
+              "correct_answer": "Отдельные S3 бакеты per environment per region с encryption, versioning, prefix-based state organization и DynamoDB для state locking",
+              "var_1": "Единый централизованный S3 бакет с prefixes для регионов и окружений, MFA Delete protection и cross-region replication для disaster recovery",
+              "var_2": "Terraform Cloud workspaces с remote execution, policy-as-code через Sentinel и организация через project-based access control для каждого региона",
+              "var_3": "Consul бэкенды в каждом регионе с ACL tokens, namespace isolation для окружений и automated snapshots в S3 для backup",
+              "var_4": "Отдельные S3 бакеты per environment per region с encryption, versioning, prefix-based state organization и DynamoDB для state locking",
+              "correct_position": 4
+            }
+          ]
+        },
+        {
+          "theme": "Модульная архитектура и переиспользование кода в Terraform (modules, workspaces, data sources)",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какая директория по умолчанию используется для хранения переиспользуемых Terraform модулей в проекте?",
+              "correct_answer": "Директория modules в корне проекта",
+              "var_1": "Директория lib/terraform в корне проекта",
+              "var_2": "Директория terraform.d для локальных модулей",
+              "var_3": "Директория .terraform/modules внутри проекта",
+              "var_4": "Директория modules в корне проекта",
+              "correct_position": 4
+            },
+            {
+              "level": "Middle",
+              "question": "В банковской инфраструктуре нужно развернуть идентичные окружения dev, stage и prod с разными параметрами. Какой механизм Terraform лучше использовать для изоляции state файлов между окружениями?",
+              "correct_answer": "Terraform workspaces с отдельными backend конфигурациями",
+              "var_1": "Terraform workspaces с отдельными backend конфигурациями",
+              "var_2": "Data sources с remote state и переменными окружений",
+              "var_3": "Модули с count parameter для каждого окружения",
+              "var_4": "Отдельные директории с локальным state для каждого окружения",
+              "correct_position": 1
+            },
+            {
+              "level": "Senior",
+              "question": "При проектировании модульной архитектуры для телеком оператора с 50+ микросервисами возникла проблема циклических зависимостей между модулями networking и security. Как правильно спроектировать архитектуру для устранения этой проблемы?",
+              "correct_answer": "Разделить на три слоя: base-network, security-groups с data sources, application-layer с явной зависимостью",
+              "var_1": "Применять workspace isolation для каждого модуля с shared state через consul backend",
+              "var_2": "Объединить модули в единый networking-security с переменными для conditional resource creation",
+              "var_3": "Разделить на три слоя: base-network, security-groups с data sources, application-layer с явной зависимостью",
+              "var_4": "Использовать terraform_remote_state для связи модулей через outputs с зависимостями depends_on",
+              "correct_position": 3
+            }
+          ]
+        },
+        {
+          "theme": "Управление конфигурациями и оркестрация с Ansible (playbooks, roles, inventory, vault)",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой модуль Ansible используется для шифрования чувствительных данных в playbook перед размещением в Git?",
+              "correct_answer": "ansible-vault для шифрования переменных и файлов",
+              "var_1": "ansible.builtin.encrypt модуль для защиты переменных",
+              "var_2": "ansible-vault для шифрования переменных и файлов",
+              "var_3": "git-crypt для автоматического шифрования Ansible-файлов",
+              "var_4": "ansible-galaxy для шифрования секретов в плейбуках",
+              "correct_position": 2
+            },
+            {
+              "level": "Middle",
+              "question": "В банковской инфраструктуре нужно применять разные настройки для prod и dev окружений. Какой подход организации inventory наиболее правильный для этого случая?",
+              "correct_answer": "Использовать group_vars с отдельными директориями для prod и dev",
+              "var_1": "Создать отдельные inventory файлы и указывать через -i параметр",
+              "var_2": "Определить окружения через ansible_environment в playbook для каждой группы",
+              "var_3": "Использовать host_vars для каждого сервера с environment переменной",
+              "var_4": "Использовать group_vars с отдельными директориями для prod и dev",
+              "correct_position": 4
+            },
+            {
+              "level": "Senior",
+              "question": "При оркестрации обновления критичных банковских систем через Ansible возникают intermittent failures из-за таймаутов SSH. Как оптимизировать архитектуру выполнения для 500+ хостов с минимизацией рисков?",
+              "correct_answer": "ControlPersist для SSH, serial batching с max_fail_percentage, async tasks с polling",
+              "var_1": "ControlPersist для SSH, serial batching с max_fail_percentage, async tasks с polling",
+              "var_2": "Увеличить SSH timeout, использовать strategy: free с mitogen plugin для ускорения",
+              "var_3": "Ansible Tower с workflow templates, динамический inventory через Redis, parallel execution",
+              "var_4": "Pipelining SSH, стратегия linear с throttle, connection multiplexing через ProxyJump",
+              "correct_position": 1
+            }
+          ]
+        },
+        {
+          "theme": "Интеграция IaC в CI/CD пайплайны и практики GitOps (terraform plan/apply automation, testing infrastructure code)",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какая команда Terraform используется в CI/CD для предварительного просмотра изменений инфраструктуры перед применением?",
+              "correct_answer": "terraform plan",
+              "var_1": "terraform preview",
+              "var_2": "terraform validate",
+              "var_3": "terraform plan",
+              "var_4": "terraform diff",
+              "correct_position": 3
+            },
+            {
+              "level": "Middle",
+              "question": "Какой подход лучше использовать для хранения Terraform state файлов в банковской CI/CD системе с несколькими командами разработки?",
+              "correct_answer": "Remote backend с state locking в S3/Minio и DynamoDB",
+              "var_1": "Remote backend с state locking в S3/Minio и DynamoDB",
+              "var_2": "Consul backend с встроенным versioning для rollback состояний",
+              "var_3": "Локальное хранение state в Git с .gitignore исключениями",
+              "var_4": "Централизованный NFS share с file locking через flock",
+              "correct_position": 1
+            },
+            {
+              "level": "Senior",
+              "question": "Как спроектировать GitOps процесс для multi-environment Terraform инфраструктуры банка, чтобы избежать drift и обеспечить audit trail для регуляторов?",
+              "correct_answer": "Разделение репозиториев по окружениям, automated drift detection, approval workflows, terraform plan в MR, immutable artifacts, centralized state с версионированием",
+              "var_1": "Atlantis для автоматизации PR, shared modules репозиторий, remote backend с encryption, policy-as-code через Sentinel, weekly reconciliation",
+              "var_2": "Разделение репозиториев по окружениям, automated drift detection, approval workflows, terraform plan в MR, immutable artifacts, centralized state с версионированием",
+              "var_3": "GitLab CI с dynamic environments, terraform workspace per branch, state locking через DynamoDB, scheduled plan jobs, exported JSON logs",
+              "var_4": "Единый монорепозиторий с workspaces, terraform apply на merge в main, shared state в S3, manual drift checks, changelog для аудита",
+              "correct_position": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "competency": "Мониторинг и логирование (Prometheus, Grafana, ELK)",
+      "type": "CORE",
+      "importance": 85,
+      "themes": [
+        {
+          "theme": "Архитектура и настройка Prometheus: метрики, экспортеры, service discovery и PromQL",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой тип метрик Prometheus используется для измерения количества запросов к API банковского приложения?",
+              "correct_answer": "Counter - монотонно возрастающий счетчик событий",
+              "var_1": "Histogram - распределение длительности API-запросов",
+              "var_2": "Summary - квантили времени обработки запросов",
+              "var_3": "Gauge - метрика для текущего значения запросов",
+              "var_4": "Counter - монотонно возрастающий счетчик событий",
+              "correct_position": 4
+            },
+            {
+              "level": "Middle",
+              "question": "Какой метод service discovery в Prometheus оптимален для динамического мониторинга микросервисов банка в Kubernetes, если список подов постоянно меняется при автоскейлинге?",
+              "correct_answer": "Kubernetes SD с role endpoints для автоматического обнаружения подов",
+              "var_1": "Static config с регулярным обновлением targets через ConfigMap",
+              "var_2": "Consul SD с автоматической регистрацией сервисов через API",
+              "var_3": "Kubernetes SD с role endpoints для автоматического обнаружения подов",
+              "var_4": "File SD с динамической генерацией конфигураций через cronjob",
+              "correct_position": 3
+            },
+            {
+              "level": "Senior",
+              "question": "В телеком-компании Prometheus хранит метрики 500 тысяч абонентов, causing high cardinality. Какие архитектурные решения применить для оптимизации производительности и избежания OOM?",
+              "correct_answer": "Federation с шардированием по регионам, релейблинг для снижения cardinality, использование recording rules",
+              "var_1": "Horizontal pod autoscaling для Prometheus, индексирование по customer_id, использование pull вместо push",
+              "var_2": "Увеличение retention времени, вертикальное масштабирование серверов, добавление replicas для нагрузки",
+              "var_3": "Переход на remote storage Thanos, агрегация метрик на уровне экспортеров, compression в TSDB",
+              "var_4": "Federation с шардированием по регионам, релейблинг для снижения cardinality, использование recording rules",
+              "correct_position": 4
+            }
+          ]
+        },
+        {
+          "theme": "Построение дашбордов в Grafana: визуализация метрик, алертинг и интеграция с источниками данных",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой тип визуализации в Grafana лучше всего подходит для отображения текущего значения latency API банковского мобильного приложения?",
+              "correct_answer": "Stat panel или Gauge panel для отображения одного значения",
+              "var_1": "Time series graph для отображения динамики значения",
+              "var_2": "Table panel с сортировкой по временной метке",
+              "var_3": "Stat panel или Gauge panel для отображения одного значения",
+              "var_4": "Heatmap для визуализации распределения задержек по времени",
+              "correct_position": 3
+            },
+            {
+              "level": "Middle",
+              "question": "В банковской системе нужно настроить алерт на превышение количества failed транзакций. В чем разница между настройкой алерта через Grafana Alert и через Alertmanager в Prometheus?",
+              "correct_answer": "Grafana Alert поддерживает мультисорсы и унифицированные правила, Alertmanager работает только с Prometheus",
+              "var_1": "Grafana Alert требует отдельный сервер, Alertmanager встроен в Prometheus и работает без инфраструктуры",
+              "var_2": "Alertmanager обрабатывает алерты в реальном времени, Grafana Alert работает по расписанию с задержкой",
+              "var_3": "Alertmanager поддерживает визуальные дашборды, Grafana Alert только отправляет уведомления в каналы",
+              "var_4": "Grafana Alert поддерживает мультисорсы и унифицированные правила, Alertmanager работает только с Prometheus",
+              "correct_position": 4
+            },
+            {
+              "level": "Senior",
+              "question": "При построении дашборда для мониторинга платежного шлюза телеком-оператора вы заметили, что запросы к Prometheus с rate() за 5m при высоком RPS дают неточные результаты. Как оптимизировать архитектуру сбора и визуализации метрик?",
+              "correct_answer": "Использовать recording rules для предагрегации метрик, увеличить scrape interval и применять subqueries с оптимальным resolution",
+              "var_1": "Переключиться на pushgateway для отправки метрик и использовать increase() вместо rate() с большим временным окном",
+              "var_2": "Использовать recording rules для предагрегации метрик, увеличить scrape interval и применять subqueries с оптимальным resolution",
+              "var_3": "Включить remote write в Victoria Metrics, использовать irate() вместо rate() и увеличить retention период данных",
+              "var_4": "Настроить federation между несколькими Prometheus инстансами и применять delta() функцию для расчета изменений метрик",
+              "correct_position": 2
+            }
+          ]
+        },
+        {
+          "theme": "ELK Stack: сбор, парсинг и индексация логов через Logstash/Filebeat и поиск в Elasticsearch",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой компонент ELK Stack отвечает за парсинг и трансформацию логов перед отправкой в Elasticsearch?",
+              "correct_answer": "Logstash с использованием фильтров grok, mutate и date",
+              "var_1": "Kibana через Dev Tools и index pattern transformations",
+              "var_2": "Elasticsearch с использованием ingest pipelines и processors",
+              "var_3": "Filebeat с модулями парсинга и multiline processors",
+              "var_4": "Logstash с использованием фильтров grok, mutate и date",
+              "correct_position": 4
+            },
+            {
+              "level": "Middle",
+              "question": "В банковском приложении нужно собирать логи с 500 серверов. Когда использовать Filebeat вместо Logstash для сбора логов?",
+              "correct_answer": "Filebeat на серверах для легковесного сбора, Logstash централизованно для парсинга",
+              "var_1": "Logstash на серверах с прямой отправкой в Elasticsearch индексы",
+              "var_2": "Logstash на всех серверах для полного контроля обработки логов",
+              "var_3": "Filebeat на серверах для легковесного сбора, Logstash централизованно для парсинга",
+              "var_4": "Filebeat централизованно на отдельном сервере для сбора и парсинга",
+              "correct_position": 3
+            },
+            {
+              "level": "Senior",
+              "question": "В телекоме поступает 100GB логов в день. Как спроектировать индексацию в Elasticsearch для оптимизации хранения и поиска за последние 90 дней?",
+              "correct_answer": "ILM политики с hot-warm-cold архитектурой, daily индексы, rollover по размеру, force merge",
+              "var_1": "Единый yearly индекс с sharding по 50GB, compression включен, replica factor 3",
+              "var_2": "Hourly индексы с автоматическим snapshot в S3, reindex API для архивных данных",
+              "var_3": "ILM политики с hot-warm-cold архитектурой, daily индексы, rollover по размеру, force merge",
+              "var_4": "Weekly индексы с curator для удаления, mapping optimization, search_after для pagination",
+              "correct_position": 3
+            }
+          ]
+        },
+        {
+          "theme": "Стратегии мониторинга в production: SLI/SLO/SLA, distributed tracing и incident management",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Что такое SLI (Service Level Indicator) в контексте мониторинга production-систем?",
+              "correct_answer": "Количественная метрика, измеряющая уровень качества предоставляемого сервиса",
+              "var_1": "Протокол взаимодействия между системами мониторинга и алертинга",
+              "var_2": "Инструмент для автоматического создания дашбордов в Grafana",
+              "var_3": "Соглашение между командами о времени реагирования на инциденты",
+              "var_4": "Количественная метрика, измеряющая уровень качества предоставляемого сервиса",
+              "correct_position": 4
+            },
+            {
+              "level": "Middle",
+              "question": "Какие метрики следует выбрать как SLI для мониторинга мобильного банкинга: процент успешных авторизаций или среднее время всех запросов к API?",
+              "correct_answer": "Процент успешных авторизаций, так как отражает пользовательский опыт",
+              "var_1": "Среднее время запросов, так как авторизация зависит от внешних факторов",
+              "var_2": "Оба показателя равноценны и должны использоваться как комбинированный SLI",
+              "var_3": "Процент успешных авторизаций, так как отражает пользовательский опыт",
+              "var_4": "Среднее время API-запросов, так как показывает производительность системы",
+              "correct_position": 3
+            },
+            {
+              "level": "Senior",
+              "question": "Как спроектировать систему distributed tracing для микросервисной архитектуры банка с 50+ сервисами при требовании хранения trace данных не менее 90 дней для compliance?",
+              "correct_answer": "Tail-based sampling с приоритизацией ошибок, hot/cold storage разделение, индексация критичных span-атрибутов",
+              "var_1": "Synchronous tracing с записью в реляционную БД, партиционирование по датам и сервисам",
+              "var_2": "Запись всех traces в Kafka с retention 90 дней, агрегация метрик в Prometheus",
+              "var_3": "Tail-based sampling с приоритизацией ошибок, hot/cold storage разделение, индексация критичных span-атрибутов",
+              "var_4": "Head-based sampling с full indexing всех spans, репликация в geo-distributed Elasticsearch кластер",
+              "correct_position": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "competency": "Облачные платформы (AWS, Azure, GCP)",
+      "type": "CORE",
+      "importance": 80,
+      "themes": [
+        {
+          "theme": "Управление инфраструктурой как кодом (IaC) с использованием Terraform и CloudFormation",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой блок в Terraform используется для определения провайдера облачной платформы AWS?",
+              "correct_answer": "Блок provider с указанием aws и региона",
+              "var_1": "Блок resource с типом aws_provider и параметрами",
+              "var_2": "Блок provider с указанием aws и региона",
+              "var_3": "Блок backend с указанием aws и credentials",
+              "var_4": "Блок module с source aws и region",
+              "correct_position": 2
+            },
+            {
+              "level": "Middle",
+              "question": "В чем ключевое отличие между Terraform state и CloudFormation stack при управлении инфраструктурой банковского приложения?",
+              "correct_answer": "Terraform хранит state отдельно, CloudFormation управляет им автоматически в AWS",
+              "var_1": "Terraform хранит state отдельно, CloudFormation управляет им автоматически в AWS",
+              "var_2": "CloudFormation создает отдельные state файлы для каждого ресурса AWS",
+              "var_3": "Terraform требует ручной синхронизации state между командами разработки",
+              "var_4": "CloudFormation хранит state в S3, Terraform использует локальные файлы",
+              "correct_position": 1
+            },
+            {
+              "level": "Senior",
+              "question": "Как спроектировать multi-account AWS инфраструктуру для банка с требованиями регулятора о изоляции prod и dev сред, используя Terraform?",
+              "correct_answer": "Использовать Terraform workspaces или отдельные state-файлы с remote backend, assume role для cross-account доступа",
+              "var_1": "Создать VPC peering между аккаунтами и использовать единый Terraform state с условиями по переменным окружения",
+              "var_2": "Использовать Terraform workspaces или отдельные state-файлы с remote backend, assume role для cross-account доступа",
+              "var_3": "Применить AWS Organizations с SCP политиками и развернуть инфраструктуру через единый management аккаунт с shared credentials",
+              "var_4": "Настроить CloudFormation StackSets с cross-region репликацией и использовать AWS SSO для доступа между средами",
+              "correct_position": 2
+            }
+          ]
+        },
+        {
+          "theme": "Настройка CI/CD пайплайнов в облачных средах и интеграция с облачными сервисами",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой AWS сервис используется для создания и запуска CI/CD пайплайнов с автоматическим развертыванием приложений?",
+              "correct_answer": "AWS CodePipeline",
+              "var_1": "Amazon CloudFormation",
+              "var_2": "AWS CodeCommit",
+              "var_3": "AWS CodePipeline",
+              "var_4": "AWS Elastic Beanstalk",
+              "correct_position": 3
+            },
+            {
+              "level": "Middle",
+              "question": "Какой подход использовать для безопасного хранения секретов банковского приложения в CI/CD пайплайне на Azure: Key Vault или переменные среды DevOps?",
+              "correct_answer": "Azure Key Vault с управляемыми идентификациями",
+              "var_1": "Azure Storage Account с приватными контейнерами",
+              "var_2": "Azure Key Vault с управляемыми идентификациями",
+              "var_3": "Зашифрованные файлы конфигурации в Git репозитории",
+              "var_4": "Переменные среды Azure DevOps с секретными флагами",
+              "correct_position": 2
+            },
+            {
+              "level": "Senior",
+              "question": "Как спроектировать multi-cloud CI/CD стратегию для телеком оператора с требованием соответствия закону о локализации данных и zero-downtime deployments?",
+              "correct_answer": "Blue-green deployment с региональными пайплайнами, Terraform для IaC, ArgoCD для GitOps синхронизации",
+              "var_1": "Blue-green deployment с региональными пайплайнами, Terraform для IaC, ArgoCD для GitOps синхронизации",
+              "var_2": "Canary deployment с единым global пайплайном, Jenkins для оркестрации, Ansible для конфигурации инфраструктуры",
+              "var_3": "Rolling update через Kubernetes Federation, CloudFormation для multi-cloud IaC, Spinnaker для непрерывной доставки",
+              "var_4": "A/B testing deployment с централизованным GitLab CI, Pulumi для описания инфраструктуры, Flux для синхронизации",
+              "correct_position": 1
+            }
+          ]
+        },
+        {
+          "theme": "Мониторинг, логирование и оптимизация затрат облачных ресурсов",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой сервис AWS используется для централизованного сбора и анализа логов приложений?",
+              "correct_answer": "Amazon CloudWatch Logs",
+              "var_1": "AWS Systems Manager Logs",
+              "var_2": "Amazon CloudWatch Logs",
+              "var_3": "AWS CloudTrail",
+              "var_4": "Amazon S3 Bucket Logging",
+              "correct_position": 2
+            },
+            {
+              "level": "Middle",
+              "question": "Какую стратегию хранения логов выбрать для соблюдения требований регулятора по хранению данных 5 лет при минимальных затратах?",
+              "correct_answer": "Lifecycle policy с переносом в S3 Glacier Deep Archive",
+              "var_1": "Хранение в EBS snapshots с автоматическим бэкапом в регион",
+              "var_2": "Репликация логов в S3 Standard-IA с ежегодной архивацией",
+              "var_3": "CloudWatch Logs Insights с retention policy на 1825 дней",
+              "var_4": "Lifecycle policy с переносом в S3 Glacier Deep Archive",
+              "correct_position": 4
+            },
+            {
+              "level": "Senior",
+              "question": "Как спроектировать систему мониторинга мультиоблачной инфраструктуры банка для контроля бюджета и выявления аномальных затрат в реальном времени?",
+              "correct_answer": "Централизованный Prometheus с федерацией, экспортерами облачных метрик, Grafana с алертингом и интеграцией billing API",
+              "var_1": "Развернуть ELK Stack с Logstash для сбора метрик затрат и Kibana дашбордами по каждому облаку",
+              "var_2": "Централизованный Prometheus с федерацией, экспортерами облачных метрик, Grafana с алертингом и интеграцией billing API",
+              "var_3": "Использовать нативные CloudWatch, Azure Monitor и GCP Operations с ручной консолидацией отчетов в Excel",
+              "var_4": "Настроить Zabbix с агентами на каждой VM и SNMP-мониторинг для сбора billing данных",
+              "correct_position": 2
+            }
+          ]
+        },
+        {
+          "theme": "Архитектура высокодоступных систем и стратегии disaster recovery в облаке",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Что такое RPO (Recovery Point Objective) в контексте disaster recovery стратегии?",
+              "correct_answer": "Максимально допустимый период потери данных при сбое системы.",
+              "var_1": "Минимальный интервал между тестированием процедур disaster recovery плана.",
+              "var_2": "Частота создания резервных копий данных в облачном хранилище.",
+              "var_3": "Максимально допустимый период потери данных при сбое системы.",
+              "var_4": "Максимальное время простоя системы до полного восстановления работоспособности.",
+              "correct_position": 3
+            },
+            {
+              "level": "Middle",
+              "question": "Какую стратегию disaster recovery выбрать для core banking системы с требованиями RTO < 1 час и RPO < 15 минут?",
+              "correct_answer": "Warm Standby с синхронной репликацией в другой availability zone.",
+              "var_1": "Hot Standby с активной репликацией через VPN между датацентрами.",
+              "var_2": "Warm Standby с синхронной репликацией в другой availability zone.",
+              "var_3": "Cold Backup с ежедневным снапшотом в S3 Glacier.",
+              "var_4": "Pilot Light с асинхронной репликацией в другой регион.",
+              "correct_position": 2
+            },
+            {
+              "level": "Senior",
+              "question": "Как спроектировать multi-region архитектуру для платежной системы банка в AWS с учетом требований регулятора о хранении данных в Казахстане?",
+              "correct_answer": "Primary регион в Казахстане, асинхронная репликация в secondary регион, Route53 health checks для failover, data residency через SCPs.",
+              "var_1": "Multi-region active-active с синхронной репликацией через Aurora Global Database, Global Accelerator для маршрутизации, шифрование данных KMS.",
+              "var_2": "Outposts rack в датацентре банка, VPN в AWS регион для DR, S3 Cross-Region Replication, CloudWatch для мониторинга доступности.",
+              "var_3": "Local Zones в Алматы как primary, CloudFront с geo-restriction, DynamoDB Global Tables для репликации, IAM Policies для compliance.",
+              "var_4": "Primary регион в Казахстане, асинхронная репликация в secondary регион, Route53 health checks для failover, data residency через SCPs.",
+              "correct_position": 4
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

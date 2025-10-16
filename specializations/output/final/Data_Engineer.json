@@ -1,0 +1,742 @@
+{
+  "profile": "Data Engineer",
+  "specialization": "Data Engineer",
+  "file_name": "Data_Engineer",
+  "competencies": [
+    {
+      "competency": "SQL и оптимизация запросов",
+      "type": "CORE",
+      "importance": 90,
+      "themes": [
+        {
+          "theme": "Индексы и их типы: B-tree, Hash, Bitmap индексы, стратегии индексирования",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой тип индекса в PostgreSQL используется по умолчанию при создании индекса командой CREATE INDEX?",
+              "correct_answer": "B-tree индекс",
+              "var_1": "Bitmap индекс",
+              "var_2": "Hash индекс",
+              "var_3": "GiST индекс",
+              "var_4": "B-tree индекс",
+              "correct_position": 4
+            },
+            {
+              "level": "Middle",
+              "question": "В таблице транзакций банка 50 млн записей с колонкой is_fraud (TRUE/FALSE, 0.1% мошеннических). Какой тип индекса оптимален для фильтрации по is_fraud?",
+              "correct_answer": "Bitmap индекс, так как низкая кардинальность колонки",
+              "var_1": "Partial индекс только на TRUE значения для экономии",
+              "var_2": "B-tree индекс для эффективного range-сканирования малых значений",
+              "var_3": "Bitmap индекс, так как низкая кардинальность колонки",
+              "var_4": "Hash индекс обеспечивает O(1) доступ к булевым данным",
+              "correct_position": 3
+            },
+            {
+              "level": "Senior",
+              "question": "Почему составной B-tree индекс (client_id, transaction_date, amount) не используется для запроса WHERE transaction_date > '2024-01-01' в таблице платежей телеком-оператора?",
+              "correct_answer": "Нарушен порядок колонок индекса, client_id должен участвовать в предикате",
+              "var_1": "B-tree индексы эффективны только для точных совпадений значений",
+              "var_2": "Нарушен порядок колонок индекса, client_id должен участвовать в предикате",
+              "var_3": "Bitmap индекс лучше подходит для высококардинальных колонок дат",
+              "var_4": "Hash индекс предпочтительнее для диапазонных запросов по датам",
+              "correct_position": 2
+            }
+          ]
+        },
+        {
+          "theme": "Планы выполнения запросов: анализ EXPLAIN, оптимизация JOIN операций",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какая команда в PostgreSQL показывает план выполнения запроса без его фактического выполнения?",
+              "correct_answer": "EXPLAIN без параметра ANALYZE",
+              "var_1": "EXPLAIN ANALYZE с параметром VERBOSE",
+              "var_2": "EXPLAIN без параметра ANALYZE",
+              "var_3": "SHOW QUERY PLAN для текущей сессии",
+              "var_4": "DESCRIBE с ключевым словом EXECUTION",
+              "correct_position": 2
+            },
+            {
+              "level": "Middle",
+              "question": "В таблице транзакций банка 50 млн записей. EXPLAIN показывает Seq Scan вместо Index Scan по customer_id. Какие две основные причины нужно проверить?",
+              "correct_answer": "Отсутствие или устаревшая статистика и низкая селективность индекса",
+              "var_1": "Отсутствие или устаревшая статистика и низкая селективность индекса",
+              "var_2": "Блокировки на уровне строк и параллельные транзакции",
+              "var_3": "Недостаточный размер shared_buffers и ограничения work_mem",
+              "var_4": "Высокая фрагментация таблицы и отсутствие партиционирования",
+              "correct_position": 1
+            },
+            {
+              "level": "Senior",
+              "question": "В хранилище телеком-оператора JOIN между таблицами абонентов и CDR показывает Hash Join с высоким memory usage. Какую архитектурную оптимизацию применить для регулярных аналитических запросов?",
+              "correct_answer": "Партиционирование CDR по датам и денормализация ключевых атрибутов абонентов",
+              "var_1": "Партиционирование CDR по датам и денормализация ключевых атрибутов абонентов",
+              "var_2": "Увеличение work_mem и переход на Merge Join через создание индексов",
+              "var_3": "Horizontal sharding CDR по регионам с распределенными Hash Join",
+              "var_4": "Материализованные представления с полной репликацией данных абонентов в CDR",
+              "correct_position": 1
+            }
+          ]
+        },
+        {
+          "theme": "Партиционирование таблиц и шардирование данных для распределенных систем",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой SQL-синтаксис используется в PostgreSQL для создания партиционированной таблицы по диапазону дат транзакций?",
+              "correct_answer": "CREATE TABLE transactions PARTITION BY RANGE (transaction_date)",
+              "var_1": "ALTER TABLE transactions ADD PARTITION BY DATE (transaction_date)",
+              "var_2": "CREATE PARTITIONED TABLE transactions USING RANGE INDEX transaction_date",
+              "var_3": "CREATE TABLE transactions PARTITION BY RANGE (transaction_date)",
+              "var_4": "CREATE TABLE transactions WITH PARTITIONING RANGE ON transaction_date",
+              "correct_position": 3
+            },
+            {
+              "level": "Middle",
+              "question": "В банковской системе хранятся транзакции клиентов за 5 лет. Какую стратегию партиционирования выбрать для оптимизации запросов по дате и номеру счета одновременно?",
+              "correct_answer": "Композитное партиционирование RANGE по дате и HASH по номеру счета",
+              "var_1": "LIST партиционирование по номеру счета с подпартициями по дате",
+              "var_2": "HASH партиционирование по обоим полям с равномерным распределением нагрузки",
+              "var_3": "Композитное партиционирование RANGE по дате и HASH по номеру счета",
+              "var_4": "RANGE партиционирование только по дате с индексом на номер счета",
+              "correct_position": 3
+            },
+            {
+              "level": "Senior",
+              "question": "При шардировании базы клиентских данных телеком-оператора по географическим регионам Казахстана возникла проблема hotspot на шарде Алматы. Как спроектировать перебалансировку без даунтайма?",
+              "correct_answer": "Consistent hashing с виртуальными нодами, постепенная миграция через dual-write и lazy-read репликацию",
+              "var_1": "Создание read-replica для Алматы с round-robin балансировкой и синхронной репликацией через CDC",
+              "var_2": "Range-based шардирование по ID клиента с автоматическим split большого шарда на два равных",
+              "var_3": "Consistent hashing с виртуальными нодами, постепенная миграция через dual-write и lazy-read репликацию",
+              "var_4": "Вертикальное партиционирование горячих таблиц с переносом активных колонок на SSD-хранилище с репликацией",
+              "correct_position": 3
+            }
+          ]
+        },
+        {
+          "theme": "Оконные функции и CTE: производительность сложных аналитических запросов",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какая оконная функция в SQL используется для вычисления накопительной суммы транзакций клиента банка по дате?",
+              "correct_answer": "SUM() OVER (PARTITION BY client_id ORDER BY transaction_date)",
+              "var_1": "SUM(amount) OVER (ORDER BY transaction_date ROWS UNBOUNDED PRECEDING)",
+              "var_2": "RUNNING_TOTAL() OVER (PARTITION BY client_id, transaction_date)",
+              "var_3": "SUM() OVER (PARTITION BY client_id ORDER BY transaction_date)",
+              "var_4": "CUMULATIVE_SUM(amount) GROUP BY client_id ORDER BY transaction_date",
+              "correct_position": 3
+            },
+            {
+              "level": "Middle",
+              "question": "В запросе на расчет среднего чека абонентов телеком-оператора за последние 3 месяца используется CTE с оконными функциями. Какой подход эффективнее: материализованный CTE или подзапрос с индексом по дате?",
+              "correct_answer": "Подзапрос с индексом эффективнее при малой выборке данных",
+              "var_1": "Временная таблица с кластерным индексом обеспечивает лучшую производительность",
+              "var_2": "Подзапрос с индексом эффективнее при малой выборке данных",
+              "var_3": "Материализованный CTE снижает нагрузку на процессор при агрегации",
+              "var_4": "CTE с PARTITION BY оптимальнее за счет параллельного выполнения",
+              "correct_position": 2
+            },
+            {
+              "level": "Senior",
+              "question": "Почему при анализе транзакций банка за год с ROW_NUMBER() и PARTITION BY по 5 млн клиентов запрос выполняется 40 минут? Какие архитектурные решения для оптимизации предложите?",
+              "correct_answer": "Разбить на инкрементальную обработку батчами, использовать партиционирование таблиц по месяцам, создать агрегированные витрины",
+              "var_1": "Добавить составной индекс на колонки PARTITION BY и ORDER BY, увеличить memory_limit для сортировки данных",
+              "var_2": "Денормализовать таблицу транзакций, добавить covering index со всеми колонками запроса для index-only scan",
+              "var_3": "Разбить на инкрементальную обработку батчами, использовать партиционирование таблиц по месяцам, создать агрегированные витрины",
+              "var_4": "Заменить ROW_NUMBER() на DENSE_RANK(), использовать материализованные представления с REFRESH COMPLETE по расписанию",
+              "correct_position": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "competency": "ETL/ELT процессы и data pipelines",
+      "type": "CORE",
+      "importance": 90,
+      "themes": [
+        {
+          "theme": "Проектирование и оркестрация data pipelines (Apache Airflow, Prefect, Dagster)",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Что такое DAG в Apache Airflow и для чего он используется?",
+              "correct_answer": "Направленный ациклический граф, определяющий последовательность задач и их зависимости",
+              "var_1": "Динамический алгоритм генерации расписания запуска задач в pipeline",
+              "var_2": "Database Access Gateway для подключения Airflow к источникам данных",
+              "var_3": "Направленный ациклический граф, определяющий последовательность задач и их зависимости",
+              "var_4": "Распределенный граф задач для параллельного выполнения pipeline на кластере",
+              "correct_position": 3
+            },
+            {
+              "level": "Middle",
+              "question": "В чем разница между подходами schedule_interval и Timetable API в Airflow для планирования загрузки банковских транзакций?",
+              "correct_answer": "Timetable API позволяет задавать сложные кастомные расписания, schedule_interval использует cron-выражения",
+              "var_1": "schedule_interval использует data-aware scheduling, Timetable API основан на временных интервалах cron",
+              "var_2": "Timetable API позволяет задавать сложные кастомные расписания, schedule_interval использует cron-выражения",
+              "var_3": "schedule_interval поддерживает динамические расписания, Timetable API работает только со статичными интервалами",
+              "var_4": "Timetable API оптимизирован для распределенных систем, schedule_interval выполняется на одном воркере",
+              "correct_position": 2
+            },
+            {
+              "level": "Senior",
+              "question": "Как спроектировать отказоустойчивый pipeline для обработки клиентских данных телекома с гарантией exactly-once delivery при падении executor?",
+              "correct_answer": "Использовать идемпотентные операции, XCom для состояния, external task sensors и transaction-aware коннекторы с checkpointing",
+              "var_1": "Использовать идемпотентные операции, XCom для состояния, external task sensors и transaction-aware коннекторы с checkpointing",
+              "var_2": "Применять retry механизмы с exponential backoff, DLQ для failed tasks и distributed locks через Redis с TTL",
+              "var_3": "Настроить KubernetesExecutor с persistent volumes, включить task retries и использовать at-least-once семантику с дедупликацией",
+              "var_4": "Использовать SubDAGs для изоляции, pool slots для контроля нагрузки и trigger rules с state-based branching операторами",
+              "correct_position": 1
+            }
+          ]
+        },
+        {
+          "theme": "Паттерны incremental loading и CDC (Change Data Capture) для оптимизации ETL",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какое поле чаще всего используется для incremental loading при загрузке транзакций из банковского процессинга?",
+              "correct_answer": "Timestamp или дата последнего изменения записи",
+              "var_1": "Хеш-сумма всех полей записи для сравнения",
+              "var_2": "Timestamp или дата последнего изменения записи",
+              "var_3": "Первичный ключ транзакции из основной таблицы",
+              "var_4": "Sequence number из лог-файла процессинга системы",
+              "correct_position": 2
+            },
+            {
+              "level": "Middle",
+              "question": "В телеком-компании необходимо отслеживать изменения тарифных планов клиентов. Какой CDC паттерн оптимален: trigger-based, log-based или timestamp-based, если важна минимальная нагрузка на OLTP систему?",
+              "correct_answer": "Log-based CDC через чтение transaction logs базы данных",
+              "var_1": "Snapshot-based CDC с периодическим сравнением состояний таблиц",
+              "var_2": "Timestamp-based подход с колонкой updated_at и полной выгрузкой",
+              "var_3": "Log-based CDC через чтение transaction logs базы данных",
+              "var_4": "Trigger-based CDC с асинхронной обработкой через очередь сообщений",
+              "correct_position": 3
+            },
+            {
+              "level": "Senior",
+              "question": "В банке реализован incremental loading платежей по updated_at, но аудит выявил потерю данных при одновременном обновлении записей между запусками ETL. Как архитектурно решить проблему при сохранении производительности?",
+              "correct_answer": "Комбинировать watermark с deleted flag и версионированием через sequence number",
+              "var_1": "Перейти на полную загрузку с дедупликацией через ROW_NUMBER по updated_at",
+              "var_2": "Использовать micro-batching с уменьшением интервала запуска ETL до минуты",
+              "var_3": "Применить двухфазный watermark с перекрытием окон и eventually consistent модель",
+              "var_4": "Комбинировать watermark с deleted flag и версионированием через sequence number",
+              "correct_position": 4
+            }
+          ]
+        },
+        {
+          "theme": "Обработка ошибок, мониторинг и логирование в data pipelines",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой уровень логирования следует использовать для записи критических ошибок в ETL pipeline, которые останавливают обработку данных?",
+              "correct_answer": "ERROR или CRITICAL level для блокирующих ошибок",
+              "var_1": "WARNING level для всех типов ошибок pipeline",
+              "var_2": "DEBUG level для отслеживания точки остановки процесса",
+              "var_3": "ERROR или CRITICAL level для блокирующих ошибок",
+              "var_4": "INFO level с детальным описанием стека ошибок",
+              "correct_position": 3
+            },
+            {
+              "level": "Middle",
+              "question": "В банковском ETL pipeline при загрузке транзакций из источника происходят периодические таймауты. Какую стратегию retry следует применить и почему?",
+              "correct_answer": "Exponential backoff с jitter для снижения нагрузки",
+              "var_1": "Немедленный retry с фиксированным интервалом 1 секунда",
+              "var_2": "Circuit breaker с переключением на резервный источник",
+              "var_3": "Exponential backoff с jitter для снижения нагрузки",
+              "var_4": "Aggressive retry с увеличением числа параллельных потоков",
+              "correct_position": 3
+            },
+            {
+              "level": "Senior",
+              "question": "При обработке платежных данных в реальном времени необходимо обеспечить exactly-once семантику с мониторингом SLA 99.9%. Как спроектировать систему обработки ошибок и алертинга для соответствия требованиям регулятора?",
+              "correct_answer": "Идемпотентные операции с транзакционными checkpoint, dead letter queue, метрики latency/throughput с алертами и audit log",
+              "var_1": "Идемпотентные операции с транзакционными checkpoint, dead letter queue, метрики latency/throughput с алертами и audit log",
+              "var_2": "Circuit breaker паттерн, асинхронная обработка с acknowledgment, Grafana дашборды и structured logging в JSON",
+              "var_3": "Двухфазный commit протокол, синхронная репликация базы данных, SNMP трапы для алертов и ротация логов",
+              "var_4": "Retry с exponential backoff, Prometheus метрики, Kafka offset commit и централизованное логирование в Elasticsearch",
+              "correct_position": 1
+            }
+          ]
+        },
+        {
+          "theme": "Трансформация данных: ELT vs ETL, использование dbt и SQL-based трансформаций",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Что такое dbt и для чего он используется в современных data pipelines?",
+              "correct_answer": "Инструмент для SQL-based трансформаций данных в хранилище с версионированием и тестированием",
+              "var_1": "Фреймворк для потоковой обработки данных в реальном времени с поддержкой Kafka",
+              "var_2": "Инструмент для SQL-based трансформаций данных в хранилище с версионированием и тестированием",
+              "var_3": "Библиотека для извлечения данных из источников и загрузки в облачные хранилища",
+              "var_4": "Платформа для оркестрации ETL-процессов с визуальным интерфейсом и планировщиком задач",
+              "correct_position": 2
+            },
+            {
+              "level": "Middle",
+              "question": "Когда следует выбрать ELT вместо ETL подход для обработки данных из АБС банка в облачное хранилище?",
+              "correct_answer": "Когда целевое хранилище имеет мощные вычислительные ресурсы и требуется гибкость трансформаций",
+              "var_1": "Когда источник данных имеет ограниченную пропускную способность и требуется компрессия",
+              "var_2": "Когда целевое хранилище имеет мощные вычислительные ресурсы и требуется гибкость трансформаций",
+              "var_3": "Когда необходимо обеспечить валидацию данных до их попадания в целевую систему",
+              "var_4": "Когда требуется предварительная очистка данных перед загрузкой в хранилище",
+              "correct_position": 2
+            },
+            {
+              "level": "Senior",
+              "question": "Как спроектировать incremental-стратегию в dbt для таблицы транзакций телеком-оператора объемом 500M записей в день, обеспечив идемпотентность при повторных запусках?",
+              "correct_answer": "Использовать merge стратегию с unique_key по transaction_id и timestamp, партиционирование по дате, delete+insert для поздних данных",
+              "var_1": "Настроить snapshot стратегию с check_cols на все поля, партиционирование по часам и upsert через staging-таблицы с row_number",
+              "var_2": "Использовать append стратегию с фильтром по max(created_at), кластеризацию по transaction_id и full refresh раз в неделю",
+              "var_3": "Применить incremental_strategy='delete+insert' с фильтром по processing_date, материализованные view для дедупликации и clustering по user_id",
+              "var_4": "Использовать merge стратегию с unique_key по transaction_id и timestamp, партиционирование по дате, delete+insert для поздних данных",
+              "correct_position": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "competency": "Работа с Big Data (Hadoop, Spark, Kafka)",
+      "type": "CORE",
+      "importance": 85,
+      "themes": [
+        {
+          "theme": "Архитектура и компоненты экосистемы Hadoop (HDFS, YARN, MapReduce)",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой компонент Hadoop отвечает за распределенное хранение данных транзакций банковских клиентов?",
+              "correct_answer": "HDFS (Hadoop Distributed File System)",
+              "var_1": "Apache HBase колоночная база данных",
+              "var_2": "YARN (Yet Another Resource Negotiator)",
+              "var_3": "MapReduce фреймворк для обработки данных",
+              "var_4": "HDFS (Hadoop Distributed File System)",
+              "correct_position": 4
+            },
+            {
+              "level": "Middle",
+              "question": "Какой replication factor HDFS оптимален для кластера телеком-оператора из 10 узлов с учетом баланса отказоустойчивости и использования диска?",
+              "correct_answer": "Replication factor 3 обеспечивает надежность при оптимальном использовании дисков",
+              "var_1": "Replication factor 3 обеспечивает надежность при оптимальном использовании дисков",
+              "var_2": "Динамический replication factor от 2 до 4 адаптируется под загрузку кластера",
+              "var_3": "Replication factor 5 гарантирует максимальную отказоустойчивость для критичных телеком-данных",
+              "var_4": "Replication factor 2 достаточен для малых кластеров с ограниченным дисковым пространством",
+              "correct_position": 1
+            },
+            {
+              "level": "Senior",
+              "question": "Почему для обработки потоковых CDR-записей телеком-оператора YARN с динамической аллокацией контейнеров предпочтительнее статической при пиковых нагрузках?",
+              "correct_answer": "Динамическая аллокация автоматически масштабирует ресурсы под нагрузку, экономя кластер при спадах",
+              "var_1": "YARN с динамической аллокацией обеспечивает приоритезацию контейнеров для критичных телеком-задач",
+              "var_2": "Динамическая аллокация автоматически масштабирует ресурсы под нагрузку, экономя кластер при спадах",
+              "var_3": "Статическая аллокация создаёт избыточную задержку при инициализации контейнеров для потоковых данных",
+              "var_4": "Динамическая аллокация предотвращает фрагментацию памяти YARN при длительной работе с CDR-потоками",
+              "correct_position": 2
+            }
+          ]
+        },
+        {
+          "theme": "Обработка потоковых данных в Apache Kafka: топики, партиции, consumer groups",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Что такое партиция в Apache Kafka и для чего она используется?",
+              "correct_answer": "Логический раздел топика для параллелизации обработки и масштабирования чтения данных.",
+              "var_1": "Механизм сжатия данных в топике для оптимизации дискового пространства.",
+              "var_2": "Логический раздел топика для параллелизации обработки и масштабирования чтения данных.",
+              "var_3": "Физический сервер в кластере Kafka для хранения и репликации сообщений.",
+              "var_4": "Группа консьюмеров для распределенного чтения сообщений из одного топика.",
+              "correct_position": 2
+            },
+            {
+              "level": "Middle",
+              "question": "В банковской системе транзакции должны обрабатываться строго по порядку для каждого клиента. Как правильно настроить Kafka producer для гарантии порядка сообщений?",
+              "correct_answer": "Использовать один ключ партиционирования на клиента и enable.idempotence=true.",
+              "var_1": "Использовать один ключ партиционирования на клиента и enable.idempotence=true.",
+              "var_2": "Установить acks=all и max.in.flight.requests.per.connection=1 для каждого producer.",
+              "var_3": "Создать отдельный топик для каждого клиента с одной партицией.",
+              "var_4": "Использовать transaction.id и настроить isolation.level=read_committed на consumer.",
+              "correct_position": 1
+            },
+            {
+              "level": "Senior",
+              "question": "В телеком-компании consumer group обрабатывает миллионы событий звонков. После ребаланса группы происходит длительная задержка обработки. Какие архитектурные решения минимизируют impact от ребаланса?",
+              "correct_answer": "Использовать static membership, увеличить session.timeout.ms, применить incremental cooperative rebalancing и оптимизировать количество партиций.",
+              "var_1": "Настроить auto.offset.reset на earliest, увеличить fetch.min.bytes и использовать sticky assignor с минимальным rebalance.timeout.ms.",
+              "var_2": "Использовать static membership, увеличить session.timeout.ms, применить incremental cooperative rebalancing и оптимизировать количество партиций.",
+              "var_3": "Применить eager rebalancing protocol, увеличить heartbeat.interval.ms и использовать несколько consumer groups для параллельной обработки событий.",
+              "var_4": "Увеличить количество партиций в 2-3 раза, использовать round-robin assignment и уменьшить max.poll.interval.ms для быстрой обработки.",
+              "correct_position": 2
+            }
+          ]
+        },
+        {
+          "theme": "Оптимизация производительности Apache Spark: RDD, DataFrame API, catalyst optimizer",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой API в Apache Spark автоматически применяет оптимизации через Catalyst Optimizer при обработке данных транзакций?",
+              "correct_answer": "DataFrame API и Dataset API",
+              "var_1": "Spark Streaming API и DStream",
+              "var_2": "DataFrame API и Dataset API",
+              "var_3": "GraphX API и Graph операции",
+              "var_4": "RDD API с transformations и actions",
+              "correct_position": 2
+            },
+            {
+              "level": "Middle",
+              "question": "В банковской ETL-системе необходимо обработать 500 млн транзакций с множественными фильтрами и агрегациями. Почему DataFrame API предпочтительнее RDD?",
+              "correct_answer": "Catalyst оптимизирует план выполнения, Tungsten улучшает управление памятью, компактное представление данных",
+              "var_1": "Catalyst оптимизирует план выполнения, Tungsten улучшает управление памятью, компактное представление данных",
+              "var_2": "RDD поддерживает колоночное хранение и векторизацию операций через Project Tungsten",
+              "var_3": "DataFrame использует MapReduce модель, RDD работает через DAG scheduler",
+              "var_4": "RDD обеспечивает ленивые вычисления, DataFrame требует немедленного выполнения операций",
+              "correct_position": 1
+            },
+            {
+              "level": "Senior",
+              "question": "При обработке телеком CDR-данных с 2 млрд записей ежедневно наблюдаются OOM-ошибки при join операциях. Какие оптимизации Spark применить для стабилизации?",
+              "correct_answer": "Broadcast join для малых таблиц, увеличить spark.sql.shuffle.partitions, включить AQE, настроить spark.memory.fraction",
+              "var_1": "Применить repartition по ключу join, отключить broadcasting, использовать mapPartitions вместо DataFrame API для контроля памяти",
+              "var_2": "Broadcast join для малых таблиц, увеличить spark.sql.shuffle.partitions, включить AQE, настроить spark.memory.fraction",
+              "var_3": "Настроить spark.executor.instances на максимум, включить dynamic allocation, использовать sortMergeJoin с предварительным cache обеих таблиц",
+              "var_4": "Увеличить executor memory до 32GB, использовать persist(MEMORY_ONLY), уменьшить количество партиций для минимизации overhead",
+              "correct_position": 2
+            }
+          ]
+        },
+        {
+          "theme": "Интеграция Big Data компонентов: построение ETL-пайплайнов с Spark, Kafka и HDFS",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой компонент Spark используется для чтения данных из Kafka в потоковом режиме?",
+              "correct_answer": "Spark Structured Streaming с форматом kafka",
+              "var_1": "Spark SQL с jdbc источником kafka",
+              "var_2": "Spark Streaming с KafkaUtils и DirectStream",
+              "var_3": "Spark Structured Streaming с форматом kafka",
+              "var_4": "Spark RDD API с Kafka Consumer",
+              "correct_position": 3
+            },
+            {
+              "level": "Middle",
+              "question": "В банковском ETL-пайплайне транзакции поступают из Kafka каждые 5 секунд, но обработка в Spark занимает 8 секунд. Какой параметр настроить для предотвращения накопления lag?",
+              "correct_answer": "Увеличить spark.executor.cores и spark.executor.instances для параллелизации обработки",
+              "var_1": "Уменьшить spark.streaming.kafka.maxRatePerPartition для снижения нагрузки",
+              "var_2": "Настроить spark.streaming.blockInterval для оптимизации размера микробатчей",
+              "var_3": "Увеличить spark.executor.cores и spark.executor.instances для параллелизации обработки",
+              "var_4": "Увеличить spark.streaming.backpressure.initialRate для контроля потока данных",
+              "correct_position": 3
+            },
+            {
+              "level": "Senior",
+              "question": "Телеком-компания обрабатывает CDR-записи: Kafka → Spark → HDFS (партиционирование по датам). При сбое Spark-джобы данные дублируются в HDFS. Как архитектурно обеспечить exactly-once семантику в этом пайплайне?",
+              "correct_answer": "Использовать Kafka offsets с checkpointing, Delta Lake для атомарных записей и идемпотентные операции",
+              "var_1": "Применить HDFS snapshots для rollback, Spark structured streaming с outputMode='complete') и Kafka transactions",
+              "var_2": "Использовать Kafka offsets с checkpointing, Delta Lake для атомарных записей и идемпотентные операции",
+              "var_3": "Использовать Spark Streaming microbatch с write.mode('append') и дедупликацию по timestamp в HDFS",
+              "var_4": "Настроить Kafka consumer group с auto.offset.reset=earliest и Spark foreachBatch с upsert логикой",
+              "correct_position": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "competency": "Облачные платформы для данных (AWS S3, Redshift, Snowflake)",
+      "type": "CORE",
+      "importance": 80,
+      "themes": [
+        {
+          "theme": "Архитектура хранения данных в AWS S3: типы хранилищ, lifecycle policies и оптимизация затрат",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой класс хранения S3 следует использовать для архивных данных банковских транзакций, которые необходимо хранить 10 лет, но доступ требуется реже одного раза в год?",
+              "correct_answer": "S3 Glacier Deep Archive",
+              "var_1": "S3 Intelligent-Tiering",
+              "var_2": "S3 Standard-Infrequent Access",
+              "var_3": "S3 Glacier Deep Archive",
+              "var_4": "S3 One Zone-IA",
+              "correct_position": 3
+            },
+            {
+              "level": "Middle",
+              "question": "Банк хранит CDR-записи телеметрии: первые 30 дней активный доступ, затем 90 дней редкий доступ, после - архив. Какую lifecycle policy вы настроите для оптимизации затрат?",
+              "correct_answer": "Standard 30 дней, затем Intelligent-Tiering 90 дней, далее Glacier Flexible Retrieval",
+              "var_1": "Intelligent-Tiering на весь период с автоматическим переходом в Archive Access Tier",
+              "var_2": "Standard 30 дней, затем Standard-IA 90 дней, далее Glacier Deep Archive",
+              "var_3": "Standard 30 дней, затем Intelligent-Tiering 90 дней, далее Glacier Flexible Retrieval",
+              "var_4": "Standard 30 дней, затем One Zone-IA 90 дней, далее S3 Glacier Instant Retrieval",
+              "correct_position": 3
+            },
+            {
+              "level": "Senior",
+              "question": "Телеком компания хранит 500 TB логов событий в S3 Standard. 80% объектов не используются после 7 дней. Как спроектировать стратегию оптимизации затрат с учетом compliance требований на 3 года хранения?",
+              "correct_answer": "Lifecycle policy: 7 дней Standard, затем Intelligent-Tiering с Archive Access tier, Object Lock для compliance",
+              "var_1": "Переход в S3 One Zone-IA через 7 дней, Glacier Deep Archive через 90 дней с Vault Lock",
+              "var_2": "Lifecycle policy: 7 дней Standard, затем S3 Glacier Instant Retrieval с MFA Delete для compliance",
+              "var_3": "Lifecycle policy: 7 дней Standard, затем Intelligent-Tiering с Archive Access tier, Object Lock для compliance",
+              "var_4": "Lifecycle policy: Standard-IA после 7 дней, S3 Glacier через 30 дней, Versioning для compliance требований",
+              "correct_position": 3
+            }
+          ]
+        },
+        {
+          "theme": "Проектирование и оптимизация схем данных в Amazon Redshift: distribution styles, sort keys и vacuum операции",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой distribution style в Redshift используется для небольших справочных таблиц, реплицируя данные на все узлы кластера?",
+              "correct_answer": "ALL distribution style",
+              "var_1": "KEY distribution style",
+              "var_2": "AUTO distribution style",
+              "var_3": "ALL distribution style",
+              "var_4": "EVEN distribution style",
+              "correct_position": 3
+            },
+            {
+              "level": "Middle",
+              "question": "В таблице транзакций банка с 500 млн записей постоянно выполняются JOIN по customer_id и фильтрация по transaction_date. Какую комбинацию distribution key и sort key оптимально использовать?",
+              "correct_answer": "Distribution key на customer_id, compound sort key на customer_id и transaction_date",
+              "var_1": "Distribution key на customer_id, compound sort key на customer_id и transaction_date",
+              "var_2": "Distribution key на transaction_id, sort key на transaction_date для последовательного сканирования",
+              "var_3": "Distribution key на transaction_date, interleaved sort key на customer_id и transaction_date",
+              "var_4": "Distribution style ALL, compound sort key на transaction_date и customer_id",
+              "correct_position": 1
+            },
+            {
+              "level": "Senior",
+              "question": "В хранилище данных телеком-оператора после ежедневных загрузок CDR-записей производительность запросов падает на 40%. Vacuum Full занимает 6 часов. Как реорганизовать процесс загрузки и обслуживания для минимизации vacuum времени?",
+              "correct_answer": "Использовать bulk insert с сортированными данными, применять vacuum delete only, настроить auto vacuum с wlm_query_slot_count",
+              "var_1": "Перейти на DISTSTYLE KEY для CDR таблиц, увеличить maintenance_work_mem и запускать vacuum в параллельных сессиях",
+              "var_2": "Разбить таблицу на партиции по датам, применять truncate вместо delete и переключиться на column encoding LZO",
+              "var_3": "Использовать bulk insert с сортированными данными, применять vacuum delete only, настроить auto vacuum с wlm_query_slot_count",
+              "var_4": "Включить deep copy через CREATE TABLE AS, настроить compression encoding вручную и использовать interleaved sort keys",
+              "correct_position": 3
+            }
+          ]
+        },
+        {
+          "theme": "Интеграция и миграция данных между облачными платформами: ETL процессы для AWS, Snowflake и гибридных решений",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой AWS сервис используется для оркестрации ETL-процессов при миграции данных из on-premise базы банка в S3?",
+              "correct_answer": "AWS Glue или AWS Data Migration Service",
+              "var_1": "AWS Lambda с EventBridge для batch обработки",
+              "var_2": "AWS Glue или AWS Data Migration Service",
+              "var_3": "Amazon Kinesis Data Streams с Firehose трансформацией",
+              "var_4": "AWS Step Functions с прямыми SQL коннекторами",
+              "correct_position": 2
+            },
+            {
+              "level": "Middle",
+              "question": "В каком случае для банка выгоднее использовать Snowflake Snowpipe вместо AWS Glue для загрузки данных транзакций из S3?",
+              "correct_answer": "При непрерывной потоковой загрузке небольших файлов в реальном времени",
+              "var_1": "При необходимости сложных трансформаций данных перед загрузкой",
+              "var_2": "При непрерывной потоковой загрузке небольших файлов в реальном времени",
+              "var_3": "При ежедневной пакетной загрузке больших архивов транзакций",
+              "var_4": "При миграции исторических данных объемом несколько терабайт",
+              "correct_position": 2
+            },
+            {
+              "level": "Senior",
+              "question": "Как спроектировать гибридное ETL-решение для телеком-оператора с данными в on-premise Oracle и Snowflake, чтобы минимизировать egress costs и обеспечить compliance с законом о локализации данных РК?",
+              "correct_answer": "Использовать Snowflake External Tables с S3 в локальном регионе, CDC через Kafka и incremental loads с фильтрацией персональных данных",
+              "var_1": "Настроить Azure Data Factory с Self-Hosted IR, полный дамп Oracle в Parquet на HDFS и синхронизацию в Snowflake через SnowPipe",
+              "var_2": "Использовать Snowflake External Tables с S3 в локальном регионе, CDC через Kafka и incremental loads с фильтрацией персональных данных",
+              "var_3": "Применить Snowflake Data Sharing между облаками, Talend для ETL с маскированием данных и AWS Transfer Family для миграции",
+              "var_4": "Развернуть AWS Glue в локальном ЦОД с Direct Connect, использовать полную репликацию Oracle в Redshift и шифрование данных",
+              "correct_position": 2
+            }
+          ]
+        },
+        {
+          "theme": "Управление производительностью и масштабированием в Snowflake: virtual warehouses, clustering keys и query optimization",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой параметр определяет размер virtual warehouse в Snowflake при его создании?",
+              "correct_answer": "Параметр SIZE со значениями X-Small, Small, Medium, Large и т.д.",
+              "var_1": "Параметр WAREHOUSE_TYPE с опциями Standard, Enterprise и Premium уровней",
+              "var_2": "Параметр CAPACITY с указанием количества compute nodes в кластере",
+              "var_3": "Параметр SIZE со значениями X-Small, Small, Medium, Large и т.д.",
+              "var_4": "Параметр SCALE_FACTOR со значениями от 1 до 10 единиц",
+              "correct_position": 3
+            },
+            {
+              "level": "Middle",
+              "question": "В банковском хранилище транзакций за 5 лет запросы по дате выполняются медленно. Таблица содержит 2 млрд записей. Когда следует использовать clustering key?",
+              "correct_answer": "Когда запросы фильтруют по датам и таблица больше 1TB",
+              "var_1": "Когда virtual warehouse работает в режиме multi-cluster",
+              "var_2": "Когда запросы фильтруют по датам и таблица больше 1TB",
+              "var_3": "Когда запросы используют JOIN с другими большими таблицами",
+              "var_4": "Когда таблица содержит более 100 миллионов записей",
+              "correct_position": 2
+            },
+            {
+              "level": "Senior",
+              "question": "Почему для ETL-процессов обработки телеком CDR-данных лучше использовать несколько малых virtual warehouses вместо одного большого при одинаковых кредитах?",
+              "correct_answer": "Несколько малых warehouses обеспечивают лучшую параллелизацию независимых задач и изоляцию workloads",
+              "var_1": "Малые warehouses эффективнее используют результаты кэширования и снижают затраты на compute",
+              "var_2": "Один большой warehouse создаёт избыточную нагрузку на metadata store и замедляет execution",
+              "var_3": "Несколько warehouses позволяют применять разные clustering keys для оптимизации micro-partitions",
+              "var_4": "Несколько малых warehouses обеспечивают лучшую параллелизацию независимых задач и изоляцию workloads",
+              "correct_position": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "competency": "Python для обработки данных (pandas, PySpark)",
+      "type": "CORE",
+      "importance": 85,
+      "themes": [
+        {
+          "theme": "Работа с DataFrame в pandas: индексация, фильтрация, группировка и агрегация данных",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой метод pandas используется для фильтрации DataFrame по условию на значения в столбце 'amount' больше 100000 тенге?",
+              "correct_answer": "df[df['amount'] > 100000] или df.query('amount > 100000')",
+              "var_1": "df.filter(df['amount'] > 100000) или df.select(condition='amount > 100000')",
+              "var_2": "df.where('amount' > 100000) или df.loc[amount > 100000]",
+              "var_3": "df[df['amount'] > 100000] или df.query('amount > 100000')",
+              "var_4": "df.query_filter(column='amount', value=100000, operator='greater') или df[amount > 100000]",
+              "correct_position": 3
+            },
+            {
+              "level": "Middle",
+              "question": "В чем разница между методами .loc и .iloc при индексации DataFrame с транзакциями клиентов банка, и когда использовать каждый из них?",
+              "correct_answer": ".loc использует метки индексов и названия столбцов, .iloc использует целочисленные позиции",
+              "var_1": ".loc поддерживает булеву индексацию и срезы, .iloc работает только с одиночными значениями",
+              "var_2": ".loc работает быстрее для больших датасетов, .iloc оптимизирован для малых выборок",
+              "var_3": ".loc использует метки индексов и названия столбцов, .iloc использует целочисленные позиции",
+              "var_4": ".loc применяется для чтения данных, .iloc используется для модификации значений в DataFrame",
+              "correct_position": 3
+            },
+            {
+              "level": "Senior",
+              "question": "Почему при агрегации больших объемов транзакций абонентов телеком-оператора groupby с apply работает медленнее, чем встроенные агрегирующие функции, и как оптимизировать производительность?",
+              "correct_answer": "apply вызывает Python-функцию для каждой группы без векторизации, используйте agg с встроенными функциями или transform",
+              "var_1": "groupby создает копии данных для каждой группы, используйте iterrows с ручной агрегацией для экономии памяти",
+              "var_2": "apply загружает группы в swap-память, увеличьте размер chunk_size в groupby или используйте categorical индексы",
+              "var_3": "apply использует однопоточную обработку, переключитесь на groupby с parallel=True или используйте Dask для распараллеливания",
+              "var_4": "apply вызывает Python-функцию для каждой группы без векторизации, используйте agg с встроенными функциями или transform",
+              "correct_position": 4
+            }
+          ]
+        },
+        {
+          "theme": "Оптимизация обработки больших данных в PySpark: партиционирование, кеширование и broadcast-переменные",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой метод PySpark используется для кеширования DataFrame в памяти для повторного использования при обработке данных транзакций?",
+              "correct_answer": "cache() или persist() с уровнем MEMORY_ONLY",
+              "var_1": "checkpoint() с записью на HDFS",
+              "var_2": "cache() или persist() с уровнем MEMORY_ONLY",
+              "var_3": "materialize() с уровнем DISK_ONLY",
+              "var_4": "broadcast() для распределения данных по узлам",
+              "correct_position": 2
+            },
+            {
+              "level": "Middle",
+              "question": "При джойне таблицы клиентов банка (500 тыс. записей) с транзакциями (500 млн записей) какой подход оптимизации следует применить и почему?",
+              "correct_answer": "Broadcast join для таблицы клиентов, избегая shuffle больших данных",
+              "var_1": "Broadcast join для таблицы транзакций с последующим кешированием",
+              "var_2": "Shuffle hash join с увеличением числа партиций",
+              "var_3": "Broadcast join для таблицы клиентов, избегая shuffle больших данных",
+              "var_4": "Партиционирование таблицы транзакций по дате перед джойном",
+              "correct_position": 3
+            },
+            {
+              "level": "Senior",
+              "question": "При обработке CDR-данных телеком-оператора с датой партиционирования возникает data skew на последнюю дату. Как архитектурно решить проблему неравномерного распределения нагрузки между executor'ами?",
+              "correct_answer": "Применить salting: добавить random suffix к ключу партиционирования, затем repartition с увеличенным числом партиций",
+              "var_1": "Увеличить число executor'ов и память через spark.executor.instances и spark.executor.memory для проблемной партиции",
+              "var_2": "Использовать adaptive query execution с включенным spark.sql.adaptive.skewJoin.enabled для автоматической балансировки",
+              "var_3": "Применить salting: добавить random suffix к ключу партиционирования, затем repartition с увеличенным числом партиций",
+              "var_4": "Применить coalesce после фильтрации данных последней даты для объединения мелких партиций в крупные",
+              "correct_position": 3
+            }
+          ]
+        },
+        {
+          "theme": "Трансформация и очистка данных: обработка пропущенных значений, дубликатов и приведение типов",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой метод pandas используется для удаления строк с пропущенными значениями в DataFrame с данными клиентов банка?",
+              "correct_answer": "dropna() удаляет строки или столбцы с NaN значениями",
+              "var_1": "remove_nulls() удаляет все записи с пустыми полями",
+              "var_2": "dropna() удаляет строки или столбцы с NaN значениями",
+              "var_3": "clean() автоматически обрабатывает пропуски в данных клиентов",
+              "var_4": "fillna() заполняет пропущенные значения указанным значением или методом",
+              "correct_position": 2
+            },
+            {
+              "level": "Middle",
+              "question": "В таблице транзакций телеком-оператора обнаружены дубликаты по ID абонента и timestamp. В чем разница между drop_duplicates(keep='first') и drop_duplicates(keep='last') при обработке временных рядов?",
+              "correct_answer": "keep='first' сохраняет первую запись, keep='last' - последнюю по порядку появления",
+              "var_1": "keep='first' сохраняет первую запись, keep='last' - последнюю по порядку появления",
+              "var_2": "keep='first' группирует по ID абонента, keep='last' - по timestamp",
+              "var_3": "keep='first' оставляет запись с минимальным timestamp, keep='last' - с максимальным",
+              "var_4": "keep='first' сортирует по возрастанию времени, keep='last' - по убыванию",
+              "correct_position": 1
+            },
+            {
+              "level": "Senior",
+              "question": "При обработке 500GB данных банковских транзакций в PySpark возникает OOM при fillna(). Почему использование coalesce() перед заполнением пропусков может решить проблему и какой оптимальный размер партиций?",
+              "correct_answer": "coalesce() уменьшает количество партиций, снижая overhead. Оптимально 128-200MB на партицию для баланса памяти",
+              "var_1": "coalesce() активирует broadcast join для словаря значений. Оптимальный размер партиции равен executor.memory деленному на cores",
+              "var_2": "coalesce() включает columnar compression перед fillna(). Оптимально 32-64MB на партицию согласно рекомендациям Spark 3.x",
+              "var_3": "coalesce() уменьшает количество партиций, снижая overhead. Оптимально 128-200MB на партицию для баланса памяти",
+              "var_4": "coalesce() увеличивает параллелизм операций fillna(). Оптимально 1GB на партицию для минимизации shuffle операций",
+              "correct_position": 3
+            }
+          ]
+        },
+        {
+          "theme": "Объединение датасетов и оконные функции в pandas и PySpark для аналитических задач",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой метод pandas используется для объединения двух датафреймов с транзакциями клиентов по общему ключу client_id?",
+              "correct_answer": "merge() или join()",
+              "var_1": "concat() с параметром on",
+              "var_2": "combine() или union()",
+              "var_3": "merge() или join()",
+              "var_4": "append() по ключу",
+              "correct_position": 3
+            },
+            {
+              "level": "Middle",
+              "question": "В чем разница между использованием merge() и concat() в pandas при объединении таблиц с данными по клиентским счетам банка?",
+              "correct_answer": "merge объединяет по ключам, concat склеивает по осям без сопоставления",
+              "var_1": "merge использует inner join, concat выполняет left join по умолчанию",
+              "var_2": "concat объединяет по ключам, merge склеивает данные построчно",
+              "var_3": "merge объединяет по ключам, concat склеивает по осям без сопоставления",
+              "var_4": "concat сопоставляет индексы таблиц, merge добавляет строки последовательно",
+              "correct_position": 3
+            },
+            {
+              "level": "Senior",
+              "question": "Почему для расчета скользящих агрегатов по миллионам транзакций телеком-оператора эффективнее использовать Window functions в PySpark вместо groupBy с collect_list?",
+              "correct_answer": "Window избегает shuffle всех данных и материализации списков в памяти",
+              "var_1": "Window избегает shuffle всех данных и материализации списков в памяти",
+              "var_2": "Window автоматически кэширует промежуточные результаты в памяти executor'ов",
+              "var_3": "groupBy с collect_list требует дополнительной сериализации через KryoSerializer",
+              "var_4": "Window использует broadcast join для распределения агрегатов по партициям",
+              "correct_position": 1
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

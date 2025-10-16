@@ -1,0 +1,73 @@
+{
+  "profile": "Frontend разработчик",
+  "specialization": "React",
+  "file_name": "Frontend_React",
+  "competencies": [
+    {
+      "competency": "HTML",
+      "type": "CORE",
+      "importance": 80,
+      "themes": [
+        "Семантическая разметка и доступность (accessibility)",
+        "Формы: атрибуты, валидация и типы input-элементов",
+        "Оптимизация производительности: async/defer, preload, lazy loading",
+        "Современные HTML5 API: Canvas, Web Storage, Geolocation, Drag and Drop"
+      ]
+    },
+    {
+      "competency": "JavaScript",
+      "type": "CORE",
+      "importance": 90,
+      "themes": [
+        "Основы JavaScript: типы данных, операторы, области видимости и замыкания",
+        "Асинхронное программирование: Promise, async/await, Event Loop",
+        "ES6+ возможности: деструктуризация, spread/rest операторы, модули, стрелочные функции",
+        "Прототипное наследование, классы и функциональное программирование в JavaScript"
+      ]
+    },
+    {
+      "competency": "CSS",
+      "type": "CORE",
+      "importance": 80,
+      "themes": [
+        "Flexbox и Grid Layout: построение адаптивных макетов",
+        "CSS-переменные, препроцессоры и методологии организации стилей (BEM, CSS Modules)",
+        "Позиционирование элементов, z-index и управление потоком документа",
+        "Анимации и трансформации: transitions, animations и performance-оптимизация"
+      ]
+    },
+    {
+      "competency": "React JS",
+      "type": "CORE",
+      "importance": 90,
+      "themes": [
+        "Жизненный цикл компонентов и хуки (useState, useEffect, useCallback, useMemo)",
+        "Управление состоянием приложения (Context API, Redux, Zustand)",
+        "Производительность и оптимизация React-приложений (мemoization, lazy loading, code splitting)",
+        "Работа с формами, валидация и обработка пользовательского ввода"
+      ]
+    },
+    {
+      "competency": "Redux",
+      "type": "DAILY",
+      "importance": 75,
+      "themes": [
+        "Основы Redux: store, actions, reducers и принцип однонаправленного потока данных",
+        "Redux Toolkit: configureStore, createSlice, createAsyncThunk и RTK Query",
+        "Middleware и асинхронные операции: redux-thunk, redux-saga, обработка side effects",
+        "Оптимизация производительности: селекторы, memoization, reselect и нормализация состояния"
+      ]
+    },
+    {
+      "competency": "TypeScript",
+      "type": "CORE",
+      "importance": 85,
+      "themes": [
+        "Типизация React компонентов: Props, State, Events и Refs",
+        "Продвинутые типы TypeScript: Utility Types, Generics и Type Guards",
+        "Типизация хуков React: useState, useEffect, useContext, useReducer и кастомные хуки",
+        "TypeScript в React экосистеме: типизация Redux/Zustand, React Router, API запросов и форм"
+      ]
+    }
+  ]
+}

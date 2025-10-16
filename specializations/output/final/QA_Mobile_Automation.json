@@ -1,0 +1,595 @@
+{
+  "profile": "QA Engineer",
+  "specialization": "QA Mobile Automation",
+  "file_name": "QA_Mobile_Automation",
+  "competencies": [
+    {
+      "competency": "Знание тестирования приложений, умение работать с симуляторами и эмуляторами",
+      "type": "CORE",
+      "importance": 85,
+      "themes": [
+        {
+          "theme": "Основы тестирования мобильных приложений: типы тестирования (функциональное, регрессионное, smoke), жизненный цикл мобильного приложения и специфика платформ iOS и Android",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Что такое smoke тестирование мобильного приложения и когда оно выполняется?",
+              "correct_answer": "Базовая проверка критического функционала после сборки перед полным тестированием.",
+              "var_1": "Полное тестирование всех функций приложения перед релизом в production.",
+              "var_2": "Тестирование UI/UX элементов на соответствие дизайн-макетам заказчика.",
+              "var_3": "Проверка производительности приложения под высокой нагрузкой пользователей.",
+              "var_4": "Базовая проверка критического функционала после сборки перед полным тестированием.",
+              "correct_position": 4
+            },
+            {
+              "level": "Middle",
+              "question": "В чем ключевое отличие эмулятора Android от симулятора iOS при тестировании банковского приложения с биометрией?",
+              "correct_answer": "Эмулятор виртуализирует ARM-архитектуру и поддерживает биометрию, симулятор имитирует поведение системы.",
+              "var_1": "Эмулятор работает через Xcode SDK, симулятор требует Android Studio для биометрии.",
+              "var_2": "Симулятор виртуализирует полную ОС iOS, эмулятор эмулирует только UI-слой Android.",
+              "var_3": "Симулятор запускает нативный ARM-код, эмулятор использует интерпретацию x86 инструкций.",
+              "var_4": "Эмулятор виртуализирует ARM-архитектуру и поддерживает биометрию, симулятор имитирует поведение системы.",
+              "correct_position": 4
+            },
+            {
+              "level": "Senior",
+              "question": "Как оптимизировать регрессионное тестирование мобильного банкинга при частых релизах, учитывая фрагментацию Android-устройств в Казахстане?",
+              "correct_answer": "Приоритизация тестов по риску, параллельный запуск на реальных устройствах популярных моделей через device farm.",
+              "var_1": "Использование matrix-тестирования на всех доступных конфигурациях устройств с ротацией тестовых сценариев каждый спринт.",
+              "var_2": "Полное тестирование всех функций на эмуляторах с последующей выборочной проверкой на реальных устройствах.",
+              "var_3": "Автоматизация всех тест-кейсов через Appium с запуском на облачных эмуляторах последних версий Android.",
+              "var_4": "Приоритизация тестов по риску, параллельный запуск на реальных устройствах популярных моделей через device farm.",
+              "correct_position": 4
+            }
+          ]
+        },
+        {
+          "theme": "Работа с эмуляторами и симуляторами: различия между эмулятором и симулятором, настройка Android Emulator и iOS Simulator, управление виртуальными устройствами и их конфигурациями",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой командой Android SDK создается новый эмулятор Android из командной строки?",
+              "correct_answer": "avdmanager create avd",
+              "var_1": "avdmanager create avd",
+              "var_2": "sdkmanager create emulator",
+              "var_3": "emulator -create-avd",
+              "var_4": "android create avd",
+              "correct_position": 1
+            },
+            {
+              "level": "Middle",
+              "question": "Почему для тестирования биометрической аутентификации банковского приложения следует использовать эмулятор вместо симулятора iOS?",
+              "correct_answer": "Симулятор не эмулирует аппаратные компоненты биометрии, тестирование неполноценно",
+              "var_1": "Симулятор не эмулирует аппаратные компоненты биометрии, тестирование неполноценно",
+              "var_2": "Симулятор iOS требует дополнительные лицензии для работы с Touch ID",
+              "var_3": "Эмулятор Android обеспечивает более быструю интеграцию с биометрическими API",
+              "var_4": "Эмулятор предоставляет прямой доступ к криптографическим модулям устройства",
+              "correct_position": 1
+            },
+            {
+              "level": "Senior",
+              "question": "Как оптимизировать время запуска 50 параллельных Android эмуляторов в CI/CD для регрессионного тестирования мобильного банкинга?",
+              "correct_answer": "Использовать snapshots с предустановленным приложением, KVM ускорение, легкие API образы без Google Play",
+              "var_1": "Запускать эмуляторы последовательно с задержкой, использовать Docker контейнеры для изоляции каждого устройства",
+              "var_2": "Увеличить RAM до 4GB на эмулятор, включить GPU acceleration и использовать полные system images",
+              "var_3": "Применить Gradle parallel execution, настроить x86_64 образы с HAX драйвером и Google Services",
+              "var_4": "Использовать snapshots с предустановленным приложением, KVM ускорение, легкие API образы без Google Play",
+              "correct_position": 4
+            }
+          ]
+        },
+        {
+          "theme": "Автоматизация тестирования мобильных приложений: использование Appium, настройка Desired Capabilities, локаторы элементов (XPath, ID, Accessibility ID), Page Object Model для мобильных приложений",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой Desired Capability в Appium используется для указания пути к APK-файлу банковского приложения?",
+              "correct_answer": "app capability с абсолютным путем к APK",
+              "var_1": "appActivity capability с путем к установочному файлу",
+              "var_2": "app capability с абсолютным путем к APK",
+              "var_3": "packageName capability с указанием bundleId приложения",
+              "var_4": "apkPath capability с относительным путем к файлу",
+              "correct_position": 2
+            },
+            {
+              "level": "Middle",
+              "question": "В чем преимущество использования Accessibility ID вместо XPath при поиске элементов в мобильном приложении банка?",
+              "correct_answer": "Быстрее работает и устойчив к изменениям UI структуры",
+              "var_1": "Работает с динамическими элементами загружаемыми через WebView",
+              "var_2": "Быстрее работает и устойчив к изменениям UI структуры",
+              "var_3": "Позволяет находить элементы по визуальному положению на экране",
+              "var_4": "Поддерживает кроссплатформенный поиск элементов без адаптации кода",
+              "correct_position": 2
+            },
+            {
+              "level": "Senior",
+              "question": "Как спроектировать Page Object Model для банковского приложения с динамическими локаторами на разных версиях Android и iOS, чтобы минимизировать дублирование кода?",
+              "correct_answer": "Использовать фабрику локаторов с платформо-специфичными стратегиями и базовый абстрактный класс страницы",
+              "var_1": "Применить Screenplay Pattern с разделением действий актора по платформенным условиям и версиям",
+              "var_2": "Использовать фабрику локаторов с платформо-специфичными стратегиями и базовый абстрактный класс страницы",
+              "var_3": "Создать отдельные Page Object классы для каждой платформы и версии операционной системы",
+              "var_4": "Использовать наследование Page Object с переопределением локаторов в дочерних классах для платформ",
+              "correct_position": 2
+            }
+          ]
+        },
+        {
+          "theme": "Продвинутые техники мобильного тестирования: тестирование на реальных устройствах vs эмуляторах, работа с облачными платформами (BrowserStack, Sauce Labs), тестирование жестов, работа с сенсорами и специфичными функциями устройств",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой инструмент в Android Studio позволяет эмулировать различные сенсоры устройства (акселерометр, GPS, гироскоп) для тестирования банковского приложения?",
+              "correct_answer": "Extended Controls в AVD Manager эмулятора Android",
+              "var_1": "Sensor Simulation Tool в Android SDK Platform Tools",
+              "var_2": "Extended Controls в AVD Manager эмулятора Android",
+              "var_3": "Device Manager с Hardware Configuration Profile",
+              "var_4": "Virtual Sensor API в Android Debug Bridge",
+              "correct_position": 2
+            },
+            {
+              "level": "Middle",
+              "question": "В чем ключевое отличие тестирования жестов смахивания в мобильном приложении банка на реальном устройстве через BrowserStack по сравнению с локальным эмулятором?",
+              "correct_answer": "Реальная чувствительность тачскрина и точность определения координат жестов",
+              "var_1": "Доступность расширенных логов TouchAction для удаленных устройств",
+              "var_2": "Реальная чувствительность тачскрина и точность определения координат жестов",
+              "var_3": "Скорость выполнения свайпов через облачную инфраструктуру BrowserStack",
+              "var_4": "Автоматическая запись видео процесса выполнения жестов в облаке",
+              "correct_position": 2
+            },
+            {
+              "level": "Senior",
+              "question": "Как спроектировать стратегию распределения тестов для банковского приложения между облачными устройствами BrowserStack и локальной фермой, учитывая тестирование биометрии, NFC-платежей и критичность времени выполнения тестов?",
+              "correct_answer": "Критичные сценарии с биометрией и NFC на реальных устройствах локально, регресс UI и кроссплатформенные проверки в облаке параллельно",
+              "var_1": "Распределить тесты по приоритету: P1 в облаке для скорости, биометрия и NFC на эмуляторах локально с stubbed-сервисами",
+              "var_2": "Все тесты биометрии и NFC в BrowserStack с виртуализацией сенсоров, UI-регресс локально для контроля времени выполнения",
+              "var_3": "Критичные сценарии с биометрией и NFC на реальных устройствах локально, регресс UI и кроссплатформенные проверки в облаке параллельно",
+              "var_4": "Критичные платежные сценарии параллельно в облаке и локально, биометрия через mock-объекты, NFC-тесты только в Sauce Labs",
+              "correct_position": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "competency": "Умение написания и поддержания автоматизированных тестов для мобильных приложений",
+      "type": "CORE",
+      "importance": 90,
+      "themes": [
+        {
+          "theme": "Архитектура автотестов: Page Object Model и Screen Object Pattern для мобильных приложений",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Что такое Page Object Model в контексте автоматизации мобильных приложений?",
+              "correct_answer": "Паттерн проектирования, где каждый экран приложения представлен отдельным классом с элементами и методами.",
+              "var_1": "Паттерн проектирования, где каждый экран приложения представлен отдельным классом с элементами и методами.",
+              "var_2": "Инструмент для визуализации иерархии элементов интерфейса и их свойств в приложении.",
+              "var_3": "Фреймворк для создания mock-объектов экранов при написании unit-тестов для мобильных приложений.",
+              "var_4": "Методология организации тестовых данных в отдельные классы для каждого типа объекта.",
+              "correct_position": 1
+            },
+            {
+              "level": "Middle",
+              "question": "В чем основное отличие Screen Object Pattern от Page Object Model при тестировании мобильного банкинга с множественными модальными окнами и bottom sheets?",
+              "correct_answer": "Screen Object инкапсулирует логику экрана включая навигацию, Page Object только элементы и действия.",
+              "var_1": "Page Object поддерживает WebView элементы, Screen Object только нативные компоненты приложения.",
+              "var_2": "Page Object создает отдельный класс для каждого bottom sheet, Screen Object группирует их.",
+              "var_3": "Screen Object использует XPath локаторы, Page Object работает с accessibility identifiers.",
+              "var_4": "Screen Object инкапсулирует логику экрана включая навигацию, Page Object только элементы и действия.",
+              "correct_position": 4
+            },
+            {
+              "level": "Senior",
+              "question": "Как спроектировать архитектуру автотестов для мобильного приложения банка с единой кодовой базой iOS/Android, чтобы минимизировать дублирование кода при разных локаторах платформ?",
+              "correct_answer": "Использовать абстрактный базовый Screen класс с платформо-специфичными наследниками, фабрику экранов и enum для локаторов.",
+              "var_1": "Использовать абстрактный базовый Screen класс с платформо-специфичными наследниками, фабрику экранов и enum для локаторов.",
+              "var_2": "Применить Screenplay Pattern с Actor классами и платформо-зависимыми Ability компонентами для каждого экрана.",
+              "var_3": "Создать отдельные репозитории для iOS и Android с общим слоем бизнес-логики через Git submodules.",
+              "var_4": "Использовать единый Screen класс с методами findElementIOS() и findElementAndroid() для каждого локатора элемента.",
+              "correct_position": 1
+            }
+          ]
+        },
+        {
+          "theme": "Работа с локаторами и стратегии поиска элементов в iOS и Android (XPath, Accessibility ID, UiAutomator)",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой тип локатора в Appium используется для поиска элементов по атрибуту accessibility identifier в iOS?",
+              "correct_answer": "Accessibility ID",
+              "var_1": "iOS Predicate String",
+              "var_2": "Content Description",
+              "var_3": "Accessibility ID",
+              "var_4": "Label Identifier",
+              "correct_position": 3
+            },
+            {
+              "level": "Middle",
+              "question": "Почему в банковском приложении Android следует избегать XPath локаторов для поиска кнопок подтверждения платежа?",
+              "correct_answer": "XPath медленный, нестабильный при изменении иерархии, снижает надежность тестов",
+              "var_1": "XPath медленный, нестабильный при изменении иерархии, снижает надежность тестов",
+              "var_2": "Accessibility ID обеспечивает шифрование данных локаторов в банковских приложениях",
+              "var_3": "UiAutomator работает быстрее XPath благодаря нативной интеграции с Firebase",
+              "var_4": "XPath требует root-доступа для работы с защищенными элементами банковского UI",
+              "correct_position": 1
+            },
+            {
+              "level": "Senior",
+              "question": "Как спроектировать стратегию поиска элементов для мультиязычного телеком-приложения с частыми обновлениями UI, чтобы минимизировать поддержку тестов?",
+              "correct_answer": "Использовать Accessibility ID и testID, требовать уникальные идентификаторы от разработчиков, избегать текстовых локаторов",
+              "var_1": "Применять UiAutomator селекторы с resourceId, дополнять их индексами элементов для точности локации",
+              "var_2": "Использовать XPath с contains() для текста, кэшировать элементы и применять явные ожидания",
+              "var_3": "Строить Page Object с комбинированными локаторами XPath и CSS, использовать fallback стратегии поиска",
+              "var_4": "Использовать Accessibility ID и testID, требовать уникальные идентификаторы от разработчиков, избегать текстовых локаторов",
+              "correct_position": 4
+            }
+          ]
+        },
+        {
+          "theme": "Управление тестовыми данными и состоянием приложения между тестами (setup/teardown, deep links, mock API)",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой метод жизненного цикла теста в Appium используется для очистки данных приложения перед каждым тестом?",
+              "correct_answer": "setUp или BeforeEach с driver.resetApp()",
+              "var_1": "tearDown с driver.clearAppData() методом",
+              "var_2": "setUp или BeforeEach с driver.resetApp()",
+              "var_3": "cleanUp с driver.terminateApp() вызовом",
+              "var_4": "AfterEach с driver.removeApp() командой",
+              "correct_position": 2
+            },
+            {
+              "level": "Middle",
+              "question": "В банковском приложении нужно тестировать экран с историей транзакций. Когда лучше использовать mock API вместо реальных тестовых данных через API?",
+              "correct_answer": "Для негативных сценариев, граничных случаев и контроля состояния ответов",
+              "var_1": "Для негативных сценариев, граничных случаев и контроля состояния ответов",
+              "var_2": "При проверке корректности отображения UI элементов списка транзакций",
+              "var_3": "Для smoke тестирования основного функционала после деплоя",
+              "var_4": "При тестировании на CI/CD для ускорения выполнения тестов",
+              "correct_position": 1
+            },
+            {
+              "level": "Senior",
+              "question": "Как спроектировать стратегию управления состоянием для автотестов мобильного банкинга, где критична изоляция данных между запусками на shared test environment?",
+              "correct_answer": "Комбинация уникальных пользовательских идентификаторов, deep links для setup, API cleanup в teardown",
+              "var_1": "Комбинация уникальных пользовательских идентификаторов, deep links для setup, API cleanup в teardown",
+              "var_2": "Использование Docker-контейнеров для каждого теста с изолированными mock-серверами и локальной БД",
+              "var_3": "Полная переустановка приложения перед каждым тестом с восстановлением базовых настроек через UI",
+              "var_4": "Shared test user pool с механизмом блокировок и автоматическим rollback транзакций после теста",
+              "correct_position": 1
+            }
+          ]
+        },
+        {
+          "theme": "Обработка нестабильных тестов: явные и неявные ожидания, синхронизация, retry-механизмы",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой метод Appium используется для установки явного ожидания видимости элемента перед взаимодействием?",
+              "correct_answer": "WebDriverWait с ExpectedConditions.visibilityOfElementLocated",
+              "var_1": "ImplicitWait с timeout параметром",
+              "var_2": "FluentWait с ignoring NoSuchElementException",
+              "var_3": "WebDriverWait с ExpectedConditions.visibilityOfElementLocated",
+              "var_4": "Thread.sleep с фиксированной задержкой",
+              "correct_position": 3
+            },
+            {
+              "level": "Middle",
+              "question": "В банковском приложении список транзакций загружается асинхронно с разной скоростью. Какой подход ожидания оптимален и почему?",
+              "correct_answer": "Явное ожидание с FluentWait, позволяет задать polling interval и игнорировать исключения",
+              "var_1": "Thread.sleep с динамическим расчетом задержки на основе предыдущих измерений",
+              "var_2": "Explicit wait с ExpectedConditions.presenceOfElementLocated без дополнительной настройки polling",
+              "var_3": "Явное ожидание с FluentWait, позволяет задать polling interval и игнорировать исключения",
+              "var_4": "Неявное ожидание через implicitlyWait с фиксированным таймаутом для всех элементов",
+              "correct_position": 3
+            },
+            {
+              "level": "Senior",
+              "question": "При тестировании мобильного банкинга 15% тестов падают из-за таймаутов при загрузке данных о курсах валют. Как архитектурно решить проблему без увеличения общего времени прогона?",
+              "correct_answer": "Реализовать conditional retry только для network-зависимых шагов с экспоненциальным backoff и логированием причин падения",
+              "var_1": "Реализовать conditional retry только для network-зависимых шагов с экспоненциальным backoff и логированием причин падения",
+              "var_2": "Применить PageLoadStrategy.NONE с полным отключением ожидания загрузки и параллельным запуском тестов через TestNG",
+              "var_3": "Увеличить глобальный implicit wait до 30 секунд и добавить Thread.sleep перед каждой проверкой курсов валют",
+              "var_4": "Настроить WebDriverWait с фиксированным polling interval и перенести проверки курсов в отдельный afterTest hook",
+              "correct_position": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "competency": "Навыки работы с Allure TestOps",
+      "type": "DAILY",
+      "importance": 60,
+      "themes": [
+        {
+          "theme": "Интеграция мобильных автотестов с Allure TestOps и настройка запуска тест-сьютов",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой параметр в конфигурации мобильного автотеста отвечает за отправку результатов в Allure TestOps?",
+              "correct_answer": "allure.results.directory с последующей загрузкой через allurectl",
+              "var_1": "allure.testops.endpoint с автоматической синхронизацией результатов",
+              "var_2": "allure.results.directory с последующей загрузкой через allurectl",
+              "var_3": "testops.integration.token в конфигурации мобильного фреймворка",
+              "var_4": "allure.upload.enabled в файле allure.properties проекта",
+              "correct_position": 2
+            },
+            {
+              "level": "Middle",
+              "question": "В мобильном банкинге нужно запускать разные тест-сьюты для iOS и Android с разными capabilities. Как организовать это в Allure TestOps через один Launch?",
+              "correct_answer": "Создать отдельные Job Plans с platform-специфичными параметрами и объединить через Test Plan",
+              "var_1": "Создать единый Job с динамическими параметрами и platform detection в коде",
+              "var_2": "Настроить matrix execution в Jenkins файле и передать параметры через Allure",
+              "var_3": "Создать отдельные Job Plans с platform-специфичными параметрами и объединить через Test Plan",
+              "var_4": "Использовать условную логику в beforeTest и передавать capabilities через environment variables",
+              "correct_position": 3
+            },
+            {
+              "level": "Senior",
+              "question": "После интеграции Appium-тестов мобильного банка с Allure TestOps половина тестов падает с timeout при параллельном запуске через Job, хотя локально проходят. Какова наиболее вероятная причина?",
+              "correct_answer": "Недостаточное количество одновременных сессий на Selenium Grid или конфликт портов Appium",
+              "var_1": "Отсутствие флага --parallel-threads в конфигурации Allure TestOps Job",
+              "var_2": "Недостаточное количество одновременных сессий на Selenium Grid или конфликт портов Appium",
+              "var_3": "Неправильная настройка implicit wait в capabilities для распределенного выполнения тестов",
+              "var_4": "Конфликт версий Appium Driver между локальным окружением и удаленной инфраструктурой",
+              "correct_position": 2
+            }
+          ]
+        },
+        {
+          "theme": "Организация тест-кейсов и управление тестовой документацией в Allure TestOps",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой элемент Allure TestOps используется для группировки тест-кейсов по функциональным областям мобильного приложения банка?",
+              "correct_answer": "Test Case Tree с использованием папок и категорий",
+              "var_1": "Launch Dashboard с фильтрацией по названию модуля",
+              "var_2": "Test Suites с автоматической группировкой по тегам",
+              "var_3": "Test Case Tree с использованием папок и категорий",
+              "var_4": "Custom Fields для маркировки функциональных зон приложения",
+              "correct_position": 3
+            },
+            {
+              "level": "Middle",
+              "question": "В чем разница между использованием Manual и Automated статусов тест-кейсов в Allure TestOps при тестировании мобильного приложения для переводов?",
+              "correct_answer": "Manual выполняются вручную тестировщиком, Automated запускаются автоматически из CI/CD",
+              "var_1": "Manual требуют описания шагов, Automated содержат только assertion логику",
+              "var_2": "Manual создаются в UI интерфейсе, Automated генерируются через API",
+              "var_3": "Manual хранятся в TestOps, Automated импортируются из аннотаций кода",
+              "var_4": "Manual выполняются вручную тестировщиком, Automated запускаются автоматически из CI/CD",
+              "correct_position": 4
+            },
+            {
+              "level": "Senior",
+              "question": "Как организовать версионирование тест-кейсов в Allure TestOps для поддержки нескольких релизов мобильного банкинга одновременно, если возникают конфликты при синхронизации из кода?",
+              "correct_answer": "Использовать Test Case Branches с привязкой к тегам релизов и настроить фильтрацию по версиям через Custom Fields",
+              "var_1": "Применить Test Plans с разделением по релизам и включить Auto-merge стратегию при синхронизации из CI/CD pipeline",
+              "var_2": "Создать отдельные проекты для каждого релиза и синхронизировать тест-кейсы через Export/Import с ручным разрешением конфликтов",
+              "var_3": "Настроить Git Flow с отдельными ветками для тестов каждого релиза и использовать Allure Launcher для запуска версионных наборов",
+              "var_4": "Использовать Test Case Branches с привязкой к тегам релизов и настроить фильтрацию по версиям через Custom Fields",
+              "correct_position": 4
+            }
+          ]
+        },
+        {
+          "theme": "Анализ результатов тестирования и создание отчетов по дефектам в Allure TestOps",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой раздел Allure TestOps используется для создания отчета по дефекту на основе упавшего теста мобильного приложения банка?",
+              "correct_answer": "Defects или кнопка Create defect в результатах теста",
+              "var_1": "Defects или кнопка Create defect в результатах теста",
+              "var_2": "Test Cases или вкладка Edit test case",
+              "var_3": "Launches и экспорт отчета в формате XML",
+              "var_4": "Dashboard с виджетом Failed tests analytics",
+              "correct_position": 1
+            },
+            {
+              "level": "Middle",
+              "question": "В мобильном банкинге некоторые тесты падают нестабильно из-за задержек сети. Какой статус в Allure TestOps поможет отделить такие кейсы от реальных багов при анализе результатов?",
+              "correct_answer": "Flaky или установка Muted статуса с причиной",
+              "var_1": "Skipped с тегом network_issues в описании",
+              "var_2": "Pending статус с комментарием о причине нестабильности",
+              "var_3": "Broken статус и фильтрация по категории инфраструктуры",
+              "var_4": "Flaky или установка Muted статуса с причиной",
+              "correct_position": 4
+            },
+            {
+              "level": "Senior",
+              "question": "При автоматизации тестирования мобильного приложения телеком-оператора 40% тестов падают из-за проблем инфраструктуры. Как в Allure TestOps настроить фильтрацию отчетов, чтобы команда видела только реальные дефекты продукта?",
+              "correct_answer": "Создать Custom fields для категоризации, настроить фильтры по failure reasons и использовать Test Cases patterns с тегами инфраструктуры",
+              "var_1": "Применить Test Layer separation с отдельными Launches для инфраструктурных проверок и использовать Defect types классификацию",
+              "var_2": "Настроить Mute rules для проблемных тестов и использовать Retry pattern с автоматическим перезапуском упавших сценариев",
+              "var_3": "Создать Custom fields для категоризации, настроить фильтры по failure reasons и использовать Test Cases patterns с тегами инфраструктуры",
+              "var_4": "Включить Known issues механизм для маркировки инфраструктурных падений и настроить Dashboard с exclude filters по статусам",
+              "correct_position": 3
+            }
+          ]
+        },
+        {
+          "theme": "Настройка дашбордов, метрик качества и интеграция с Jira через Allure TestOps",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой тип виджета в Allure TestOps используется для отображения процента прохождения автотестов мобильного приложения?",
+              "correct_answer": "Pie chart или Summary widget с метрикой Pass Rate",
+              "var_1": "Bar chart для сравнения результатов запусков по версиям приложения",
+              "var_2": "Line chart widget с отображением тренда стабильности тестов",
+              "var_3": "Timeline widget с визуализацией длительности выполнения test suites",
+              "var_4": "Pie chart или Summary widget с метрикой Pass Rate",
+              "correct_position": 4
+            },
+            {
+              "level": "Middle",
+              "question": "Какие метрики качества следует добавить на дашборд для отслеживания стабильности автотестов Android-приложения банка с учетом разных версий ОС?",
+              "correct_answer": "Flaky tests rate, Pass rate by OS version, Test execution duration",
+              "var_1": "Code coverage percentage, Build success rate, Average test creation time per sprint",
+              "var_2": "CPU usage metrics, Memory leaks detection, Network latency by carrier and region",
+              "var_3": "Total test cases count, Manual testing hours, Defects found in production environment",
+              "var_4": "Flaky tests rate, Pass rate by OS version, Test execution duration",
+              "correct_position": 4
+            },
+            {
+              "level": "Senior",
+              "question": "При интеграции Allure TestOps с Jira тесты регрессии мобильного банкинга не синхронизируют статусы дефектов. Какие три наиболее вероятные причины проблемы?",
+              "correct_answer": "Неверный JQL-фильтр в настройках интеграции, отсутствие permissions у service account, некорректный mapping статусов",
+              "var_1": "Устаревшая версия Allure TestOps, несовместимость API Jira Cloud, отсутствие webhook endpoints в настройках",
+              "var_2": "Превышение rate limits Jira REST API, блокировка firewall на порту 443, некорректный формат JSON в payload",
+              "var_3": "Отключен двусторонний sync в настройках проекта, неверный project key в конфигурации, отсутствие custom fields mapping",
+              "var_4": "Неверный JQL-фильтр в настройках интеграции, отсутствие permissions у service account, некорректный mapping статусов",
+              "correct_position": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "competency": "Навыки работы с Appium",
+      "type": "CORE",
+      "importance": 85,
+      "themes": [
+        {
+          "theme": "Архитектура Appium и настройка тестового окружения (Desired Capabilities, Appium Server, драйверы для iOS/Android)",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой Desired Capability указывает на уникальный идентификатор Android-приложения банка для запуска теста в Appium?",
+              "correct_answer": "appPackage capability с bundle identifier приложения",
+              "var_1": "bundleId capability для Android устройств",
+              "var_2": "appPackage capability с bundle identifier приложения",
+              "var_3": "appActivity capability с главным экраном приложения",
+              "var_4": "app capability с путём к APK-файлу",
+              "correct_position": 2
+            },
+            {
+              "level": "Middle",
+              "question": "В чем разница между использованием UIAutomator2 и Espresso драйверов при тестировании банковского Android-приложения с WebView компонентами?",
+              "correct_answer": "UIAutomator2 работает вне процесса приложения, Espresso требует инструментации и быстрее",
+              "var_1": "Espresso использует accessibility API, UIAutomator2 работает через Android Debug Bridge",
+              "var_2": "UIAutomator2 работает вне процесса приложения, Espresso требует инструментации и быстрее",
+              "var_3": "Espresso поддерживает WebView контекст, UIAutomator2 работает только с нативными элементами",
+              "var_4": "UIAutomator2 требует root-доступ для банковских приложений, Espresso работает без привилегий",
+              "correct_position": 2
+            },
+            {
+              "level": "Senior",
+              "question": "Как оптимизировать архитектуру Appium-инфраструктуры для параллельного тестирования iOS/Android приложений банка на 50+ устройствах с минимизацией времени инициализации сессий?",
+              "correct_answer": "Использовать Appium Grid с предварительно прогретыми драйверами и session reuse через capability relaxedSecurity",
+              "var_1": "Развернуть Selenium Grid с Hub и Node архитектурой для распределения нагрузки по устройствам",
+              "var_2": "Использовать Appium Grid с предварительно прогретыми драйверами и session reuse через capability relaxedSecurity",
+              "var_3": "Настроить Docker Compose с множественными Appium-контейнерами и централизованным управлением через Kubernetes",
+              "var_4": "Применить стратегию session pooling с autoLaunch=false и noReset capability для переиспользования приложений",
+              "correct_position": 2
+            }
+          ]
+        },
+        {
+          "theme": "Стратегии локаторов и взаимодействие с элементами мобильных приложений (XPath, Accessibility ID, UiAutomator2, XCUITest)",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой атрибут элемента в iOS приложении банка используется для локатора Accessibility ID?",
+              "correct_answer": "Атрибут accessibilityIdentifier элемента",
+              "var_1": "Атрибут accessibilityLabel элемента",
+              "var_2": "Атрибут accessibilityIdentifier элемента",
+              "var_3": "Атрибут testID элемента",
+              "var_4": "Атрибут name элемента",
+              "correct_position": 2
+            },
+            {
+              "level": "Middle",
+              "question": "Почему в мобильном приложении банка не рекомендуется использовать XPath для поиска элементов вместо UiAutomator2 селекторов на Android?",
+              "correct_answer": "XPath медленнее из-за обхода всего дерева элементов и менее стабилен",
+              "var_1": "UiAutomator2 использует нативную индексацию элементов через системный кэш Android",
+              "var_2": "XPath требует root-доступ на устройстве для обхода UI-иерархии",
+              "var_3": "XPath блокируется политиками безопасности банковских приложений на уровне SDK",
+              "var_4": "XPath медленнее из-за обхода всего дерева элементов и менее стабилен",
+              "correct_position": 4
+            },
+            {
+              "level": "Senior",
+              "question": "Как оптимизировать стратегию локаторов для списка транзакций в банковском приложении с динамически подгружаемым контентом, чтобы минимизировать flaky tests при автоматизации на iOS и Android?",
+              "correct_answer": "Использовать Accessibility ID с явными ожиданиями visibility, кастомные предикаты для XCUITest и resourceId для UiAutomator2 с индексацией",
+              "var_1": "Использовать Accessibility ID с явными ожиданиями visibility, кастомные предикаты для XCUITest и resourceId для UiAutomator2 с индексацией",
+              "var_2": "Использовать абсолютные XPath локаторы с индексами элементов и implicit waits для синхронизации с динамической подгрузкой контента",
+              "var_3": "Задействовать className для поиска элементов списка сPollingInterval увеличенным до 5 секунд и retry механизмом на уровне теста",
+              "var_4": "Применять XPath с contains() для текстовых элементов и Thread.sleep() для ожидания загрузки всех элементов списка перед взаимодействием",
+              "correct_position": 1
+            }
+          ]
+        },
+        {
+          "theme": "Работа с жестами и нативными функциями устройств (свайпы, тап, зум, работа с GPS, камерой, push-уведомлениями)",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой метод Appium используется для выполнения свайпа на мобильном устройстве?",
+              "correct_answer": "TouchAction или W3C Actions с методом swipe",
+              "var_1": "MobileElement с методом performSwipe для жестов",
+              "var_2": "GestureAction через executeScript с параметрами направления",
+              "var_3": "driver.swipeGesture с координатами начала и конца",
+              "var_4": "TouchAction или W3C Actions с методом swipe",
+              "correct_position": 4
+            },
+            {
+              "level": "Middle",
+              "question": "В мобильном банкинге нужно протестировать двухфакторную аутентификацию через SMS. Как в Appium перехватить push-уведомление с кодом без реального SMS?",
+              "correct_answer": "Использовать mobile:getNotifications для Android или перехват через mock сервера",
+              "var_1": "Применить executeScript с командой mobile:readMessages для iOS и Android",
+              "var_2": "Использовать driver.switchTo().alert() для перехвата SMS-уведомлений",
+              "var_3": "Использовать mobile:getNotifications для Android или перехват через mock сервера",
+              "var_4": "Настроить mobile:interceptSMS capability в desired capabilities Appium",
+              "correct_position": 3
+            },
+            {
+              "level": "Senior",
+              "question": "При автоматизации тестов геолокации для банковских отделений в Казахстане столкнулись с нестабильностью. Как спроектировать архитектуру для надежного тестирования GPS-функционала с учетом различных permission-сценариев?",
+              "correct_answer": "Использовать setLocation с координатами, PageObject для permission dialogs, отдельный слой управления capabilities с appium:gpsEnabled",
+              "var_1": "Mockito для эмуляции LocationManager, Singleton для permission handlers, настройка desired capabilities с autoGrantPermissions",
+              "var_2": "Charles Proxy для подмены координат через API, Factory Pattern для создания location mocks, capabilities с autoAcceptAlerts",
+              "var_3": "Использовать setLocation с координатами, PageObject для permission dialogs, отдельный слой управления capabilities с appium:gpsEnabled",
+              "var_4": "Реальные устройства с внешним GPS-спуфером, Cucumber для BDD-сценариев permissions, конфигурация через Android Settings API",
+              "correct_position": 3
+            }
+          ]
+        },
+        {
+          "theme": "Синхронизация, ожидания и обработка сложных сценариев (Explicit/Implicit waits, переключение контекстов WebView/Native, работа с клавиатурой)",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой метод Appium используется для установки явного ожидания (Explicit Wait) элемента в мобильном приложении банка?",
+              "correct_answer": "WebDriverWait с ExpectedConditions для ожидания visibility или clickability элемента",
+              "var_1": "WebDriverWait с ExpectedConditions для ожидания visibility или clickability элемента",
+              "var_2": "FluentWait с polling интервалом и ignoring исключений NoSuchElement",
+              "var_3": "ImplicitlyWait с заданным таймаутом для всех элементов приложения",
+              "var_4": "Thread.sleep с фиксированной задержкой перед поиском элемента на экране",
+              "correct_position": 1
+            },
+            {
+              "level": "Middle",
+              "question": "В банковском приложении есть WebView для отображения условий кредита и Native компоненты. Как переключаться между контекстами и в каком случае использовать каждый подход?",
+              "correct_answer": "driver.context('WEBVIEW') для WebView контента, driver.context('NATIVE_APP') для нативных элементов, получить список через getContextHandles()",
+              "var_1": "driver.switchTo().frame() для WebView, driver.switchTo().defaultContent() для Native, переключение через индексы фреймов",
+              "var_2": "driver.activateContext('WEBVIEW_chrome') для WebView элементов, driver.activateContext('NATIVE_APP') для нативных, список через getAvailableContexts()",
+              "var_3": "driver.setContext('WEB_VIEW') и driver.setContext('NATIVE') методами, определение активного контекста через getCurrentContext()",
+              "var_4": "driver.context('WEBVIEW') для WebView контента, driver.context('NATIVE_APP') для нативных элементов, получить список через getContextHandles()",
+              "correct_position": 4
+            },
+            {
+              "level": "Senior",
+              "question": "В приложении телеком-оператора при вводе номера телефона периодически возникают flaky-тесты из-за анимации клавиатуры и задержек рендеринга. Как спроектировать надежную стратегию синхронизации для этого сценария?",
+              "correct_answer": "Комбинировать FluentWait с кастомными условиями проверки атрибутов элемента, отключать анимации через desired capabilities, использовать polling interval",
+              "var_1": "Применять Explicit Wait только для элементов ввода, использовать pressKey вместо sendKeys для обхода анимации клавиатуры",
+              "var_2": "Комбинировать FluentWait с кастомными условиями проверки атрибутов элемента, отключать анимации через desired capabilities, использовать polling interval",
+              "var_3": "Настроить PageLoadTimeout для клавиатуры, использовать invisibilityOfElementLocated для проверки скрытия анимации, добавить retry mechanism",
+              "var_4": "Использовать Thread.sleep с фиксированными задержками после каждого действия с клавиатурой, увеличить implicit wait до 30 секунд",
+              "correct_position": 2
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

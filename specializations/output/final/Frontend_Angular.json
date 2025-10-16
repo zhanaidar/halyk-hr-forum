@@ -1,0 +1,595 @@
+{
+  "profile": "Frontend разработчик",
+  "specialization": "Angular",
+  "file_name": "Frontend_Angular",
+  "competencies": [
+    {
+      "competency": "Знание языка программирования JavaScript",
+      "type": "CORE",
+      "importance": 85,
+      "themes": [
+        {
+          "theme": "Типы данных, операторы и области видимости переменных (var, let, const)",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой оператор объявления переменной создает константу, значение которой нельзя переприсвоить после инициализации?",
+              "correct_answer": "const",
+              "var_1": "var",
+              "var_2": "final",
+              "var_3": "let",
+              "var_4": "const",
+              "correct_position": 4
+            },
+            {
+              "level": "Middle",
+              "question": "В Angular-компоненте обработчика клика на кнопку перевода средств используется var i в цикле. Почему при быстрых кликах может возникнуть race condition, и какой оператор решит проблему?",
+              "correct_answer": "var не имеет блочной области видимости, использовать let",
+              "var_1": "цикл выполняется асинхронно, применить async/await с var",
+              "var_2": "var не имеет блочной области видимости, использовать let",
+              "var_3": "var кэширует значения между вызовами, использовать Object.freeze()",
+              "var_4": "var создает глобальные переменные, использовать const для локализации",
+              "correct_position": 2
+            },
+            {
+              "level": "Senior",
+              "question": "В SPA банковского приложения модуль авторизации экспортирует объект config через const. Почему мутация его свойств из другого модуля создает уязвимость, и как архитектурно предотвратить это без Object.freeze?",
+              "correct_answer": "const защищает только ссылку, использовать геттеры или immutable паттерны",
+              "var_1": "const обеспечивает deep immutability, использовать приватные поля класса",
+              "var_2": "экспортировать через Object.seal и валидировать мутации прокси",
+              "var_3": "использовать WeakMap для инкапсуляции и Symbol ключи",
+              "var_4": "const защищает только ссылку, использовать геттеры или immutable паттерны",
+              "correct_position": 4
+            }
+          ]
+        },
+        {
+          "theme": "Асинхронное программирование: Promises, async/await и Event Loop",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой метод Promise используется для обработки ошибок при загрузке данных клиентов из API банка?",
+              "correct_answer": "Метод .catch() для перехвата отклоненных промисов",
+              "var_1": "Метод .catch() для перехвата отклоненных промисов",
+              "var_2": "Метод .finally() для обработки всех завершенных промисов",
+              "var_3": "Конструктор Promise с reject() в блоке try-catch",
+              "var_4": "Метод .then() со вторым колбэк-параметром для ошибок",
+              "correct_position": 1
+            },
+            {
+              "level": "Middle",
+              "question": "В Angular-приложении банка нужно последовательно загрузить профиль клиента, затем его счета, затем транзакции. Что эффективнее: цепочка .then() или async/await?",
+              "correct_answer": "async/await для читаемости и упрощения обработки ошибок",
+              "var_1": "async/await для читаемости и упрощения обработки ошибок",
+              "var_2": "цепочка .then() для лучшей производительности выполнения",
+              "var_3": "RxJS switchMap для последовательных HTTP-запросов",
+              "var_4": "Promise.all() для параллельной загрузки всех данных",
+              "correct_position": 1
+            },
+            {
+              "level": "Senior",
+              "question": "В Angular-приложении телеком-оператора при обработке 10000 SMS-уведомлений через Promise.all() один запрос падает и блокирует всю операцию. Как архитектурно решить проблему для продолжения обработки остальных?",
+              "correct_answer": "Использовать Promise.allSettled() для обработки всех результатов независимо от статуса",
+              "var_1": "Обернуть каждый Promise в try-catch и использовать Promise.all()",
+              "var_2": "Использовать Promise.allSettled() для обработки всех результатов независимо от статуса",
+              "var_3": "Разбить массив на чанки и последовательно обрабатывать через await",
+              "var_4": "Применить Promise.race() для получения первого успешного результата запроса",
+              "correct_position": 2
+            }
+          ]
+        },
+        {
+          "theme": "Прототипное наследование, классы ES6+ и контекст выполнения (this)",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Что произойдет с контекстом this внутри стрелочной функции в Angular компоненте?",
+              "correct_answer": "Стрелочная функция наследует this из лексического окружения.",
+              "var_1": "Стрелочная функция создает собственный контекст this динамически.",
+              "var_2": "Стрелочная функция привязывает this к экземпляру компонента.",
+              "var_3": "Стрелочная функция наследует this из лексического окружения.",
+              "var_4": "Стрелочная функция получает this от вызывающего объекта.",
+              "correct_position": 3
+            },
+            {
+              "level": "Middle",
+              "question": "В чем разница между использованием class и constructor function для создания сервиса обработки транзакций в банковском приложении?",
+              "correct_answer": "Class имеет более читаемый синтаксис, но оба создают прототипное наследование.",
+              "var_1": "Class создает приватные поля по умолчанию, constructor function требует замыкания.",
+              "var_2": "Class имеет более читаемый синтаксис, но оба создают прототипное наследование.",
+              "var_3": "Class создает копирование свойств, constructor function использует прототипную цепочку.",
+              "var_4": "Constructor function быстрее выполняется, class добавляет overhead при компиляции.",
+              "correct_position": 2
+            },
+            {
+              "level": "Senior",
+              "question": "Почему при реализации кастомного декоратора для логирования банковских операций важно сохранять оригинальный контекст this методов класса?",
+              "correct_answer": "Потеря контекста приведет к ошибкам доступа к свойствам экземпляра.",
+              "var_1": "Angular DI контейнер автоматически инжектирует корректный контекст выполнения.",
+              "var_2": "TypeScript требует строгую типизацию контекста в декораторах метадата.",
+              "var_3": "Декоратор должен возвращать новый экземпляр класса для изоляции.",
+              "var_4": "Потеря контекста приведет к ошибкам доступа к свойствам экземпляра.",
+              "correct_position": 4
+            }
+          ]
+        },
+        {
+          "theme": "Функции высшего порядка, замыкания и методы массивов (map, filter, reduce)",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Что возвращает метод map() при применении к массиву транзакций клиентов банка?",
+              "correct_answer": "Новый массив с результатами применения функции к каждому элементу",
+              "var_1": "Модифицированный исходный массив с обновленными значениями элементов",
+              "var_2": "Новый массив с результатами применения функции к каждому элементу",
+              "var_3": "Отфильтрованный массив транзакций, соответствующих условию в функции",
+              "var_4": "Одно агрегированное значение, полученное путем обработки всех элементов",
+              "correct_position": 2
+            },
+            {
+              "level": "Middle",
+              "question": "В Angular-приложении банка нужно отфильтровать активные счета клиента и посчитать общую сумму. Какую комбинацию методов массива следует использовать?",
+              "correct_answer": "filter() для отбора активных счетов, затем reduce() для суммирования",
+              "var_1": "filter() для активных счетов, затем map() с последующим sum()",
+              "var_2": "reduce() для фильтрации и суммирования в одном проходе массива",
+              "var_3": "filter() для отбора активных счетов, затем reduce() для суммирования",
+              "var_4": "map() для преобразования счетов, затем forEach() для накопления суммы",
+              "correct_position": 3
+            },
+            {
+              "level": "Senior",
+              "question": "При обработке 50000+ транзакций в реальном времени с использованием map/filter/reduce возникают проблемы с производительностью. Какие оптимизации архитектуры предложите для Angular-приложения телеком-оператора?",
+              "correct_answer": "Виртуальный скроллинг, Web Workers для вычислений, memoization через замыкания, разбиение на chunks",
+              "var_1": "Переход на синхронные forEach циклы, debouncing событий, использование var для оптимизации памяти",
+              "var_2": "Виртуальный скроллинг, Web Workers для вычислений, memoization через замыкания, разбиение на chunks",
+              "var_3": "Применение множественных pipe операторов RxJS, aggressive change detection, inline функции в шаблонах",
+              "var_4": "Увеличение heap size Node.js, применение nested map/filter chains, eager loading всех модулей",
+              "correct_position": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "competency": "Знание языка программирования TypeScript",
+      "type": "CORE",
+      "importance": 90,
+      "themes": [
+        {
+          "theme": "Система типов TypeScript: примитивы, union, intersection, type guards и narrowing",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой тип TypeScript использовать для поля accountStatus, если оно может быть 'active', 'blocked' или 'pending'?",
+              "correct_answer": "Union type: 'active' | 'blocked' | 'pending'",
+              "var_1": "Type alias с intersection: Active & Blocked & Pending",
+              "var_2": "Interface AccountStatus с полями active, blocked, pending",
+              "var_3": "Enum с значениями ACTIVE, BLOCKED, PENDING",
+              "var_4": "Union type: 'active' | 'blocked' | 'pending'",
+              "correct_position": 4
+            },
+            {
+              "level": "Middle",
+              "question": "В Angular-сервисе обработки платежей приходит объект unknown типа. Как безопасно проверить, что это объект с полями amount и currency перед использованием?",
+              "correct_answer": "Использовать type guard с проверкой typeof и in operator",
+              "var_1": "Использовать instanceof для проверки структуры объекта перед доступом",
+              "var_2": "Применить as assertion с интерфейсом PaymentObject для типизации",
+              "var_3": "Использовать type guard с проверкой typeof и in operator",
+              "var_4": "Привести к any и проверить наличие свойств через optional chaining",
+              "correct_position": 3
+            },
+            {
+              "level": "Senior",
+              "question": "В системе интернет-банкинга нужен тип для транзакций разных категорий с общими полями (id, date) и уникальными (transfer имеет recipient, payment имеет provider). Как спроектировать типобезопасную архитектуру с автоматическим narrowing?",
+              "correct_answer": "Discriminated union с литеральным полем type и intersection базового типа",
+              "var_1": "Abstract class с protected полями и instanceof для определения типа",
+              "var_2": "Discriminated union с литеральным полем type и intersection базового типа",
+              "var_3": "Generic constraint с extends для базового интерфейса и перегрузка методов",
+              "var_4": "Conditional types с infer ключевым словом и mapped types для полей",
+              "correct_position": 2
+            }
+          ]
+        },
+        {
+          "theme": "Generics и продвинутые типы: utility types, mapped types, conditional types",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой utility type TypeScript используется для создания типа со всеми опциональными свойствами из существующего типа BankAccount?",
+              "correct_answer": "Partial<BankAccount>",
+              "var_1": "Optional<BankAccount>",
+              "var_2": "Partial<BankAccount>",
+              "var_3": "Nullable<BankAccount>",
+              "var_4": "Required<BankAccount>",
+              "correct_position": 2
+            },
+            {
+              "level": "Middle",
+              "question": "В чем разница между использованием Pick<User, 'iin' | 'phone'> и Omit<User, 'password'> при создании типа для API ответа с данными клиента банка?",
+              "correct_answer": "Pick явно выбирает нужные поля, Omit исключает ненужные из всех.",
+              "var_1": "Pick явно выбирает нужные поля, Omit исключает ненужные из всех.",
+              "var_2": "Omit работает быстрее при компиляции для больших типов.",
+              "var_3": "Pick использует intersection types, Omit применяет union types внутри.",
+              "var_4": "Pick создает новый тип, Omit модифицирует существующий интерфейс.",
+              "correct_position": 1
+            },
+            {
+              "level": "Senior",
+              "question": "Как спроектировать conditional type для автоматического извлечения типа ответа API в зависимости от кода операции ('payment' | 'transfer' | 'deposit'), чтобы избежать дублирования типов при масштабировании?",
+              "correct_answer": "type ApiResponse<T> = T extends 'payment' ? PaymentData : T extends 'transfer' ? TransferData : DepositData",
+              "var_1": "type ApiResponse = Record<'payment' | 'transfer' | 'deposit', PaymentData | TransferData | DepositData> для union типов",
+              "var_2": "interface ApiResponse extends Pick<T, 'payment' | 'transfer' | 'deposit'> { data: PaymentData | TransferData | DepositData }",
+              "var_3": "type ApiResponse<T> = Omit<T, keyof T> & { [K in 'payment' | 'transfer' | 'deposit']: any }",
+              "var_4": "type ApiResponse<T> = T extends 'payment' ? PaymentData : T extends 'transfer' ? TransferData : DepositData",
+              "correct_position": 4
+            }
+          ]
+        },
+        {
+          "theme": "Декораторы, метаданные и их применение в Angular",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой декоратор используется для создания Angular компонента и какие обязательные метаданные он принимает?",
+              "correct_answer": "@Component с обязательным свойством selector и template или templateUrl",
+              "var_1": "@Component с обязательным свойством selector и template или templateUrl",
+              "var_2": "@Directive с обязательными свойствами selector и providers",
+              "var_3": "@Component с обязательным свойством selector и styleUrls",
+              "var_4": "@NgModule с обязательным свойством declarations и template",
+              "correct_position": 1
+            },
+            {
+              "level": "Middle",
+              "question": "В чем разница между декораторами @Input() и @Output() в компоненте формы банковского перевода, и когда использовать каждый из них?",
+              "correct_answer": "@Input для передачи данных в компонент, @Output с EventEmitter для отправки событий наружу",
+              "var_1": "@Input для синхронной передачи данных, @Output для асинхронной обработки через Observable",
+              "var_2": "@Input для передачи данных в компонент, @Output с EventEmitter для отправки событий наружу",
+              "var_3": "@Output для получения данных от родителя, @Input с EventEmitter для отправки событий",
+              "var_4": "@Input для двустороннего биндинга данных, @Output для одностороннего связывания с родителем",
+              "correct_position": 2
+            },
+            {
+              "level": "Senior",
+              "question": "Почему использование декоратора @HostListener вместо обработчиков событий в template может вызвать проблемы производительности в большом Angular приложении банка с множеством компонентов?",
+              "correct_answer": "@HostListener добавляет глобальные слушатели без автоматической отписки, создавая memory leaks и лишние проверки change detection",
+              "var_1": "@HostListener создает дополнительные HTTP-запросы при каждом событии, увеличивая нагрузку на серверы банковского приложения",
+              "var_2": "@HostListener добавляет глобальные слушатели без автоматической отписки, создавая memory leaks и лишние проверки change detection",
+              "var_3": "@HostListener блокирует основной поток при обработке событий, замедляя рендеринг компонентов и взаимодействие с DOM",
+              "var_4": "@HostListener компилируется в менее оптимизированный JavaScript код по сравнению с template-биндингами, увеличивая размер bundle",
+              "correct_position": 2
+            }
+          ]
+        },
+        {
+          "theme": "Асинхронное программирование: Promise, async/await, Observable и типизация RxJS",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой тип возвращает async функция в TypeScript?",
+              "correct_answer": "Promise с типом возвращаемого значения",
+              "var_1": "Observable с типом возвращаемого значения",
+              "var_2": "AsyncFunction с generic параметром типа",
+              "var_3": "Promise с типом возвращаемого значения",
+              "var_4": "Future с указанным типом результата",
+              "correct_position": 3
+            },
+            {
+              "level": "Middle",
+              "question": "В Angular-сервисе банка нужно загрузить данные клиента и его счета параллельно. Какой RxJS оператор использовать для комбинирования двух Observable?",
+              "correct_answer": "forkJoin или combineLatest в зависимости от требований",
+              "var_1": "switchMap с вложенной подпиской на второй Observable",
+              "var_2": "forkJoin или combineLatest в зависимости от требований",
+              "var_3": "mergeMap для последовательной загрузки с объединением результатов",
+              "var_4": "concat для синхронизации запросов клиента и счетов",
+              "correct_position": 2
+            },
+            {
+              "level": "Senior",
+              "question": "В приложении телеком-оператора Observable стрим тарифов вызывает memory leak при переходе между роутами. Как правильно типизировать метод cleanup с учетом Subject и takeUntil паттерна?",
+              "correct_answer": "Subject<void> с takeUntil в pipe и complete в ngOnDestroy",
+              "var_1": "AsyncSubject<any> с takeWhile условием и destroy метод в компоненте",
+              "var_2": "Subject<void> с takeUntil в pipe и complete в ngOnDestroy",
+              "var_3": "BehaviorSubject<boolean> с unsubscribe в ngOnDestroy и null значением",
+              "var_4": "ReplaySubject<void> с first оператором и finalize в subscribe",
+              "correct_position": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "competency": "Знание Angular",
+      "type": "CORE",
+      "importance": 90,
+      "themes": [
+        {
+          "theme": "Компоненты и их жизненный цикл (lifecycle hooks, взаимодействие между компонентами, ViewChild, ContentChild)",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой lifecycle hook в Angular вызывается один раз после инициализации всех input-свойств компонента?",
+              "correct_answer": "ngOnInit",
+              "var_1": "ngOnInit",
+              "var_2": "ngAfterViewInit",
+              "var_3": "ngOnChanges",
+              "var_4": "ngAfterContentInit",
+              "correct_position": 1
+            },
+            {
+              "level": "Middle",
+              "question": "В чем разница между @ViewChild и @ContentChild при взаимодействии компонентов в форме загрузки документов клиента?",
+              "correct_answer": "ViewChild находит элементы в шаблоне компонента, ContentChild в проецируемом контенте ng-content",
+              "var_1": "ViewChild обращается к директивам компонента, ContentChild к его input-параметрам",
+              "var_2": "ViewChild находит элементы в шаблоне компонента, ContentChild в проецируемом контенте ng-content",
+              "var_3": "ViewChild работает с динамическими компонентами, ContentChild с статическими элементами шаблона",
+              "var_4": "ViewChild получает данные из родительского компонента, ContentChild из дочерних компонентов",
+              "correct_position": 2
+            },
+            {
+              "level": "Senior",
+              "question": "Почему использование ngAfterViewInit для доступа к @ViewChild элементу безопаснее, чем ngOnInit в компоненте списка транзакций с виртуальным скроллингом?",
+              "correct_answer": "ViewChild гарантированно инициализирован только после рендеринга view, ngOnInit может вернуть undefined",
+              "var_1": "ngOnInit выполняется до привязки данных, ngAfterViewInit обрабатывает изменения синхронно",
+              "var_2": "ViewChild гарантированно инициализирован только после рендеринга view, ngOnInit может вернуть undefined",
+              "var_3": "ngAfterViewInit предотвращает ExpressionChangedAfterItHasBeenCheckedError при обращении к ViewChild",
+              "var_4": "Виртуальный скроллинг требует завершения Change Detection перед доступом к элементам",
+              "correct_position": 2
+            }
+          ]
+        },
+        {
+          "theme": "Реактивное программирование с RxJS (Observable, Subject, операторы, управление подписками, async pipe)",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой оператор RxJS используется для отмены предыдущего HTTP-запроса при новом вводе в поисковую строку транзакций?",
+              "correct_answer": "switchMap",
+              "var_1": "concatMap",
+              "var_2": "flatMap",
+              "var_3": "mergeMap",
+              "var_4": "switchMap",
+              "correct_position": 4
+            },
+            {
+              "level": "Middle",
+              "question": "В чем разница между Subject и BehaviorSubject при реализации сервиса уведомлений о статусе платежа в банковском приложении?",
+              "correct_answer": "BehaviorSubject хранит и эмитит последнее значение новым подписчикам",
+              "var_1": "Subject кэширует все значения для replay при переподключении",
+              "var_2": "BehaviorSubject поддерживает multicast для множественных подписчиков одновременно",
+              "var_3": "BehaviorSubject хранит и эмитит последнее значение новым подписчикам",
+              "var_4": "Subject автоматически завершает подписки при удалении компонента",
+              "correct_position": 3
+            },
+            {
+              "level": "Senior",
+              "question": "Почему использование async pipe предпочтительнее ручных подписок в компонентах списка клиентов с пагинацией и фильтрацией по 10000+ записей?",
+              "correct_answer": "Автоматически отписывается при уничтожении компонента, предотвращая утечки памяти",
+              "var_1": "Обеспечивает виртуальный скроллинг для оптимизации рендеринга больших списков",
+              "var_2": "Кэширует предыдущие результаты Observable для повторного использования данных",
+              "var_3": "Автоматически группирует множественные подписки в один batched запрос",
+              "var_4": "Автоматически отписывается при уничтожении компонента, предотвращая утечки памяти",
+              "correct_position": 4
+            }
+          ]
+        },
+        {
+          "theme": "Dependency Injection и сервисы (провайдеры, иерархия инжекторов, singleton-сервисы, InjectionToken)",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой декоратор используется для создания singleton-сервиса, доступного во всем приложении банка?",
+              "correct_answer": "@Injectable({ providedIn: 'root' })",
+              "var_1": "@Component({ providers: [Service] })",
+              "var_2": "@Injectable({ providedIn: 'root' })",
+              "var_3": "@Service({ scope: 'global' })",
+              "var_4": "@Injectable({ providedIn: 'platform' })",
+              "correct_position": 2
+            },
+            {
+              "level": "Middle",
+              "question": "В приложении банка есть модули для клиентов и сотрудников. Где должен быть провайден сервис логирования, чтобы каждый модуль имел свой экземпляр?",
+              "correct_answer": "В массиве providers каждого feature-модуля отдельно",
+              "var_1": "В массиве providers корневого AppModule",
+              "var_2": "В массиве providers каждого feature-модуля отдельно",
+              "var_3": "В конструкторе компонентов с useClass",
+              "var_4": "В декораторе @Injectable с providedIn root",
+              "correct_position": 2
+            },
+            {
+              "level": "Senior",
+              "question": "В микрофронтенд-архитектуре банковского портала несколько Angular-приложений используют общие сервисы. Как предотвратить создание множественных экземпляров singleton-сервиса при lazy-loading модулей?",
+              "correct_answer": "Использовать providedIn: 'root' или forRoot() паттерн для предоставления сервиса только в корневом инжекторе",
+              "var_1": "Использовать providedIn: 'root' или forRoot() паттерн для предоставления сервиса только в корневом инжекторе",
+              "var_2": "Использовать providedIn: 'any' для создания отдельного экземпляра сервиса в каждом lazy-loaded модуле",
+              "var_3": "Объявить сервис в providers массиве каждого feature-модуля с флагом useExisting: true",
+              "var_4": "Регистрировать сервис через providers в SharedModule и импортировать его в каждое приложение",
+              "correct_position": 1
+            }
+          ]
+        },
+        {
+          "theme": "Модули и маршрутизация (NgModules, lazy loading, guards, resolvers, preloading strategies)",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой декоратор используется для создания модуля маршрутизации в Angular приложении?",
+              "correct_answer": "@NgModule с импортом RouterModule.forRoot() или RouterModule.forChild()",
+              "var_1": "@Component с декларацией RouterConfig и Routes",
+              "var_2": "@Directive с RouterOutlet и routerLink директивами",
+              "var_3": "@Injectable с provideRouter() в массиве providers",
+              "var_4": "@NgModule с импортом RouterModule.forRoot() или RouterModule.forChild()",
+              "correct_position": 4
+            },
+            {
+              "level": "Middle",
+              "question": "В чем разница между CanActivate и CanLoad guards при защите lazy-loaded модуля с личным кабинетом клиента банка?",
+              "correct_answer": "CanLoad предотвращает загрузку модуля, CanActivate проверяет доступ после загрузки",
+              "var_1": "CanActivate защищает дочерние роуты, CanLoad применяется к родительским модулям",
+              "var_2": "CanActivate блокирует загрузку бандла, CanLoad проверяет права доступа",
+              "var_3": "CanLoad работает синхронно, CanActivate возвращает Observable для асинхронной проверки",
+              "var_4": "CanLoad предотвращает загрузку модуля, CanActivate проверяет доступ после загрузки",
+              "correct_position": 4
+            },
+            {
+              "level": "Senior",
+              "question": "Как оптимизировать загрузку модулей интернет-банкинга с 15+ lazy-loaded разделами, чтобы минимизировать время до интерактивности критичных операций?",
+              "correct_answer": "PreloadingStrategy с приоритизацией критичных модулей и QuicklinkStrategy для предзагрузки по ховеру",
+              "var_1": "PreloadAllModules стратегия с enableTracing для мониторинга загрузки всех разделов одновременно",
+              "var_2": "PreloadingStrategy с приоритизацией критичных модулей и QuicklinkStrategy для предзагрузки по ховеру",
+              "var_3": "Разделение на microfrontends с Module Federation и отдельной сборкой каждого раздела",
+              "var_4": "Eager loading всех модулей в main bundle с tree-shaking для уменьшения HTTP-запросов",
+              "correct_position": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "competency": "Знание HTML5, CSS + Tailwind, умение верстки",
+      "type": "CORE",
+      "importance": 80,
+      "themes": [
+        {
+          "theme": "Семантическая разметка HTML5: использование структурных элементов, форм, атрибутов accessibility и валидация",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой HTML5 элемент используется для обозначения основного содержимого страницы интернет-банкинга, исключая шапку и футер?",
+              "correct_answer": "Элемент <main>, содержит уникальный контент страницы.",
+              "var_1": "Элемент <section>, определяет основную область контента.",
+              "var_2": "Элемент <main>, содержит уникальный контент страницы.",
+              "var_3": "Элемент <article>, содержит независимый контент приложения.",
+              "var_4": "Элемент <div class='content'>, обозначает центральный блок.",
+              "correct_position": 2
+            },
+            {
+              "level": "Middle",
+              "question": "В форме онлайн-заявки на кредит нужно поле для ИИН. Какие атрибуты обеспечат правильную валидацию и accessibility для пользователей скринридеров?",
+              "correct_answer": "pattern для 12 цифр, required, aria-label, aria-describedby для ошибок, inputmode numeric.",
+              "var_1": "pattern для 12 цифр, required, aria-label, aria-describedby для ошибок, inputmode numeric.",
+              "var_2": "required, aria-required='true', autocomplete='cc-number', role='textbox', min и max атрибуты.",
+              "var_3": "type='number' для валидации, maxlength='12', placeholder с примером, title для подсказки.",
+              "var_4": "pattern для цифр, aria-invalid, autofocus, aria-autocomplete, type='tel' для мобильных.",
+              "correct_position": 1
+            },
+            {
+              "level": "Senior",
+              "question": "Почему для dashboard интернет-банка с виджетами балансов, транзакций и уведомлений лучше использовать <section> с aria-label вместо <article>?",
+              "correct_answer": "Section группирует связанный контент dashboard, article подразумевает независимый самодостаточный контент для синдикации.",
+              "var_1": "Section требует обязательный aria-label для скринридеров, article работает с заголовками самостоятельно.",
+              "var_2": "Section группирует связанный контент dashboard, article подразумевает независимый самодостаточный контент для синдикации.",
+              "var_3": "Article создает отдельные landmark-регионы для каждого виджета, улучшая навигацию assistive technologies.",
+              "var_4": "Article обеспечивает лучшую поддержку ARIA-атрибутов для динамических виджетов банковских данных.",
+              "correct_position": 2
+            }
+          ]
+        },
+        {
+          "theme": "CSS Layout и позиционирование: Flexbox, Grid, позиционирование элементов и создание адаптивных макетов",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какое свойство CSS Grid используется для определения количества и размера колонок в сетке?",
+              "correct_answer": "grid-template-columns",
+              "var_1": "grid-auto-columns",
+              "var_2": "grid-column-count",
+              "var_3": "grid-template-columns",
+              "var_4": "grid-template-rows",
+              "correct_position": 3
+            },
+            {
+              "level": "Middle",
+              "question": "В мобильном приложении банка нужно разместить карточки услуг в ряд с автоматическим переносом. Что использовать: Flexbox с flex-wrap или CSS Grid с auto-fit?",
+              "correct_answer": "Flexbox с flex-wrap для динамического переноса контента",
+              "var_1": "Flexbox с flex-wrap для динамического переноса контента",
+              "var_2": "CSS Grid с auto-fit для равномерного распределения",
+              "var_3": "CSS Grid с grid-template-columns: repeat(auto-fill, minmax())",
+              "var_4": "Flexbox с justify-content: space-between для выравнивания",
+              "correct_position": 1
+            },
+            {
+              "level": "Senior",
+              "question": "При проектировании дашборда банковской системы с множеством виджетов разного размера, почему CSS Grid с named areas предпочтительнее Flexbox для основного layout?",
+              "correct_answer": "Grid обеспечивает двумерное позиционирование, явный контроль областей и упрощает адаптивную реструктуризацию макета",
+              "var_1": "Flexbox ограничен фиксированными пропорциями, Grid позволяет использовать fr units для виджетов",
+              "var_2": "Grid named areas обеспечивают лучшую производительность рендеринга при большом количестве элементов",
+              "var_3": "Flexbox требует больше JavaScript для динамического изменения расположения виджетов в runtime",
+              "var_4": "Grid обеспечивает двумерное позиционирование, явный контроль областей и упрощает адаптивную реструктуризацию макета",
+              "correct_position": 4
+            }
+          ]
+        },
+        {
+          "theme": "Tailwind CSS: утилитарные классы, кастомизация конфигурации, responsive design и оптимизация production build",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой утилитарный класс Tailwind CSS устанавливает flex-direction: column для мобильной версии формы регистрации клиента банка?",
+              "correct_answer": "flex-col",
+              "var_1": "direction-col",
+              "var_2": "flex-col",
+              "var_3": "flex-column",
+              "var_4": "flex-dir-column",
+              "correct_position": 2
+            },
+            {
+              "level": "Middle",
+              "question": "Как в tailwind.config.js добавить корпоративный цвет банка #00A651 для использования в классах text и bg, сохранив стандартную палитру?",
+              "correct_answer": "Расширить theme.extend.colors, добавив corporate: '#00A651'",
+              "var_1": "Переопределить theme.colors с добавлением corporate",
+              "var_2": "Использовать plugins с addUtilities для corporate",
+              "var_3": "Добавить в module.exports.colors новое свойство corporate",
+              "var_4": "Расширить theme.extend.colors, добавив corporate: '#00A651'",
+              "correct_position": 4
+            },
+            {
+              "level": "Senior",
+              "question": "Почему для production build интернет-банкинга следует использовать purge/content с safelist вместо отключения tree-shaking динамических классов?",
+              "correct_answer": "Минимизируется размер бандла, сохраняя только критичные динамические классы через safelist",
+              "var_1": "Предотвращаются конфликты классов при динамической генерации через JavaScript в runtime",
+              "var_2": "Минимизируется размер бандла, сохраняя только критичные динамические классы через safelist",
+              "var_3": "Улучшается SEO-оптимизация за счёт приоритетной загрузки критических стилей первого экрана",
+              "var_4": "Ускоряется hot reload в development режиме через кэширование используемых утилит",
+              "correct_position": 2
+            }
+          ]
+        },
+        {
+          "theme": "Продвинутые техники верстки: CSS-переменные, анимации, transitions, псевдоэлементы и кросс-браузерная совместимость",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой синтаксис используется для объявления CSS-переменной в корневом элементе?",
+              "correct_answer": ":root { --variable-name: value; }",
+              "var_1": ":root { var(--variable-name): value; }",
+              "var_2": ":root { --variable-name: value; }",
+              "var_3": "html { $variable-name: value; }",
+              "var_4": "* { @variable-name: value; }",
+              "correct_position": 2
+            },
+            {
+              "level": "Middle",
+              "question": "В чем разница между CSS transition и animation при создании hover-эффекта для кнопки оплаты в банковском интерфейсе?",
+              "correct_answer": "Transition срабатывает при изменении состояния, animation запускается независимо и поддерживает keyframes.",
+              "var_1": "Animation поддерживает только линейную интерполяцию, transition позволяет использовать кривые Безье.",
+              "var_2": "Transition работает с псевдоклассами, animation требует JavaScript для запуска эффектов.",
+              "var_3": "Transition создает циклические анимации, animation работает только при изменении свойств элемента.",
+              "var_4": "Transition срабатывает при изменении состояния, animation запускается независимо и поддерживает keyframes.",
+              "correct_position": 4
+            },
+            {
+              "level": "Senior",
+              "question": "Как спроектировать систему CSS-переменных для темизации банковского Angular-приложения с учетом брендов дочерних компаний и требований доступности?",
+              "correct_answer": "Создать многоуровневую иерархию переменных: базовые токены, семантические цвета, компонентные значения с fallback для старых браузеров.",
+              "var_1": "Создать отдельные CSS-файлы для каждой темы и подгружать их динамически через lazy loading модулей Angular.",
+              "var_2": "Создать многоуровневую иерархию переменных: базовые токены, семантические цвета, компонентные значения с fallback для старых браузеров.",
+              "var_3": "Применить SCSS-миксины с параметрами цветов, компилируя отдельные бандлы стилей для каждого дочернего банка.",
+              "var_4": "Использовать inline-стили через Angular renderer с динамической подстановкой HEX-значений для каждого бренда из конфига.",
+              "correct_position": 2
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

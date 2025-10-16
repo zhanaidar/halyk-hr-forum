@@ -1,0 +1,51 @@
+{
+  "profile": "Mobile разработчик",
+  "specialization": "iOS",
+  "file_name": "Mobile_iOS",
+  "competencies": [
+    {
+      "competency": "Знание языка программирования Swift",
+      "type": "CORE",
+      "importance": 90,
+      "themes": [
+        "Типы данных, опционалы и безопасность типов в Swift",
+        "Протоколы, расширения и protocol-oriented programming",
+        "Управление памятью: ARC, capture lists и слабые ссылки",
+        "Concurrency: async/await, actors и structured concurrency"
+      ]
+    },
+    {
+      "competency": "Знание iOS SDK",
+      "type": "CORE",
+      "importance": 90,
+      "themes": [
+        "UIKit: жизненный цикл UIViewController, Auto Layout и работа с UI компонентами",
+        "Foundation Framework: работа с коллекциями, String, Date, URLSession и многопоточность",
+        "SwiftUI: декларативное построение интерфейсов, State management и навигация",
+        "Core Data и UserDefaults: локальное хранение данных, NSFetchedResultsController и миграции"
+      ]
+    },
+    {
+      "competency": "Знание UIKit, SwiftUI",
+      "type": "CORE",
+      "importance": 85,
+      "themes": [
+        "Жизненный цикл UIViewController и навигация в UIKit",
+        "Декларативное построение интерфейсов в SwiftUI: State, Binding и ObservableObject",
+        "Работа с UITableView и UICollectionView: делегаты, источники данных и оптимизация",
+        "Интеграция UIKit и SwiftUI: UIViewRepresentable, UIHostingController и миграция компонентов"
+      ]
+    },
+    {
+      "competency": "Навыки работы с Xcode",
+      "type": "DAILY",
+      "importance": 70,
+      "themes": [
+        "Работа с Interface Builder и Storyboards: создание и настройка UI элементов, Auto Layout constraints",
+        "Отладка приложений: использование breakpoints, lldb команд, View Hierarchy Debugger и Memory Graph",
+        "Управление зависимостями и конфигурациями проекта: схемы сборки, build configurations, Swift Package Manager",
+        "Инструменты профилирования и оптимизации: Instruments (Time Profiler, Allocations, Leaks), анализ производительности"
+      ]
+    }
+  ]
+}

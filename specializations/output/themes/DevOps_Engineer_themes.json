@@ -1,0 +1,62 @@
+{
+  "profile": "DevOps Engineer",
+  "specialization": "DevOps",
+  "file_name": "DevOps_Engineer",
+  "competencies": [
+    {
+      "competency": "Контейнеризация и оркестрация (Docker, Kubernetes)",
+      "type": "CORE",
+      "importance": 90,
+      "themes": [
+        "Основы Docker: образы, контейнеры, Dockerfile и многоступенчатые сборки",
+        "Архитектура Kubernetes: поды, сервисы, деплойменты и управление конфигурациями",
+        "Networking и Service Mesh: сетевые политики, Ingress, CNI плагины",
+        "Мониторинг, логирование и отказоустойчивость контейнеризованных приложений"
+      ]
+    },
+    {
+      "competency": "CI/CD пайплайны (GitLab CI, Jenkins, GitHub Actions)",
+      "type": "CORE",
+      "importance": 90,
+      "themes": [
+        "Основы построения CI/CD пайплайнов: стадии, джобы, артефакты и зависимости",
+        "Управление секретами и переменными окружения в GitLab CI, Jenkins и GitHub Actions",
+        "Оптимизация времени выполнения пайплайнов: кеширование, параллелизация и условное выполнение",
+        "Стратегии деплоя и rollback: Blue-Green, Canary, Rolling deployments в CI/CD"
+      ]
+    },
+    {
+      "competency": "Инфраструктура как код (Terraform, Ansible)",
+      "type": "CORE",
+      "importance": 85,
+      "themes": [
+        "Управление состоянием и удаленными бэкендами в Terraform (S3, Consul, Terraform Cloud)",
+        "Модульная архитектура и переиспользование кода в Terraform (modules, workspaces, data sources)",
+        "Управление конфигурациями и оркестрация с Ansible (playbooks, roles, inventory, vault)",
+        "Интеграция IaC в CI/CD пайплайны и практики GitOps (terraform plan/apply automation, testing infrastructure code)"
+      ]
+    },
+    {
+      "competency": "Мониторинг и логирование (Prometheus, Grafana, ELK)",
+      "type": "CORE",
+      "importance": 85,
+      "themes": [
+        "Архитектура и настройка Prometheus: метрики, экспортеры, service discovery и PromQL",
+        "Построение дашбордов в Grafana: визуализация метрик, алертинг и интеграция с источниками данных",
+        "ELK Stack: сбор, парсинг и индексация логов через Logstash/Filebeat и поиск в Elasticsearch",
+        "Стратегии мониторинга в production: SLI/SLO/SLA, distributed tracing и incident management"
+      ]
+    },
+    {
+      "competency": "Облачные платформы (AWS, Azure, GCP)",
+      "type": "CORE",
+      "importance": 80,
+      "themes": [
+        "Управление инфраструктурой как кодом (IaC) с использованием Terraform и CloudFormation",
+        "Настройка CI/CD пайплайнов в облачных средах и интеграция с облачными сервисами",
+        "Мониторинг, логирование и оптимизация затрат облачных ресурсов",
+        "Архитектура высокодоступных систем и стратегии disaster recovery в облаке"
+      ]
+    }
+  ]
+}

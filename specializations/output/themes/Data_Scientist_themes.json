@@ -1,0 +1,73 @@
+{
+  "profile": "Data Scientist",
+  "specialization": "Data Science",
+  "file_name": "Data_Scientist",
+  "competencies": [
+    {
+      "competency": "Статистика и теория вероятностей",
+      "type": "CORE",
+      "importance": 90,
+      "themes": [
+        "Проверка статистических гипотез и A/B тестирование",
+        "Распределения вероятностей и их применение в машинном обучении",
+        "Корреляционный и регрессионный анализ данных",
+        "Байесовская статистика и условные вероятности"
+      ]
+    },
+    {
+      "competency": "Python для Data Science (pandas, numpy, scikit-learn)",
+      "type": "CORE",
+      "importance": 90,
+      "themes": [
+        "Манипуляция и обработка данных с pandas: индексация, группировка, объединение датафреймов",
+        "Векторизация и математические операции с numpy: Broadcasting, линейная алгебра, работа с массивами",
+        "Построение и оценка моделей машинного обучения с scikit-learn: Pipeline, кросс-валидация, метрики качества",
+        "Предобработка данных и feature engineering: обработка пропусков, кодирование категориальных признаков, масштабирование"
+      ]
+    },
+    {
+      "competency": "SQL и работа с базами данных",
+      "type": "CORE",
+      "importance": 85,
+      "themes": [
+        "Основы SQL: SELECT-запросы, фильтрация, сортировка и агрегатные функции",
+        "JOIN-операции и подзапросы для объединения данных из множества таблиц",
+        "Оконные функции (Window Functions) для аналитических вычислений",
+        "Оптимизация запросов, индексы и работа с планами выполнения"
+      ]
+    },
+    {
+      "competency": "Построение классических моделей ML",
+      "type": "CORE",
+      "importance": 90,
+      "themes": [
+        "Линейные модели и регуляризация (Linear Regression, Ridge, Lasso, ElasticNet)",
+        "Ансамблевые методы и деревья решений (Random Forest, Gradient Boosting, XGBoost, LightGBM)",
+        "Метрики качества и валидация моделей (Cross-validation, ROC-AUC, Precision-Recall, RMSE)",
+        "Feature Engineering и предобработка данных (масштабирование, кодирование категорий, работа с пропусками)"
+      ]
+    },
+    {
+      "competency": "MLOps инструменты (Airflow, MLflow)",
+      "type": "DAILY",
+      "importance": 70,
+      "themes": [
+        "Организация и оркестрация ML-пайплайнов в Apache Airflow",
+        "Управление экспериментами и версионирование моделей в MLflow",
+        "Мониторинг и логирование ML-моделей в production",
+        "CI/CD для машинного обучения и автоматизация деплоя моделей"
+      ]
+    },
+    {
+      "competency": "Big Data (Hadoop/Spark)",
+      "type": "DAILY",
+      "importance": 65,
+      "themes": [
+        "Архитектура Hadoop: HDFS, MapReduce и YARN",
+        "Apache Spark: RDD, DataFrame и оптимизация производительности",
+        "Обработка потоковых данных с использованием Spark Streaming",
+        "Интеграция Big Data инструментов: Hive, HBase и экосистема Hadoop"
+      ]
+    }
+  ]
+}

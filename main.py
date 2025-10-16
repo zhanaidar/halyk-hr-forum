@@ -42,7 +42,7 @@ async def get_current_user(authorization: Optional[str] = Header(None)):
     
     return user_data
 
-# ===== AI РЕКОМЕНДАЦИИ (БЕЗ ИЗМЕНЕНИЙ) =====
+# ===== AI РЕКОМЕНДАЦИИ (MOCK ДЛЯ ТЕСТА) =====
 async def generate_ai_recommendation(user_test_id: int):
     """Генерация AI рекомендации на основе результатов теста"""
     try:
@@ -68,29 +68,6 @@ async def generate_ai_recommendation(user_test_id: int):
                 
                 score, max_score, specialization, name, surname = test_data
                 
-                # Получаем детали ответов С ТЕМАМИ
-                await cur.execute("""
-                    SELECT 
-                        q.level,
-                        t.name as topic_name,
-                        ta.is_correct
-                    FROM test_answers ta
-                    JOIN questions q ON q.id = ta.question_id
-                    JOIN topics t ON t.id = q.topic_id
-                    WHERE ta.user_test_id = %s
-                    ORDER BY ta.answered_at
-                """, (user_test_id,))
-
-                answers = await cur.fetchall()
-
-                # Формируем детали для промпта
-                answers_summary = []
-                for level, topic_name, is_correct in answers:
-                    status = "✓ Правильно" if is_correct else "✗ Неправильно"
-                    answers_summary.append(f"{topic_name} ({level}): {status}")
-
-                answers_text = "\n".join(answers_summary)
-                
                 # Определяем уровень
                 percentage = (score / max_score) * 100
                 if percentage >= 80:
@@ -100,31 +77,10 @@ async def generate_ai_recommendation(user_test_id: int):
                 else:
                     level = "Junior"
                 
-                # Промпт для Claude
-                prompt = f"""Ты - опытный HR-специалист Халык банка. 
-
-Кандидат: {name} {surname}
-Специализация: {specialization}
-Результат: {score}/{max_score} баллов (уровень {level})
-
-Детали ответов:
-{answers_text}
-
-Создай краткую персональную рекомендацию (2-3 предложения):
-- Отметь что освоено хорошо
-- Укажи конкретные пробелы (Junior/Middle/Senior вопросы)
-- Дай практический совет для развития
-
-Тон: дружелюбный, конкретный, мотивирующий."""
-
-                # Вызываем Claude API
-                message = claude_client.messages.create(
-                    model="claude-sonnet-4-20250514",
-                    max_tokens=300,
-                    messages=[{"role": "user", "content": prompt}]
-                )
-                
-                recommendation = message.content[0].text.strip()
+                # ========================================
+                # MOCK РЕКОМЕНДАЦИЯ (БЕЗ CLAUDE API)
+                # ========================================
+                recommendation = f"""Рекомендация: {name}, вы показали {level} уровень в области "{specialization}" ({score}/{max_score} баллов). Продолжайте развиваться в выбранном направлении и обращайте внимание на практические навыки."""
                 
                 # Сохраняем в БД
                 await cur.execute(
@@ -138,6 +94,103 @@ async def generate_ai_recommendation(user_test_id: int):
     except Exception as e:
         print(f"Ошибка генерации рекомендации: {e}")
         return "Рекомендация будет доступна позже."
+
+# # ===== AI РЕКОМЕНДАЦИИ (БЕЗ ИЗМЕНЕНИЙ) =====
+# async def generate_ai_recommendation(user_test_id: int):
+#     """Генерация AI рекомендации на основе результатов теста"""
+#     try:
+#         async with get_db_connection() as conn:
+#             async with conn.cursor() as cur:
+#                 # Получаем данные теста
+#                 await cur.execute("""
+#                     SELECT 
+#                         ut.score,
+#                         ut.max_score,
+#                         s.name as specialization_name,
+#                         u.name,
+#                         u.surname
+#                     FROM user_specialization_tests ut
+#                     JOIN specializations s ON s.id = ut.specialization_id
+#                     JOIN users u ON u.id = ut.user_id
+#                     WHERE ut.id = %s
+#                 """, (user_test_id,))
+                
+#                 test_data = await cur.fetchone()
+#                 if not test_data:
+#                     return None
+                
+#                 score, max_score, specialization, name, surname = test_data
+                
+#                 # Получаем детали ответов С ТЕМАМИ
+#                 await cur.execute("""
+#                     SELECT 
+#                         q.level,
+#                         t.name as topic_name,
+#                         ta.is_correct
+#                     FROM test_answers ta
+#                     JOIN questions q ON q.id = ta.question_id
+#                     JOIN topics t ON t.id = q.topic_id
+#                     WHERE ta.user_test_id = %s
+#                     ORDER BY ta.answered_at
+#                 """, (user_test_id,))
+
+#                 answers = await cur.fetchall()
+
+#                 # Формируем детали для промпта
+#                 answers_summary = []
+#                 for level, topic_name, is_correct in answers:
+#                     status = "✓ Правильно" if is_correct else "✗ Неправильно"
+#                     answers_summary.append(f"{topic_name} ({level}): {status}")
+
+#                 answers_text = "\n".join(answers_summary)
+                
+#                 # Определяем уровень
+#                 percentage = (score / max_score) * 100
+#                 if percentage >= 80:
+#                     level = "Senior"
+#                 elif percentage >= 50:
+#                     level = "Middle"
+#                 else:
+#                     level = "Junior"
+                
+#                 # Промпт для Claude
+#                 prompt = f"""Ты - опытный HR-специалист Халык банка. 
+
+# Кандидат: {name} {surname}
+# Специализация: {specialization}
+# Результат: {score}/{max_score} баллов (уровень {level})
+
+# Детали ответов:
+# {answers_text}
+
+# Создай краткую персональную рекомендацию (2-3 предложения):
+# - Отметь что освоено хорошо
+# - Укажи конкретные пробелы (Junior/Middle/Senior вопросы)
+# - Дай практический совет для развития
+
+# Тон: дружелюбный, конкретный, мотивирующий."""
+
+#                 # Вызываем Claude API
+#                 message = claude_client.messages.create(
+#                     model="claude-sonnet-4-20250514",
+#                     max_tokens=300,
+#                     messages=[{"role": "user", "content": prompt}]
+#                 )
+                
+#                 recommendation = message.content[0].text.strip()
+                
+#                 # Сохраняем в БД
+#                 await cur.execute(
+#                     """INSERT INTO ai_recommendations (user_test_id, recommendation_text)
+#                        VALUES (%s, %s)""",
+#                     (user_test_id, recommendation)
+#                 )
+                
+#                 return recommendation
+                
+#     except Exception as e:
+#         print(f"Ошибка генерации рекомендации: {e}")
+#         return "Рекомендация будет доступна позже."
 
 # ===== LIFECYCLE =====
 @asynccontextmanager

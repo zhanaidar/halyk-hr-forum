@@ -1,0 +1,442 @@
+{
+  "profile": "Data Engineer",
+  "specialization": "Data Engineer",
+  "file_name": "Data_Engineer",
+  "competencies": [
+    {
+      "competency": "SQL и оптимизация запросов",
+      "type": "CORE",
+      "importance": 90,
+      "themes": [
+        {
+          "theme": "Индексы и их типы: B-tree, Hash, Bitmap индексы, стратегии индексирования",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой тип индекса в PostgreSQL используется по умолчанию при создании индекса командой CREATE INDEX?",
+              "correct_answer": "B-tree индекс"
+            },
+            {
+              "level": "Middle",
+              "question": "В таблице транзакций банка 50 млн записей с колонкой is_fraud (TRUE/FALSE, 0.1% мошеннических). Какой тип индекса оптимален для фильтрации по is_fraud?",
+              "correct_answer": "Bitmap индекс, так как низкая кардинальность колонки"
+            },
+            {
+              "level": "Senior",
+              "question": "Почему составной B-tree индекс (client_id, transaction_date, amount) не используется для запроса WHERE transaction_date > '2024-01-01' в таблице платежей телеком-оператора?",
+              "correct_answer": "Нарушен порядок колонок индекса, client_id должен участвовать в предикате"
+            }
+          ]
+        },
+        {
+          "theme": "Планы выполнения запросов: анализ EXPLAIN, оптимизация JOIN операций",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какая команда в PostgreSQL показывает план выполнения запроса без его фактического выполнения?",
+              "correct_answer": "EXPLAIN без параметра ANALYZE"
+            },
+            {
+              "level": "Middle",
+              "question": "В таблице транзакций банка 50 млн записей. EXPLAIN показывает Seq Scan вместо Index Scan по customer_id. Какие две основные причины нужно проверить?",
+              "correct_answer": "Отсутствие или устаревшая статистика и низкая селективность индекса"
+            },
+            {
+              "level": "Senior",
+              "question": "В хранилище телеком-оператора JOIN между таблицами абонентов и CDR показывает Hash Join с высоким memory usage. Какую архитектурную оптимизацию применить для регулярных аналитических запросов?",
+              "correct_answer": "Партиционирование CDR по датам и денормализация ключевых атрибутов абонентов"
+            }
+          ]
+        },
+        {
+          "theme": "Партиционирование таблиц и шардирование данных для распределенных систем",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой SQL-синтаксис используется в PostgreSQL для создания партиционированной таблицы по диапазону дат транзакций?",
+              "correct_answer": "CREATE TABLE transactions PARTITION BY RANGE (transaction_date)"
+            },
+            {
+              "level": "Middle",
+              "question": "В банковской системе хранятся транзакции клиентов за 5 лет. Какую стратегию партиционирования выбрать для оптимизации запросов по дате и номеру счета одновременно?",
+              "correct_answer": "Композитное партиционирование RANGE по дате и HASH по номеру счета"
+            },
+            {
+              "level": "Senior",
+              "question": "При шардировании базы клиентских данных телеком-оператора по географическим регионам Казахстана возникла проблема hotspot на шарде Алматы. Как спроектировать перебалансировку без даунтайма?",
+              "correct_answer": "Consistent hashing с виртуальными нодами, постепенная миграция через dual-write и lazy-read репликацию"
+            }
+          ]
+        },
+        {
+          "theme": "Оконные функции и CTE: производительность сложных аналитических запросов",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какая оконная функция в SQL используется для вычисления накопительной суммы транзакций клиента банка по дате?",
+              "correct_answer": "SUM() OVER (PARTITION BY client_id ORDER BY transaction_date)"
+            },
+            {
+              "level": "Middle",
+              "question": "В запросе на расчет среднего чека абонентов телеком-оператора за последние 3 месяца используется CTE с оконными функциями. Какой подход эффективнее: материализованный CTE или подзапрос с индексом по дате?",
+              "correct_answer": "Подзапрос с индексом эффективнее при малой выборке данных"
+            },
+            {
+              "level": "Senior",
+              "question": "Почему при анализе транзакций банка за год с ROW_NUMBER() и PARTITION BY по 5 млн клиентов запрос выполняется 40 минут? Какие архитектурные решения для оптимизации предложите?",
+              "correct_answer": "Разбить на инкрементальную обработку батчами, использовать партиционирование таблиц по месяцам, создать агрегированные витрины"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "competency": "ETL/ELT процессы и data pipelines",
+      "type": "CORE",
+      "importance": 90,
+      "themes": [
+        {
+          "theme": "Проектирование и оркестрация data pipelines (Apache Airflow, Prefect, Dagster)",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Что такое DAG в Apache Airflow и для чего он используется?",
+              "correct_answer": "Направленный ациклический граф, определяющий последовательность задач и их зависимости"
+            },
+            {
+              "level": "Middle",
+              "question": "В чем разница между подходами schedule_interval и Timetable API в Airflow для планирования загрузки банковских транзакций?",
+              "correct_answer": "Timetable API позволяет задавать сложные кастомные расписания, schedule_interval использует cron-выражения"
+            },
+            {
+              "level": "Senior",
+              "question": "Как спроектировать отказоустойчивый pipeline для обработки клиентских данных телекома с гарантией exactly-once delivery при падении executor?",
+              "correct_answer": "Использовать идемпотентные операции, XCom для состояния, external task sensors и transaction-aware коннекторы с checkpointing"
+            }
+          ]
+        },
+        {
+          "theme": "Паттерны incremental loading и CDC (Change Data Capture) для оптимизации ETL",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какое поле чаще всего используется для incremental loading при загрузке транзакций из банковского процессинга?",
+              "correct_answer": "Timestamp или дата последнего изменения записи"
+            },
+            {
+              "level": "Middle",
+              "question": "В телеком-компании необходимо отслеживать изменения тарифных планов клиентов. Какой CDC паттерн оптимален: trigger-based, log-based или timestamp-based, если важна минимальная нагрузка на OLTP систему?",
+              "correct_answer": "Log-based CDC через чтение transaction logs базы данных"
+            },
+            {
+              "level": "Senior",
+              "question": "В банке реализован incremental loading платежей по updated_at, но аудит выявил потерю данных при одновременном обновлении записей между запусками ETL. Как архитектурно решить проблему при сохранении производительности?",
+              "correct_answer": "Комбинировать watermark с deleted flag и версионированием через sequence number"
+            }
+          ]
+        },
+        {
+          "theme": "Обработка ошибок, мониторинг и логирование в data pipelines",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой уровень логирования следует использовать для записи критических ошибок в ETL pipeline, которые останавливают обработку данных?",
+              "correct_answer": "ERROR или CRITICAL level для блокирующих ошибок"
+            },
+            {
+              "level": "Middle",
+              "question": "В банковском ETL pipeline при загрузке транзакций из источника происходят периодические таймауты. Какую стратегию retry следует применить и почему?",
+              "correct_answer": "Exponential backoff с jitter для снижения нагрузки"
+            },
+            {
+              "level": "Senior",
+              "question": "При обработке платежных данных в реальном времени необходимо обеспечить exactly-once семантику с мониторингом SLA 99.9%. Как спроектировать систему обработки ошибок и алертинга для соответствия требованиям регулятора?",
+              "correct_answer": "Идемпотентные операции с транзакционными checkpoint, dead letter queue, метрики latency/throughput с алертами и audit log"
+            }
+          ]
+        },
+        {
+          "theme": "Трансформация данных: ELT vs ETL, использование dbt и SQL-based трансформаций",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Что такое dbt и для чего он используется в современных data pipelines?",
+              "correct_answer": "Инструмент для SQL-based трансформаций данных в хранилище с версионированием и тестированием"
+            },
+            {
+              "level": "Middle",
+              "question": "Когда следует выбрать ELT вместо ETL подход для обработки данных из АБС банка в облачное хранилище?",
+              "correct_answer": "Когда целевое хранилище имеет мощные вычислительные ресурсы и требуется гибкость трансформаций"
+            },
+            {
+              "level": "Senior",
+              "question": "Как спроектировать incremental-стратегию в dbt для таблицы транзакций телеком-оператора объемом 500M записей в день, обеспечив идемпотентность при повторных запусках?",
+              "correct_answer": "Использовать merge стратегию с unique_key по transaction_id и timestamp, партиционирование по дате, delete+insert для поздних данных"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "competency": "Работа с Big Data (Hadoop, Spark, Kafka)",
+      "type": "CORE",
+      "importance": 85,
+      "themes": [
+        {
+          "theme": "Архитектура и компоненты экосистемы Hadoop (HDFS, YARN, MapReduce)",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой компонент Hadoop отвечает за распределенное хранение данных транзакций банковских клиентов?",
+              "correct_answer": "HDFS (Hadoop Distributed File System)"
+            },
+            {
+              "level": "Middle",
+              "question": "Какой replication factor HDFS оптимален для кластера телеком-оператора из 10 узлов с учетом баланса отказоустойчивости и использования диска?",
+              "correct_answer": "Replication factor 3 обеспечивает надежность при оптимальном использовании дисков"
+            },
+            {
+              "level": "Senior",
+              "question": "Почему для обработки потоковых CDR-записей телеком-оператора YARN с динамической аллокацией контейнеров предпочтительнее статической при пиковых нагрузках?",
+              "correct_answer": "Динамическая аллокация автоматически масштабирует ресурсы под нагрузку, экономя кластер при спадах"
+            }
+          ]
+        },
+        {
+          "theme": "Обработка потоковых данных в Apache Kafka: топики, партиции, consumer groups",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Что такое партиция в Apache Kafka и для чего она используется?",
+              "correct_answer": "Логический раздел топика для параллелизации обработки и масштабирования чтения данных."
+            },
+            {
+              "level": "Middle",
+              "question": "В банковской системе транзакции должны обрабатываться строго по порядку для каждого клиента. Как правильно настроить Kafka producer для гарантии порядка сообщений?",
+              "correct_answer": "Использовать один ключ партиционирования на клиента и enable.idempotence=true."
+            },
+            {
+              "level": "Senior",
+              "question": "В телеком-компании consumer group обрабатывает миллионы событий звонков. После ребаланса группы происходит длительная задержка обработки. Какие архитектурные решения минимизируют impact от ребаланса?",
+              "correct_answer": "Использовать static membership, увеличить session.timeout.ms, применить incremental cooperative rebalancing и оптимизировать количество партиций."
+            }
+          ]
+        },
+        {
+          "theme": "Оптимизация производительности Apache Spark: RDD, DataFrame API, catalyst optimizer",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой API в Apache Spark автоматически применяет оптимизации через Catalyst Optimizer при обработке данных транзакций?",
+              "correct_answer": "DataFrame API и Dataset API"
+            },
+            {
+              "level": "Middle",
+              "question": "В банковской ETL-системе необходимо обработать 500 млн транзакций с множественными фильтрами и агрегациями. Почему DataFrame API предпочтительнее RDD?",
+              "correct_answer": "Catalyst оптимизирует план выполнения, Tungsten улучшает управление памятью, компактное представление данных"
+            },
+            {
+              "level": "Senior",
+              "question": "При обработке телеком CDR-данных с 2 млрд записей ежедневно наблюдаются OOM-ошибки при join операциях. Какие оптимизации Spark применить для стабилизации?",
+              "correct_answer": "Broadcast join для малых таблиц, увеличить spark.sql.shuffle.partitions, включить AQE, настроить spark.memory.fraction"
+            }
+          ]
+        },
+        {
+          "theme": "Интеграция Big Data компонентов: построение ETL-пайплайнов с Spark, Kafka и HDFS",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой компонент Spark используется для чтения данных из Kafka в потоковом режиме?",
+              "correct_answer": "Spark Structured Streaming с форматом kafka"
+            },
+            {
+              "level": "Middle",
+              "question": "В банковском ETL-пайплайне транзакции поступают из Kafka каждые 5 секунд, но обработка в Spark занимает 8 секунд. Какой параметр настроить для предотвращения накопления lag?",
+              "correct_answer": "Увеличить spark.executor.cores и spark.executor.instances для параллелизации обработки"
+            },
+            {
+              "level": "Senior",
+              "question": "Телеком-компания обрабатывает CDR-записи: Kafka → Spark → HDFS (партиционирование по датам). При сбое Spark-джобы данные дублируются в HDFS. Как архитектурно обеспечить exactly-once семантику в этом пайплайне?",
+              "correct_answer": "Использовать Kafka offsets с checkpointing, Delta Lake для атомарных записей и идемпотентные операции"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "competency": "Облачные платформы для данных (AWS S3, Redshift, Snowflake)",
+      "type": "CORE",
+      "importance": 80,
+      "themes": [
+        {
+          "theme": "Архитектура хранения данных в AWS S3: типы хранилищ, lifecycle policies и оптимизация затрат",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой класс хранения S3 следует использовать для архивных данных банковских транзакций, которые необходимо хранить 10 лет, но доступ требуется реже одного раза в год?",
+              "correct_answer": "S3 Glacier Deep Archive"
+            },
+            {
+              "level": "Middle",
+              "question": "Банк хранит CDR-записи телеметрии: первые 30 дней активный доступ, затем 90 дней редкий доступ, после - архив. Какую lifecycle policy вы настроите для оптимизации затрат?",
+              "correct_answer": "Standard 30 дней, затем Intelligent-Tiering 90 дней, далее Glacier Flexible Retrieval"
+            },
+            {
+              "level": "Senior",
+              "question": "Телеком компания хранит 500 TB логов событий в S3 Standard. 80% объектов не используются после 7 дней. Как спроектировать стратегию оптимизации затрат с учетом compliance требований на 3 года хранения?",
+              "correct_answer": "Lifecycle policy: 7 дней Standard, затем Intelligent-Tiering с Archive Access tier, Object Lock для compliance"
+            }
+          ]
+        },
+        {
+          "theme": "Проектирование и оптимизация схем данных в Amazon Redshift: distribution styles, sort keys и vacuum операции",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой distribution style в Redshift используется для небольших справочных таблиц, реплицируя данные на все узлы кластера?",
+              "correct_answer": "ALL distribution style"
+            },
+            {
+              "level": "Middle",
+              "question": "В таблице транзакций банка с 500 млн записей постоянно выполняются JOIN по customer_id и фильтрация по transaction_date. Какую комбинацию distribution key и sort key оптимально использовать?",
+              "correct_answer": "Distribution key на customer_id, compound sort key на customer_id и transaction_date"
+            },
+            {
+              "level": "Senior",
+              "question": "В хранилище данных телеком-оператора после ежедневных загрузок CDR-записей производительность запросов падает на 40%. Vacuum Full занимает 6 часов. Как реорганизовать процесс загрузки и обслуживания для минимизации vacuum времени?",
+              "correct_answer": "Использовать bulk insert с сортированными данными, применять vacuum delete only, настроить auto vacuum с wlm_query_slot_count"
+            }
+          ]
+        },
+        {
+          "theme": "Интеграция и миграция данных между облачными платформами: ETL процессы для AWS, Snowflake и гибридных решений",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой AWS сервис используется для оркестрации ETL-процессов при миграции данных из on-premise базы банка в S3?",
+              "correct_answer": "AWS Glue или AWS Data Migration Service"
+            },
+            {
+              "level": "Middle",
+              "question": "В каком случае для банка выгоднее использовать Snowflake Snowpipe вместо AWS Glue для загрузки данных транзакций из S3?",
+              "correct_answer": "При непрерывной потоковой загрузке небольших файлов в реальном времени"
+            },
+            {
+              "level": "Senior",
+              "question": "Как спроектировать гибридное ETL-решение для телеком-оператора с данными в on-premise Oracle и Snowflake, чтобы минимизировать egress costs и обеспечить compliance с законом о локализации данных РК?",
+              "correct_answer": "Использовать Snowflake External Tables с S3 в локальном регионе, CDC через Kafka и incremental loads с фильтрацией персональных данных"
+            }
+          ]
+        },
+        {
+          "theme": "Управление производительностью и масштабированием в Snowflake: virtual warehouses, clustering keys и query optimization",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой параметр определяет размер virtual warehouse в Snowflake при его создании?",
+              "correct_answer": "Параметр SIZE со значениями X-Small, Small, Medium, Large и т.д."
+            },
+            {
+              "level": "Middle",
+              "question": "В банковском хранилище транзакций за 5 лет запросы по дате выполняются медленно. Таблица содержит 2 млрд записей. Когда следует использовать clustering key?",
+              "correct_answer": "Когда запросы фильтруют по датам и таблица больше 1TB"
+            },
+            {
+              "level": "Senior",
+              "question": "Почему для ETL-процессов обработки телеком CDR-данных лучше использовать несколько малых virtual warehouses вместо одного большого при одинаковых кредитах?",
+              "correct_answer": "Несколько малых warehouses обеспечивают лучшую параллелизацию независимых задач и изоляцию workloads"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "competency": "Python для обработки данных (pandas, PySpark)",
+      "type": "CORE",
+      "importance": 85,
+      "themes": [
+        {
+          "theme": "Работа с DataFrame в pandas: индексация, фильтрация, группировка и агрегация данных",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой метод pandas используется для фильтрации DataFrame по условию на значения в столбце 'amount' больше 100000 тенге?",
+              "correct_answer": "df[df['amount'] > 100000] или df.query('amount > 100000')"
+            },
+            {
+              "level": "Middle",
+              "question": "В чем разница между методами .loc и .iloc при индексации DataFrame с транзакциями клиентов банка, и когда использовать каждый из них?",
+              "correct_answer": ".loc использует метки индексов и названия столбцов, .iloc использует целочисленные позиции"
+            },
+            {
+              "level": "Senior",
+              "question": "Почему при агрегации больших объемов транзакций абонентов телеком-оператора groupby с apply работает медленнее, чем встроенные агрегирующие функции, и как оптимизировать производительность?",
+              "correct_answer": "apply вызывает Python-функцию для каждой группы без векторизации, используйте agg с встроенными функциями или transform"
+            }
+          ]
+        },
+        {
+          "theme": "Оптимизация обработки больших данных в PySpark: партиционирование, кеширование и broadcast-переменные",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой метод PySpark используется для кеширования DataFrame в памяти для повторного использования при обработке данных транзакций?",
+              "correct_answer": "cache() или persist() с уровнем MEMORY_ONLY"
+            },
+            {
+              "level": "Middle",
+              "question": "При джойне таблицы клиентов банка (500 тыс. записей) с транзакциями (500 млн записей) какой подход оптимизации следует применить и почему?",
+              "correct_answer": "Broadcast join для таблицы клиентов, избегая shuffle больших данных"
+            },
+            {
+              "level": "Senior",
+              "question": "При обработке CDR-данных телеком-оператора с датой партиционирования возникает data skew на последнюю дату. Как архитектурно решить проблему неравномерного распределения нагрузки между executor'ами?",
+              "correct_answer": "Применить salting: добавить random suffix к ключу партиционирования, затем repartition с увеличенным числом партиций"
+            }
+          ]
+        },
+        {
+          "theme": "Трансформация и очистка данных: обработка пропущенных значений, дубликатов и приведение типов",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой метод pandas используется для удаления строк с пропущенными значениями в DataFrame с данными клиентов банка?",
+              "correct_answer": "dropna() удаляет строки или столбцы с NaN значениями"
+            },
+            {
+              "level": "Middle",
+              "question": "В таблице транзакций телеком-оператора обнаружены дубликаты по ID абонента и timestamp. В чем разница между drop_duplicates(keep='first') и drop_duplicates(keep='last') при обработке временных рядов?",
+              "correct_answer": "keep='first' сохраняет первую запись, keep='last' - последнюю по порядку появления"
+            },
+            {
+              "level": "Senior",
+              "question": "При обработке 500GB данных банковских транзакций в PySpark возникает OOM при fillna(). Почему использование coalesce() перед заполнением пропусков может решить проблему и какой оптимальный размер партиций?",
+              "correct_answer": "coalesce() уменьшает количество партиций, снижая overhead. Оптимально 128-200MB на партицию для баланса памяти"
+            }
+          ]
+        },
+        {
+          "theme": "Объединение датасетов и оконные функции в pandas и PySpark для аналитических задач",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой метод pandas используется для объединения двух датафреймов с транзакциями клиентов по общему ключу client_id?",
+              "correct_answer": "merge() или join()"
+            },
+            {
+              "level": "Middle",
+              "question": "В чем разница между использованием merge() и concat() в pandas при объединении таблиц с данными по клиентским счетам банка?",
+              "correct_answer": "merge объединяет по ключам, concat склеивает по осям без сопоставления"
+            },
+            {
+              "level": "Senior",
+              "question": "Почему для расчета скользящих агрегатов по миллионам транзакций телеком-оператора эффективнее использовать Window functions в PySpark вместо groupBy с collect_list?",
+              "correct_answer": "Window избегает shuffle всех данных и материализации списков в памяти"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

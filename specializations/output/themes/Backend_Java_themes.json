@@ -1,0 +1,62 @@
+{
+  "profile": "Backend разработчик",
+  "specialization": "Java / Spring",
+  "file_name": "Backend_Java",
+  "competencies": [
+    {
+      "competency": "Навыки Java",
+      "type": "CORE",
+      "importance": 90,
+      "themes": [
+        "Многопоточность и concurrency (synchronized, volatile, ExecutorService, CompletableFuture)",
+        "Коллекции и Stream API (ArrayList vs LinkedList, HashMap, ConcurrentHashMap, Optional, функциональные интерфейсы)",
+        "Управление памятью и garbage collection (heap vs stack, типы GC, memory leaks, профилирование)",
+        "Обработка исключений и best practices (checked vs unchecked, try-with-resources, custom exceptions)"
+      ]
+    },
+    {
+      "competency": "Навыки Spring Framework",
+      "type": "CORE",
+      "importance": 90,
+      "themes": [
+        "Spring Boot: автоконфигурация, стартеры и управление properties для микросервисов",
+        "Spring Security: аутентификация, авторизация и защита REST API в банковских системах",
+        "Spring Data JPA: работа с базами данных, транзакции и оптимизация запросов",
+        "Spring AOP и управление транзакциями: логирование, аудит и обработка исключений"
+      ]
+    },
+    {
+      "competency": "Навыки проектирования REST API",
+      "type": "CORE",
+      "importance": 85,
+      "themes": [
+        "Принципы REST и HTTP методы: идемпотентность, безопасность операций, правильное использование GET/POST/PUT/PATCH/DELETE",
+        "Версионирование API и обратная совместимость: стратегии версионирования (URI, header, media type), управление breaking changes",
+        "Обработка ошибок и стандарты ответов: HTTP статус-коды, структура error response, Problem Details (RFC 7807), локализация сообщений",
+        "Безопасность REST API: аутентификация и авторизация (OAuth 2.0, JWT), rate limiting, защита от OWASP Top 10, шифрование чувствительных данных"
+      ]
+    },
+    {
+      "competency": "Навыки Apache Kafka",
+      "type": "DAILY",
+      "importance": 70,
+      "themes": [
+        "Интеграция Spring Boot с Apache Kafka: настройка producers и consumers для обработки банковских транзакций",
+        "Обеспечение надежности доставки сообщений: управление offset, acknowledgment modes и обработка ошибок в Kafka",
+        "Производительность и масштабирование: партиционирование, consumer groups и мониторинг Kafka в высоконагруженных системах",
+        "Безопасность и отказоустойчивость: шифрование данных, аутентификация, реализация idempotent producers и transactional messaging"
+      ]
+    },
+    {
+      "competency": "Алгоритмы и структуры данных",
+      "type": "DAILY",
+      "importance": 65,
+      "themes": [
+        "Работа с коллекциями Java (List, Set, Map): выбор оптимальной структуры данных для кэширования и поиска",
+        "Алгоритмы сортировки и поиска: применение для обработки транзакций и логов",
+        "Оптимизация производительности через правильный выбор структур данных (HashMap vs TreeMap, ArrayList vs LinkedList)",
+        "Алгоритмы обхода графов и деревьев: моделирование иерархических структур (организационные структуры, тарифные планы)"
+      ]
+    }
+  ]
+}

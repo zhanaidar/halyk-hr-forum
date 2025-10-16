@@ -1,0 +1,442 @@
+{
+  "profile": "Backend разработчик",
+  "specialization": "Java / Spring",
+  "file_name": "Backend_Java",
+  "competencies": [
+    {
+      "competency": "Навыки Java",
+      "type": "CORE",
+      "importance": 90,
+      "themes": [
+        {
+          "theme": "Многопоточность и concurrency (synchronized, volatile, ExecutorService, CompletableFuture)",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какое ключевое слово в Java гарантирует видимость изменений переменной между потоками без блокировки?",
+              "correct_answer": "volatile"
+            },
+            {
+              "level": "Middle",
+              "question": "В чем разница между ExecutorService.submit() и execute() при обработке транзакций в банковской системе?",
+              "correct_answer": "submit() возвращает Future и обрабатывает исключения, execute() их игнорирует"
+            },
+            {
+              "level": "Senior",
+              "question": "Почему использование synchronized(this) может вызвать deadlock при обработке параллельных платежей между счетами? Как спроектировать безопасную альтернативу?",
+              "correct_answer": "Циклическая блокировка при взаимных переводах. Упорядочивать захват локов по ID счета или использовать ReentrantLock с tryLock"
+            }
+          ]
+        },
+        {
+          "theme": "Коллекции и Stream API (ArrayList vs LinkedList, HashMap, ConcurrentHashMap, Optional, функциональные интерфейсы)",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой метод Stream API используется для преобразования каждого элемента коллекции в другой объект?",
+              "correct_answer": "map()"
+            },
+            {
+              "level": "Middle",
+              "question": "В чем основное отличие HashMap от ConcurrentHashMap при обработке транзакций в банковской системе с несколькими потоками?",
+              "correct_answer": "ConcurrentHashMap потокобезопасен и не блокирует всю структуру при записи"
+            },
+            {
+              "level": "Senior",
+              "question": "Почему использование ArrayList предпочтительнее LinkedList для хранения истории SMS-сообщений абонента в телеком-системе при частом доступе по индексу и редких вставках?",
+              "correct_answer": "ArrayList обеспечивает O(1) доступ по индексу благодаря непрерывному размещению в памяти"
+            }
+          ]
+        },
+        {
+          "theme": "Управление памятью и garbage collection (heap vs stack, типы GC, memory leaks, профилирование)",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "В какой области памяти JVM хранятся локальные переменные примитивных типов и ссылки на объекты внутри метода?",
+              "correct_answer": "В stack памяти, очищаемой автоматически при выходе из метода"
+            },
+            {
+              "level": "Middle",
+              "question": "Ваш Spring Boot микросервис для обработки банковских транзакций показывает Full GC каждые 2 минуты. Какие JVM флаги используете для диагностики причины?",
+              "correct_answer": "-XX:+PrintGCDetails -XX:+PrintGCDateStamps -Xloggc:gc.log для анализа паттернов GC"
+            },
+            {
+              "level": "Senior",
+              "question": "При проектировании высоконагруженного биллингового сервиса для телеком оператора с 10М абонентов почему выбрали G1GC вместо ZGC, учитывая heap 32GB?",
+              "correct_answer": "G1GC предсказуемее для транзакционных систем, ZGC оптимален для heap 64GB+, меньше overhead"
+            }
+          ]
+        },
+        {
+          "theme": "Обработка исключений и best practices (checked vs unchecked, try-with-resources, custom exceptions)",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой синтаксис используется для автоматического закрытия ресурсов в Java, например, при работе с JDBC-соединением к базе данных банка?",
+              "correct_answer": "try-with-resources с объявлением ресурсов в круглых скобках"
+            },
+            {
+              "level": "Middle",
+              "question": "В микросервисе обработки платежей нужно обрабатывать ошибки валидации данных карты. Какой тип исключения следует использовать и почему?",
+              "correct_answer": "Unchecked RuntimeException, так как это ошибка бизнес-логики валидации"
+            },
+            {
+              "level": "Senior",
+              "question": "При проектировании иерархии исключений для банковской системы платежей вы создаете PaymentException. Как спроектировать обработку исключений, чтобы избежать потери контекста ошибки при прохождении через несколько слоев приложения?",
+              "correct_answer": "Использовать exception chaining через конструкторы с Throwable cause, логировать на границах слоев, добавлять контекстные поля в custom exceptions"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "competency": "Навыки Spring Framework",
+      "type": "CORE",
+      "importance": 90,
+      "themes": [
+        {
+          "theme": "Spring Boot: автоконфигурация, стартеры и управление properties для микросервисов",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой файл используется по умолчанию для хранения конфигурационных свойств в Spring Boot приложении?",
+              "correct_answer": "application.properties или application.yml"
+            },
+            {
+              "level": "Middle",
+              "question": "В чем разница между @ConditionalOnProperty и @ConditionalOnBean при создании автоконфигурации для микросервиса обработки платежей?",
+              "correct_answer": "ConditionalOnProperty проверяет наличие свойства в properties, ConditionalOnBean проверяет наличие бина в контексте"
+            },
+            {
+              "level": "Senior",
+              "question": "Почему при разработке общего стартера для микросервисов банка следует использовать spring.factories вместо прямого @ComponentScan, и какие проблемы это решает?",
+              "correct_answer": "Избегает конфликтов имен пакетов, обеспечивает изолированную автоконфигурацию, дает контроль над порядком загрузки бинов"
+            }
+          ]
+        },
+        {
+          "theme": "Spring Security: аутентификация, авторизация и защита REST API в банковских системах",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какая аннотация Spring Security используется для защиты метода REST контроллера на уровне роли?",
+              "correct_answer": "@PreAuthorize или @Secured для проверки ролей пользователя"
+            },
+            {
+              "level": "Middle",
+              "question": "В чем разница между Stateless и Stateful аутентификацией в REST API банковского приложения и когда использовать JWT?",
+              "correct_answer": "Stateless хранит токен на клиенте, не использует сессии, JWT подходит для микросервисной архитектуры банка"
+            },
+            {
+              "level": "Senior",
+              "question": "Как спроектировать систему авторизации для банковского REST API с поддержкой разграничения прав на уровне филиалов и мультитенантности для разных банков группы?",
+              "correct_answer": "Custom PermissionEvaluator с иерархическими ролями, tenant-aware SecurityContext, разделение через клеймы JWT и database-per-tenant изоляция"
+            }
+          ]
+        },
+        {
+          "theme": "Spring Data JPA: работа с базами данных, транзакции и оптимизация запросов",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какую аннотацию нужно добавить к методу репозитория для выполнения операции изменения или удаления данных?",
+              "correct_answer": "@Modifying совместно с @Query"
+            },
+            {
+              "level": "Middle",
+              "question": "В чем разница между уровнями изоляции транзакций READ_COMMITTED и REPEATABLE_READ при работе с банковскими операциями?",
+              "correct_answer": "REPEATABLE_READ предотвращает non-repeatable read, фиксируя данные на весь транзакцию"
+            },
+            {
+              "level": "Senior",
+              "question": "Как спроектировать загрузку истории транзакций клиента (300К записей) с минимальным потреблением памяти и без N+1 проблемы?",
+              "correct_answer": "Использовать Slice/Page с JOIN FETCH, batch size и read-only транзакции"
+            }
+          ]
+        },
+        {
+          "theme": "Spring AOP и управление транзакциями: логирование, аудит и обработка исключений",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какая аннотация Spring используется для объявления метода как точки среза (pointcut) в аспекте для логирования входящих параметров?",
+              "correct_answer": "@Before с выражением execution и args для перехвата параметров"
+            },
+            {
+              "level": "Middle",
+              "question": "В банковском приложении требуется логировать все операции с транзакциями, но исключить методы чтения. Какой тип advice и pointcut expression оптимально использовать?",
+              "correct_answer": "@AfterReturning с execution(@Transactional * *(..)) && !execution(* get*(..))"
+            },
+            {
+              "level": "Senior",
+              "question": "При аудите банковских транзакций возникает проблема: @Transactional метод вызывает другой @Transactional метод этого же класса, и AOP-логирование не срабатывает на внутреннем вызове. Как архитектурно решить эту проблему без AspectJ weaving?",
+              "correct_answer": "Вынести внутренний метод в отдельный Spring bean или использовать self-injection через ApplicationContext"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "competency": "Навыки проектирования REST API",
+      "type": "CORE",
+      "importance": 85,
+      "themes": [
+        {
+          "theme": "Принципы REST и HTTP методы: идемпотентность, безопасность операций, правильное использование GET/POST/PUT/PATCH/DELETE",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой HTTP метод является идемпотентным и используется для получения данных без изменения состояния сервера?",
+              "correct_answer": "GET метод является идемпотентным и безопасным"
+            },
+            {
+              "level": "Middle",
+              "question": "В чем разница между PUT и PATCH при обновлении баланса клиента в банковском API? Когда использовать каждый метод?",
+              "correct_answer": "PUT заменяет весь ресурс, PATCH обновляет частично; PATCH для изменения баланса"
+            },
+            {
+              "level": "Senior",
+              "question": "Как спроектировать идемпотентный POST endpoint для создания платежа в банковской системе, учитывая возможность повторных запросов из-за сетевых таймаутов?",
+              "correct_answer": "Использовать Idempotency-Key в заголовке, хранить результаты в кэше с TTL"
+            }
+          ]
+        },
+        {
+          "theme": "Версионирование API и обратная совместимость: стратегии версионирования (URI, header, media type), управление breaking changes",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой HTTP заголовок используется для версионирования API через custom header в Spring?",
+              "correct_answer": "X-API-Version или Custom-Header с @RequestHeader аннотацией"
+            },
+            {
+              "level": "Middle",
+              "question": "В банковском API нужно изменить формат поля accountNumber с String на объект. Какую стратегию версионирования выбрать для минимизации влияния на мобильные приложения клиентов?",
+              "correct_answer": "URI versioning с параллельным поддержанием /v1 и /v2 endpoints"
+            },
+            {
+              "level": "Senior",
+              "question": "Как спроектировать систему версионирования для телеком API с 50+ микросервисами, чтобы обеспечить независимое развертывание команд и минимизировать breaking changes при изменении контрактов между сервисами?",
+              "correct_answer": "Consumer-Driven Contracts с Pact, semantic versioning, API Gateway для маршрутизации версий, deprecation policy с sunset headers"
+            }
+          ]
+        },
+        {
+          "theme": "Обработка ошибок и стандарты ответов: HTTP статус-коды, структура error response, Problem Details (RFC 7807), локализация сообщений",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой HTTP статус-код должен возвращать REST API при ошибке валидации входных данных клиента?",
+              "correct_answer": "400 Bad Request"
+            },
+            {
+              "level": "Middle",
+              "question": "В чем разница между использованием RFC 7807 Problem Details и стандартной структуры error response в Spring Boot?",
+              "correct_answer": "RFC 7807 предоставляет стандартизированный формат с type, title, detail, instance для машиночитаемой обработки ошибок"
+            },
+            {
+              "level": "Senior",
+              "question": "Как спроектировать локализацию сообщений об ошибках в REST API для банковского приложения с поддержкой казахского и русского языков, учитывая требования PCI DSS к безопасности информации?",
+              "correct_answer": "Использовать MessageSource с ResourceBundle, Accept-Language header, возвращать локализованный detail без раскрытия внутренних данных, логировать детали отдельно"
+            }
+          ]
+        },
+        {
+          "theme": "Безопасность REST API: аутентификация и авторизация (OAuth 2.0, JWT), rate limiting, защита от OWASP Top 10, шифрование чувствительных данных",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Что такое JWT токен и из каких трех основных частей он состоит?",
+              "correct_answer": "JSON Web Token, состоит из header, payload и signature."
+            },
+            {
+              "level": "Middle",
+              "question": "В чем разница между OAuth 2.0 grant типами Authorization Code и Client Credentials для банковского API?",
+              "correct_answer": "Authorization Code для пользовательских приложений, Client Credentials для server-to-server взаимодействия между системами."
+            },
+            {
+              "level": "Senior",
+              "question": "Как спроектировать rate limiting для REST API банка с учетом разных клиентских тарифов и защиты от DDoS на уровне приложения?",
+              "correct_answer": "Многоуровневый rate limiting: Redis с token bucket алгоритмом, лимиты по API key и IP, sliding window для точности, graceful degradation."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "competency": "Навыки Apache Kafka",
+      "type": "DAILY",
+      "importance": 70,
+      "themes": [
+        {
+          "theme": "Интеграция Spring Boot с Apache Kafka: настройка producers и consumers для обработки банковских транзакций",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какая аннотация Spring Kafka используется для создания метода-слушателя, который будет получать сообщения о банковских транзакциях из топика?",
+              "correct_answer": "@KafkaListener с указанием topics или topicPattern"
+            },
+            {
+              "level": "Middle",
+              "question": "В чем разница между настройками acks=1 и acks=all для Kafka producer при отправке критичных банковских платежей, и какую следует выбрать?",
+              "correct_answer": "acks=1 подтверждает запись лидером, acks=all ждет от всех реплик, для платежей использовать acks=all"
+            },
+            {
+              "level": "Senior",
+              "question": "При обработке платежных транзакций consumer периодически отстает на 2-3 минуты от producer. Какие три ключевые настройки нужно проверить и оптимизировать для устранения lag?",
+              "correct_answer": "max.poll.records, fetch.min.bytes, количество consumer instances в группе и партиций топика"
+            }
+          ]
+        },
+        {
+          "theme": "Обеспечение надежности доставки сообщений: управление offset, acknowledgment modes и обработка ошибок в Kafka",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Что такое offset в Apache Kafka и зачем он нужен при чтении сообщений из топика?",
+              "correct_answer": "Порядковый номер сообщения в партиции для отслеживания позиции чтения."
+            },
+            {
+              "level": "Middle",
+              "question": "В чем разница между enable.auto.commit=true и ручным commit offset при обработке банковских транзакций в Kafka?",
+              "correct_answer": "Auto-commit фиксирует offset автоматически, ручной commit гарантирует фиксацию только после успешной обработки."
+            },
+            {
+              "level": "Senior",
+              "question": "В системе обработки платежей consumer упал после чтения, но до записи в БД. Offset уже зафиксирован. Как спроектировать решение для предотвращения потери транзакций?",
+              "correct_answer": "Использовать ручной commit после успешной записи в БД или применить transactional consumer с idempotent producer."
+            }
+          ]
+        },
+        {
+          "theme": "Производительность и масштабирование: партиционирование, consumer groups и мониторинг Kafka в высоконагруженных системах",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Что такое партиция в Apache Kafka и как сообщения распределяются по партициям при отправке?",
+              "correct_answer": "Это логический сегмент топика. Сообщения распределяются по ключу или round-robin."
+            },
+            {
+              "level": "Middle",
+              "question": "В банковской системе процессинга платежей consumer группа из 10 инстансов обрабатывает топик с 5 партициями. Какая проблема возникнет и как её решить?",
+              "correct_answer": "5 консьюмеров будут idle. Увеличить количество партиций до 10 или более."
+            },
+            {
+              "level": "Senior",
+              "question": "В телеком-системе биллинга consumer lag растёт до 500K сообщений в пиковые часы. Какие три метрики JMX нужно проверить первыми для диагностики bottleneck?",
+              "correct_answer": "records-lag-max, fetch-latency-avg, commit-latency-avg для выявления узких мест в потреблении."
+            }
+          ]
+        },
+        {
+          "theme": "Безопасность и отказоустойчивость: шифрование данных, аутентификация, реализация idempotent producers и transactional messaging",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой параметр Kafka Producer необходимо установить в true для включения idempotence и предотвращения дублирования сообщений?",
+              "correct_answer": "enable.idempotence=true"
+            },
+            {
+              "level": "Middle",
+              "question": "В чем разница между isolation.level=read_committed и read_uncommitted при использовании transactional messaging в Kafka Consumer для обработки банковских транзакций?",
+              "correct_answer": "read_committed читает только закоммиченные сообщения, исключая незавершенные транзакции, read_uncommitted читает все сообщения."
+            },
+            {
+              "level": "Senior",
+              "question": "В production среде банка producer периодически получает ProducerFencedException при отправке в Kafka с включенными транзакциями. Какие две наиболее вероятные причины и как их диагностировать?",
+              "correct_answer": "Дублирование transactional.id между инстансами или долгая обработка превышающая transaction.timeout.ms. Проверить уникальность ID и метрики задержек."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "competency": "Алгоритмы и структуры данных",
+      "type": "DAILY",
+      "importance": 65,
+      "themes": [
+        {
+          "theme": "Работа с коллекциями Java (List, Set, Map): выбор оптимальной структуры данных для кэширования и поиска",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой интерфейс коллекции Java гарантирует уникальность элементов и подходит для кэширования идентификаторов клиентов банка?",
+              "correct_answer": "Set интерфейс, например HashSet или LinkedHashSet"
+            },
+            {
+              "level": "Middle",
+              "question": "В системе биллинга телеком-оператора нужно кэшировать 100 000 тарифов с поиском по ID. Почему HashMap предпочтительнее TreeMap в этом случае?",
+              "correct_answer": "HashMap обеспечивает O(1) поиск против O(log n) у TreeMap"
+            },
+            {
+              "level": "Senior",
+              "question": "В продакшене банковского сервиса ConcurrentHashMap для кэша сессий показывает деградацию при 10 000+ RPS. Какая проблема и решение?",
+              "correct_answer": "Высокая contention на сегментах, использовать Caffeine Cache с оптимизированным striping"
+            }
+          ]
+        },
+        {
+          "theme": "Алгоритмы сортировки и поиска: применение для обработки транзакций и логов",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой алгоритм сортировки используется в Java Collections.sort() для сортировки списка транзакций?",
+              "correct_answer": "TimSort - гибридный алгоритм на основе merge sort и insertion sort"
+            },
+            {
+              "level": "Middle",
+              "question": "В банковском приложении нужно найти транзакцию по ID в отсортированном списке из 1 млн записей. Какой алгоритм поиска выбрать и почему?",
+              "correct_answer": "Бинарный поиск, так как O(log n) против O(n) линейного поиска"
+            },
+            {
+              "level": "Senior",
+              "question": "При обработке логов телеком-системы сервис падает с OutOfMemoryError при сортировке 50GB файла транзакций за день. Как решить проблему?",
+              "correct_answer": "Применить внешнюю сортировку: разбить на чанки, отсортировать в памяти, merge отсортированные файлы"
+            }
+          ]
+        },
+        {
+          "theme": "Оптимизация производительности через правильный выбор структур данных (HashMap vs TreeMap, ArrayList vs LinkedList)",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какая структура данных в Java обеспечивает O(1) для операций get/put по ключу?",
+              "correct_answer": "HashMap"
+            },
+            {
+              "level": "Middle",
+              "question": "В системе обработки банковских транзакций нужно хранить 10000 записей с частыми вставками в середину. ArrayList или LinkedList?",
+              "correct_answer": "ArrayList, вставки в середину редки, доступ по индексу важнее"
+            },
+            {
+              "level": "Senior",
+              "question": "В телеком-биллинге HashMap с абонентскими номерами показывает деградацию при 500K записей. Какие причины и решение?",
+              "correct_answer": "Плохая hash-функция вызывает коллизии. Переопределить hashCode или использовать ConcurrentHashMap с правильным capacity"
+            }
+          ]
+        },
+        {
+          "theme": "Алгоритмы обхода графов и деревьев: моделирование иерархических структур (организационные структуры, тарифные планы)",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой алгоритм обхода дерева используется для вывода организационной структуры банка от директора к сотрудникам по уровням?",
+              "correct_answer": "Обход в ширину (BFS)"
+            },
+            {
+              "level": "Middle",
+              "question": "В системе тарифных планов телеком-оператора с наследованием услуг: какой обход использовать для расчета итоговой стоимости с учетом всех родительских тарифов?",
+              "correct_answer": "Обход в глубину (DFS) с постобработкой от листьев к корню"
+            },
+            {
+              "level": "Senior",
+              "question": "При загрузке 50000 записей организационной структуры банка через REST API возникает StackOverflowError в рекурсивном DFS. Как оптимизировать без изменения API?",
+              "correct_answer": "Заменить рекурсию на итеративный DFS со Stack или использовать увеличение стека"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

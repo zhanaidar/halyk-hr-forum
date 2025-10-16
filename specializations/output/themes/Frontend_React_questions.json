@@ -1,0 +1,529 @@
+{
+  "profile": "Frontend разработчик",
+  "specialization": "React",
+  "file_name": "Frontend_React",
+  "competencies": [
+    {
+      "competency": "HTML",
+      "type": "CORE",
+      "importance": 80,
+      "themes": [
+        {
+          "theme": "Семантическая разметка и доступность (accessibility)",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой HTML-тег следует использовать для основной навигации по сайту банка?",
+              "correct_answer": "Тег <nav> для семантической разметки навигационного блока"
+            },
+            {
+              "level": "Middle",
+              "question": "В чем разница между aria-label и aria-labelledby при разметке формы перевода денег в React-приложении банка?",
+              "correct_answer": "aria-label задает текст напрямую, aria-labelledby ссылается на ID существующего элемента"
+            },
+            {
+              "level": "Senior",
+              "question": "Как спроектировать доступную систему уведомлений в личном кабинете банка, чтобы скринридеры корректно объявляли динамические изменения баланса?",
+              "correct_answer": "Использовать aria-live регионы с polite для некритичных обновлений и assertive для срочных"
+            }
+          ]
+        },
+        {
+          "theme": "Формы: атрибуты, валидация и типы input-элементов",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой атрибут HTML input используется для указания обязательности заполнения поля ИИН клиента банка?",
+              "correct_answer": "Атрибут required делает поле обязательным для заполнения"
+            },
+            {
+              "level": "Middle",
+              "question": "Какой тип input и pattern лучше использовать для валидации казахстанского номера телефона в формате +7 (7XX) XXX-XX-XX?",
+              "correct_answer": "type='tel' с pattern='\\+7\\s\\([0-9]{3}\\)\\s[0-9]{3}-[0-9]{2}-[0-9]{2}'"
+            },
+            {
+              "level": "Senior",
+              "question": "Почему для форм онлайн-банкинга с чувствительными данными стоит использовать autocomplete='off' вместе с программной валидацией, несмотря на ухудшение UX?",
+              "correct_answer": "Предотвращение утечки данных через историю браузера и автозаполнение на публичных устройствах"
+            }
+          ]
+        },
+        {
+          "theme": "Оптимизация производительности: async/defer, preload, lazy loading",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой атрибут тега <script> позволяет загружать JavaScript файл асинхронно, не блокируя парсинг HTML?",
+              "correct_answer": "Атрибут async загружает скрипт асинхронно без блокировки парсинга."
+            },
+            {
+              "level": "Middle",
+              "question": "В интернет-банке критичны метрики LCP. В чем разница между async и defer для подключения аналитики и основного бандла приложения?",
+              "correct_answer": "async выполняется сразу после загрузки, defer — после парсинга DOM в порядке объявления."
+            },
+            {
+              "level": "Senior",
+              "question": "Почему использование preload для всех chunk'ов React-приложения банка может ухудшить FCP и увеличить bandwidth вместо оптимизации?",
+              "correct_answer": "Preload создает высокий приоритет загрузки, конкурируя с критичными ресурсами и перегружая сеть."
+            }
+          ]
+        },
+        {
+          "theme": "Современные HTML5 API: Canvas, Web Storage, Geolocation, Drag and Drop",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой метод Canvas API используется для отрисовки прямоугольника с заливкой?",
+              "correct_answer": "fillRect(x, y, width, height)"
+            },
+            {
+              "level": "Middle",
+              "question": "В чем ключевое различие между localStorage и sessionStorage при реализации корзины покупок в банковском приложении?",
+              "correct_answer": "localStorage сохраняется между сессиями, sessionStorage удаляется при закрытии вкладки"
+            },
+            {
+              "level": "Senior",
+              "question": "Почему следует использовать OffscreenCanvas вместо обычного Canvas при реализации визуализации больших массивов транзакций в React-приложении банка?",
+              "correct_answer": "OffscreenCanvas работает в Web Worker, не блокируя основной поток рендеринга"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "competency": "JavaScript",
+      "type": "CORE",
+      "importance": 90,
+      "themes": [
+        {
+          "theme": "Основы JavaScript: типы данных, операторы, области видимости и замыкания",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой тип данных вернет typeof null в JavaScript?",
+              "correct_answer": "object"
+            },
+            {
+              "level": "Middle",
+              "question": "В React-приложении банка обработчик события клика объявлен через стрелочную функцию в render(). В чем разница контекста this по сравнению с обычной функцией?",
+              "correct_answer": "Стрелочная функция наследует this из лексического окружения, обычная создает собственный контекст."
+            },
+            {
+              "level": "Senior",
+              "question": "В SPA телеком-оператора возникает memory leak из-за замыканий в event listeners. Как архитектурно предотвратить утечки при размонтировании React-компонентов с таймерами и подписками?",
+              "correct_answer": "Использовать useEffect с cleanup функцией, возвращающей отписку и clearTimeout/clearInterval."
+            }
+          ]
+        },
+        {
+          "theme": "Асинхронное программирование: Promise, async/await, Event Loop",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой метод Promise используется для обработки ошибок асинхронных операций при загрузке данных клиента из API банка?",
+              "correct_answer": "Метод .catch() или второй аргумент .then()"
+            },
+            {
+              "level": "Middle",
+              "question": "В чем разница между Promise.all() и Promise.allSettled() при параллельной загрузке данных о балансах счетов клиента из нескольких микросервисов банка?",
+              "correct_answer": "Promise.all() отклоняется при первой ошибке, Promise.allSettled() ждет завершения всех промисов"
+            },
+            {
+              "level": "Senior",
+              "question": "Почему в React-приложении банка с частыми API-запросами может возникнуть блокировка Event Loop и как микротаски (Promise) влияют на приоритет выполнения по сравнению с макротасками (setTimeout)?",
+              "correct_answer": "Микротаски выполняются после текущего кода до макротасок, блокируя рендеринг при большом количестве промисов"
+            }
+          ]
+        },
+        {
+          "theme": "ES6+ возможности: деструктуризация, spread/rest операторы, модули, стрелочные функции",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой синтаксис используется для деструктуризации объекта с переименованием свойства 'clientId' в 'id'?",
+              "correct_answer": "const { clientId: id } = object"
+            },
+            {
+              "level": "Middle",
+              "question": "В React-компоненте банковского приложения нужно передать все props кроме 'sensitive'. Какой подход с rest оператором оптимален?",
+              "correct_answer": "const { sensitive, ...safeProps } = props; затем spread safeProps"
+            },
+            {
+              "level": "Senior",
+              "question": "Почему стрелочные функции в обработчиках событий React могут вызвать проблемы производительности при рендере больших списков транзакций?",
+              "correct_answer": "Создается новая функция при каждом рендере, breaking referential equality для React.memo"
+            }
+          ]
+        },
+        {
+          "theme": "Прототипное наследование, классы и функциональное программирование в JavaScript",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Что такое прототип объекта в JavaScript и как получить доступ к прототипу созданного объекта?",
+              "correct_answer": "Объект, от которого наследуются свойства. Доступ через __proto__ или Object.getPrototypeOf()."
+            },
+            {
+              "level": "Middle",
+              "question": "В React-приложении банка нужно создать иерархию компонентов для разных типов транзакций. В чем принципиальная разница между наследованием через классы и композицией функций в контексте переиспользования логики?",
+              "correct_answer": "Классы создают жесткую иерархию с единственным родителем, композиция комбинирует независимые функции гибко."
+            },
+            {
+              "level": "Senior",
+              "question": "В высоконагруженном React-приложении для онлайн-банкинга используется функциональное программирование с иммутабельными структурами данных. Какие проблемы с производительностью могут возникнуть при глубоком копировании больших объектов состояния и как их решить архитектурно?",
+              "correct_answer": "Избыточное выделение памяти и GC-паузы. Использовать structural sharing через Immer или персистентные структуры."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "competency": "CSS",
+      "type": "CORE",
+      "importance": 80,
+      "themes": [
+        {
+          "theme": "Flexbox и Grid Layout: построение адаптивных макетов",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какое свойство Flexbox используется для выравнивания элементов по главной оси контейнера?",
+              "correct_answer": "justify-content"
+            },
+            {
+              "level": "Middle",
+              "question": "Когда следует использовать CSS Grid вместо Flexbox для создания адаптивной формы заявки на кредит с несколькими секциями?",
+              "correct_answer": "Когда нужен двумерный контроль расположения элементов по строкам и столбцам одновременно"
+            },
+            {
+              "level": "Senior",
+              "question": "Почему использование Grid с auto-fit и minmax() предпочтительнее медиа-запросов при проектировании каталога банковских продуктов для мобильных и десктопных версий?",
+              "correct_answer": "Обеспечивает автоматическую адаптивность без брейкпоинтов, упрощает поддержку и уменьшает объем кода"
+            }
+          ]
+        },
+        {
+          "theme": "CSS-переменные, препроцессоры и методологии организации стилей (BEM, CSS Modules)",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой синтаксис используется для объявления CSS-переменной с основным цветом бренда банка?",
+              "correct_answer": "--primary-color: #0066CC; в селекторе :root"
+            },
+            {
+              "level": "Middle",
+              "question": "В чем преимущество CSS Modules перед глобальным BEM при разработке компонентной библиотеки для нескольких банковских продуктов?",
+              "correct_answer": "Автоматическая локализация стилей исключает конфликты имен между продуктами"
+            },
+            {
+              "level": "Senior",
+              "question": "Как спроектировать систему тем для мультибрендового банковского приложения с учетом производительности и поддержки legacy браузеров?",
+              "correct_answer": "CSS-переменные для современных браузеров с фоллбэком через препроцессор, критические стили инлайн"
+            }
+          ]
+        },
+        {
+          "theme": "Позиционирование элементов, z-index и управление потоком документа",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какое свойство CSS удаляет элемент из нормального потока документа и позиционирует его относительно viewport?",
+              "correct_answer": "position: fixed"
+            },
+            {
+              "level": "Middle",
+              "question": "В React-приложении банка модальное окно с z-index: 100 перекрывается выпадающим меню с z-index: 200. Оба внутри порталов. Почему и как исправить?",
+              "correct_answer": "Разные stacking context. Проверить z-index родительских элементов или использовать единый портал."
+            },
+            {
+              "level": "Senior",
+              "question": "Проектируете систему слоёв для банковского приложения: header, модалы, tooltips, notifications. Как организовать z-index management для масштабируемости?",
+              "correct_answer": "CSS-переменные или константы со слоями: base, header, overlay, modal, tooltip, notification."
+            }
+          ]
+        },
+        {
+          "theme": "Анимации и трансформации: transitions, animations и performance-оптимизация",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какое CSS-свойство используется для плавного перехода между состояниями элемента при hover?",
+              "correct_answer": "transition"
+            },
+            {
+              "level": "Middle",
+              "question": "Почему для анимации позиции элемента лучше использовать transform: translate(), а не top/left?",
+              "correct_answer": "transform не вызывает reflow, работает на GPU, обеспечивает 60fps"
+            },
+            {
+              "level": "Senior",
+              "question": "Как оптимизировать анимацию большого списка транзакций в мобильном банкинге для предотвращения jank на слабых устройствах?",
+              "correct_answer": "Использовать will-change, CSS containment, виртуализацию списка, анимировать только transform и opacity"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "competency": "React JS",
+      "type": "CORE",
+      "importance": 90,
+      "themes": [
+        {
+          "theme": "Жизненный цикл компонентов и хуки (useState, useEffect, useCallback, useMemo)",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой хук используется для выполнения побочных эффектов, таких как запрос данных о клиенте из API банка?",
+              "correct_answer": "useEffect"
+            },
+            {
+              "level": "Middle",
+              "question": "В чем разница между useCallback и useMemo при оптимизации обработчика отправки платежа в банковском приложении?",
+              "correct_answer": "useCallback мемоизирует функцию, useMemo мемоизирует результат вычисления"
+            },
+            {
+              "level": "Senior",
+              "question": "Почему useEffect с пустым массивом зависимостей может создать проблему с устаревшим замыканием при подписке на WebSocket для обновления баланса счета?",
+              "correct_answer": "Замыкание сохраняет начальные значения state, игнорируя их обновления"
+            }
+          ]
+        },
+        {
+          "theme": "Управление состоянием приложения (Context API, Redux, Zustand)",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой хук используется для чтения значения из Context API в функциональном компоненте React?",
+              "correct_answer": "useContext"
+            },
+            {
+              "level": "Middle",
+              "question": "В мобильном банковском приложении с 50+ экранами нужно управлять данными профиля пользователя, темой интерфейса и временными данными форм. Какое решение оптимально для каждого типа состояния?",
+              "correct_answer": "Context API для темы, Redux/Zustand для профиля, локальный state для форм"
+            },
+            {
+              "level": "Senior",
+              "question": "В телеком-портале с Context API все компоненты перерендериваются при любом изменении глобального состояния с данными тарифов, балансом и настройками. Как архитектурно решить проблему избыточных рендеров?",
+              "correct_answer": "Разделить на множественные контексты по доменам, использовать React.memo и useMemo для селекторов"
+            }
+          ]
+        },
+        {
+          "theme": "Производительность и оптимизация React-приложений (мemoization, lazy loading, code splitting)",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Что такое React.memo и для чего он используется?",
+              "correct_answer": "HOC для мемоизации компонента, предотвращает ре-рендер при неизменных props"
+            },
+            {
+              "level": "Middle",
+              "question": "В личном кабинете банка список из 50 транзакций ре-рендерится при каждом клике. Какие методы оптимизации применить?",
+              "correct_answer": "React.memo для элементов списка, виртуализация через react-window, useMemo для вычислений"
+            },
+            {
+              "level": "Senior",
+              "question": "В приложении интернет-банкинга после внедрения code splitting увеличилось время загрузки модуля платежей на медленных сетях. Как оптимизировать архитектуру загрузки?",
+              "correct_answer": "Prefetching критичных чанков, aggressive code splitting, resource hints, bundle analyzer для оптимизации размера"
+            }
+          ]
+        },
+        {
+          "theme": "Работа с формами, валидация и обработка пользовательского ввода",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой атрибут HTML input используется для отключения автозаполнения формы регистрации в банковском приложении?",
+              "correct_answer": "autoComplete со значением off"
+            },
+            {
+              "level": "Middle",
+              "question": "В чем разница между контролируемыми и неконтролируемыми компонентами форм в React при работе с формой перевода денег?",
+              "correct_answer": "Контролируемые управляются через state, неконтролируемые через refs и DOM"
+            },
+            {
+              "level": "Senior",
+              "question": "Как спроектировать оптимальную архитектуру валидации для многостраничной формы заявки на кредит с 50+ полями и зависимыми правилами?",
+              "correct_answer": "Использовать schema-based валидацию с yup/zod, разделить на контексты, применить debounce и мемоизацию"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "competency": "Redux",
+      "type": "DAILY",
+      "importance": 75,
+      "themes": [
+        {
+          "theme": "Основы Redux: store, actions, reducers и принцип однонаправленного потока данных",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой метод Redux используется для создания store с переданным reducer?",
+              "correct_answer": "createStore из библиотеки Redux"
+            },
+            {
+              "level": "Middle",
+              "question": "В React-приложении банка нужно хранить токен авторизации и список транзакций. Где лучше хранить токен: в Redux store или sessionStorage?",
+              "correct_answer": "В sessionStorage, чтобы избежать утечек через DevTools и сохранить при перезагрузке"
+            },
+            {
+              "level": "Senior",
+              "question": "В приложении телеком-оператора при массовом обновлении тарифов (200+ action за секунду) интерфейс тормозит. Как оптимизировать обработку actions в Redux?",
+              "correct_answer": "Батчинг actions через redux-batched-actions или debounce на уровне middleware"
+            }
+          ]
+        },
+        {
+          "theme": "Redux Toolkit: configureStore, createSlice, createAsyncThunk и RTK Query",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой метод Redux Toolkit автоматически создает action creators и reducer для slice?",
+              "correct_answer": "createSlice"
+            },
+            {
+              "level": "Middle",
+              "question": "В банковском приложении нужно кешировать данные клиента на 5 минут. Использовать RTK Query или createAsyncThunk?",
+              "correct_answer": "RTK Query с keepUnusedDataFor для автоматического кеширования"
+            },
+            {
+              "level": "Senior",
+              "question": "В приложении банка после logout остаются закешированные данные RTK Query. Как очистить все кеши при выходе?",
+              "correct_answer": "Dispatch api.util.resetApiState() в logout action или middleware"
+            }
+          ]
+        },
+        {
+          "theme": "Middleware и асинхронные операции: redux-thunk, redux-saga, обработка side effects",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой middleware в Redux позволяет диспатчить функции вместо объектов action для выполнения асинхронных операций?",
+              "correct_answer": "redux-thunk"
+            },
+            {
+              "level": "Middle",
+              "question": "В приложении банка нужно реализовать последовательную обработку платежей с отменой при ошибке. Какой middleware выбрать: redux-thunk или redux-saga?",
+              "correct_answer": "redux-saga, так как поддерживает cancellation и декларативное управление потоком"
+            },
+            {
+              "level": "Senior",
+              "question": "В телеком-приложении saga для загрузки баланса абонента выполняется дважды при монтировании компонента. Какая наиболее вероятная причина и решение?",
+              "correct_answer": "React.StrictMode вызывает двойной рендер. Использовать takeLatest вместо takeEvery для дедупликации"
+            }
+          ]
+        },
+        {
+          "theme": "Оптимизация производительности: селекторы, memoization, reselect и нормализация состояния",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Что такое селектор в Redux и для чего он используется?",
+              "correct_answer": "Функция для извлечения и вычисления данных из Redux store."
+            },
+            {
+              "level": "Middle",
+              "question": "В банковском приложении список из 10000 транзакций фильтруется при каждом рендере. Когда использовать reselect вместо обычного селектора?",
+              "correct_answer": "Когда нужна мemoизация вычислений для предотвращения повторных фильтраций идентичных данных."
+            },
+            {
+              "level": "Senior",
+              "question": "В личном кабинете телеком-оператора данные клиента хранятся как вложенные объекты (contracts->services->tariffs), что вызывает массовые ререндеры. Как нормализация состояния решит эту проблему?",
+              "correct_answer": "Плоская структура с ID-ссылками позволит обновлять отдельные сущности без пересчета всего дерева."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "competency": "TypeScript",
+      "type": "CORE",
+      "importance": 85,
+      "themes": [
+        {
+          "theme": "Типизация React компонентов: Props, State, Events и Refs",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой тип TypeScript использовать для типизации props функционального React компонента, отображающего данные клиента банка?",
+              "correct_answer": "Interface или type для объекта props с полями клиента"
+            },
+            {
+              "level": "Middle",
+              "question": "В чем разница между React.FC<Props> и обычной функцией с типизированными props при создании компонента формы перевода денег?",
+              "correct_answer": "React.FC автоматически добавляет children, обычная функция требует явного указания"
+            },
+            {
+              "level": "Senior",
+              "question": "Почему использование generic constraints с forwardRef критично для типобезопасности при создании переиспользуемой библиотеки UI-компонентов банковского приложения?",
+              "correct_answer": "Обеспечивает корректный вывод типов ref и props, предотвращает type widening"
+            }
+          ]
+        },
+        {
+          "theme": "Продвинутые типы TypeScript: Utility Types, Generics и Type Guards",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой Utility Type в TypeScript используется для создания типа со всеми свойствами исходного типа, но с модификатором optional?",
+              "correct_answer": "Partial<T>"
+            },
+            {
+              "level": "Middle",
+              "question": "В React-компоненте банковского приложения нужно валидировать props на runtime и использовать type guards. Какую конструкцию применить для проверки, что переданный объект имеет свойство accountNumber типа string?",
+              "correct_answer": "Использовать предикат типа: 'accountNumber' in obj && typeof obj.accountNumber === 'string'"
+            },
+            {
+              "level": "Senior",
+              "question": "При проектировании типобезопасного API-клиента для банковских транзакций необходимо создать generic-функцию, которая гарантирует совместимость типов запроса и ответа. Какие ограничения (constraints) и условные типы использовать для обеспечения type safety между Request и Response типами с поддержкой discriminated unions?",
+              "correct_answer": "Использовать generic constraints с extends, mapped types и conditional types с infer для связывания типов через discriminant поле"
+            }
+          ]
+        },
+        {
+          "theme": "Типизация хуков React: useState, useEffect, useContext, useReducer и кастомные хуки",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Как типизировать useState для хранения данных пользователя с полями id, name и iin в банковском приложении?",
+              "correct_answer": "useState<{id: number; name: string; iin: string} | null>(null)"
+            },
+            {
+              "level": "Middle",
+              "question": "В чем разница между типизацией useEffect(() => {}, []) и useEffect(() => { return () => {} }, []) при работе с WebSocket соединением для онлайн-банкинга?",
+              "correct_answer": "Вторая возвращает cleanup функцию для отписки, первая без очистки ресурсов"
+            },
+            {
+              "level": "Senior",
+              "question": "Почему для кастомного хука useTransactionPolling в банковском приложении лучше использовать дискриминированные union типы вместо optional полей при типизации состояния загрузки?",
+              "correct_answer": "Гарантирует type-safe доступ к данным, исключает невалидные комбинации состояний"
+            }
+          ]
+        },
+        {
+          "theme": "TypeScript в React экосистеме: типизация Redux/Zustand, React Router, API запросов и форм",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой тип TypeScript используется для типизации параметров navigate функции из React Router v6?",
+              "correct_answer": "NavigateFunction из react-router-dom"
+            },
+            {
+              "level": "Middle",
+              "question": "В чем разница между typed hooks useAppDispatch и обычным useDispatch при типизации Redux Toolkit в приложении банка?",
+              "correct_answer": "useAppDispatch инферит типы thunk actions и middleware"
+            },
+            {
+              "level": "Senior",
+              "question": "Как спроектировать архитектуру типобезопасного API-слоя с RTK Query для микросервисов банка, чтобы избежать дублирования типов между сервисами?",
+              "correct_answer": "Использовать codegen из OpenAPI спецификаций с shared types пакетом"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

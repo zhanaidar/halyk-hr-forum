@@ -1,0 +1,355 @@
+{
+  "profile": "Mobile разработчик",
+  "specialization": "iOS",
+  "file_name": "Mobile_iOS",
+  "competencies": [
+    {
+      "competency": "Знание языка программирования Swift",
+      "type": "CORE",
+      "importance": 90,
+      "themes": [
+        {
+          "theme": "Типы данных, опционалы и безопасность типов в Swift",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой синтаксис используется для объявления опционального типа String в Swift?",
+              "correct_answer": "String? или Optional<String>"
+            },
+            {
+              "level": "Middle",
+              "question": "В банковском приложении нужно обработать сумму перевода, которая может отсутствовать. Когда использовать guard let вместо if let для разворачивания опционала?",
+              "correct_answer": "Когда нужно досрочно выйти из функции при nil значении"
+            },
+            {
+              "level": "Senior",
+              "question": "В телеком-приложении происходят крэши при десериализации JSON с номерами телефонов. Как спроектировать безопасную архитектуру типов для обработки опциональных полей API с минимальными force unwrap?",
+              "correct_answer": "Использовать Codable с кастомными init, nil coalescing и Result type"
+            }
+          ]
+        },
+        {
+          "theme": "Протоколы, расширения и protocol-oriented programming",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какое ключевое слово используется для объявления протокола в Swift?",
+              "correct_answer": "protocol"
+            },
+            {
+              "level": "Middle",
+              "question": "В чем преимущество protocol extension с default implementation перед базовым классом при разработке модуля аутентификации в банковском приложении?",
+              "correct_answer": "Избегаем наследования, поддерживаем композицию и множественное соответствие протоколам"
+            },
+            {
+              "level": "Senior",
+              "question": "Как спроектировать protocol-oriented архитектуру для модуля безопасности банковского приложения, чтобы избежать проблем с existential container и сохранить производительность при работе с биометрией?",
+              "correct_answer": "Использовать generic constraints с associated types вместо protocol as types"
+            }
+          ]
+        },
+        {
+          "theme": "Управление памятью: ARC, capture lists и слабые ссылки",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Что такое ARC в Swift и за что он отвечает?",
+              "correct_answer": "Automatic Reference Counting — автоматическое управление памятью через подсчет ссылок на объекты"
+            },
+            {
+              "level": "Middle",
+              "question": "В банковском приложении экран детализации транзакций имеет замыкание для обновления UI. Когда следует использовать [weak self] в capture list?",
+              "correct_answer": "Когда замыкание хранится как свойство и может пережить владельца, предотвращая retain cycle"
+            },
+            {
+              "level": "Senior",
+              "question": "В телеком-приложении WebSocket-соединение с биллинговой системой держит замыкание на контроллер. Почему использование unowned self может привести к крэшу при смене тарифа?",
+              "correct_answer": "unowned не обнуляется при деинициализации, обращение к освобожденной памяти вызывает краш при выполнении замыкания"
+            }
+          ]
+        },
+        {
+          "theme": "Concurrency: async/await, actors и structured concurrency",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какое ключевое слово необходимо добавить перед функцией в Swift, чтобы она могла использовать await внутри своего тела?",
+              "correct_answer": "async"
+            },
+            {
+              "level": "Middle",
+              "question": "В банковском приложении нужно синхронизировать доступ к балансу счета между несколькими async операциями. Какой механизм Swift Concurrency следует использовать вместо DispatchQueue?",
+              "correct_answer": "Actor для изоляции мутабельного состояния баланса"
+            },
+            {
+              "level": "Senior",
+              "question": "При загрузке списка транзакций в банковском приложении через async/await возникает проблема: при быстрой смене экранов старые запросы продолжают выполняться. Как structured concurrency решает эту проблему архитектурно?",
+              "correct_answer": "Task автоматически отменяется при деинициализации родительского контекста через cooperative cancellation"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "competency": "Знание iOS SDK",
+      "type": "CORE",
+      "importance": 90,
+      "themes": [
+        {
+          "theme": "UIKit: жизненный цикл UIViewController, Auto Layout и работа с UI компонентами",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой метод жизненного цикла UIViewController вызывается один раз после загрузки view в память?",
+              "correct_answer": "viewDidLoad вызывается однократно после загрузки view"
+            },
+            {
+              "level": "Middle",
+              "question": "В банковском приложении нужно обновлять курсы валют при каждом появлении экрана. В каком методе жизненного цикла правильнее загружать данные и почему не в viewDidLoad?",
+              "correct_answer": "В viewWillAppear, так как viewDidLoad вызывается только один раз"
+            },
+            {
+              "level": "Senior",
+              "question": "В приложении банка форма с Auto Layout тормозит при появлении клавиатуры на старых устройствах. Как оптимизировать обновление constraints для избежания лишних проходов layout engine?",
+              "correct_answer": "Батчить изменения constraints, использовать setNeedsLayout с layoutIfNeeded в animation block"
+            }
+          ]
+        },
+        {
+          "theme": "Foundation Framework: работа с коллекциями, String, Date, URLSession и многопоточность",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой класс Foundation используется для создания неизменяемого массива объектов в iOS?",
+              "correct_answer": "NSArray или Array в Swift"
+            },
+            {
+              "level": "Middle",
+              "question": "В приложении банка нужно загружать данные клиента каждые 30 секунд. Какой подход с URLSession и DispatchQueue правильный для фоновой загрузки без блокировки UI?",
+              "correct_answer": "URLSession с делегатом на background queue и обновление UI на main queue"
+            },
+            {
+              "level": "Senior",
+              "question": "В банковском приложении при массовой обработке транзакций (10000+ объектов) происходит memory spike. Как оптимизировать работу с NSArray/Dictionary и String для минимизации копирования данных?",
+              "correct_answer": "Использовать NSMutableArray, избегать bridging, применять autoreleasepool блоки и lazy processing"
+            }
+          ]
+        },
+        {
+          "theme": "SwiftUI: декларативное построение интерфейсов, State management и навигация",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой property wrapper используется в SwiftUI для создания изменяемого состояния внутри View?",
+              "correct_answer": "@State для локального изменяемого состояния View"
+            },
+            {
+              "level": "Middle",
+              "question": "В приложении банка нужно передать данные пользователя через несколько уровней навигации без явной передачи через каждый View. Какой property wrapper использовать и почему?",
+              "correct_answer": "@EnvironmentObject, так как он доступен всем дочерним View без явной передачи"
+            },
+            {
+              "level": "Senior",
+              "question": "В банковском приложении с крупной формой открытия счета происходят потери ввода при навигации назад через NavigationStack. Как архитектурно решить проблему сохранения состояния формы и избежать лишних рендеров?",
+              "correct_answer": "Вынести состояние в StateObject/ObservableObject выше NavigationStack, использовать navigationDestination с value-based навигацией"
+            }
+          ]
+        },
+        {
+          "theme": "Core Data и UserDefaults: локальное хранение данных, NSFetchedResultsController и миграции",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой класс используется для сохранения простых пар ключ-значение в iOS, например настроек языка приложения банка?",
+              "correct_answer": "UserDefaults для хранения примитивных типов данных"
+            },
+            {
+              "level": "Middle",
+              "question": "В банковском приложении нужно отображать список из 10000+ транзакций с постраничной загрузкой. Почему NSFetchedResultsController предпочтительнее обычного fetch запроса?",
+              "correct_answer": "Автоматический батчинг, мониторинг изменений и эффективное управление памятью"
+            },
+            {
+              "level": "Senior",
+              "question": "В приложении телеком-оператора при миграции Core Data с версии 3 на 4 необходимо зашифровать номера телефонов клиентов. Какой тип миграции использовать и почему?",
+              "correct_answer": "Heavyweight migration с NSMigrationManager для трансформации данных с кастомной логикой"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "competency": "Знание UIKit, SwiftUI",
+      "type": "CORE",
+      "importance": 85,
+      "themes": [
+        {
+          "theme": "Жизненный цикл UIViewController и навигация в UIKit",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "В каком методе UIViewController следует добавлять subviews и настраивать UI-элементы?",
+              "correct_answer": "viewDidLoad, так как view гарантированно загружен в память"
+            },
+            {
+              "level": "Middle",
+              "question": "В чем разница между использованием present(_:animated:) и pushViewController(_:animated:) для навигации в банковском приложении с многоуровневым меню?",
+              "correct_answer": "pushViewController требует UINavigationController и создает иерархию с back-кнопкой, present показывает модально"
+            },
+            {
+              "level": "Senior",
+              "question": "Почему в банковском iOS-приложении с биометрией может происходить утечка памяти при использовании замыканий в viewDidLoad без [weak self], и как это связано с жизненным циклом контроллера?",
+              "correct_answer": "Замыкание захватывает self, создавая retain cycle, контроллер не деинициализируется после dismiss/pop"
+            }
+          ]
+        },
+        {
+          "theme": "Декларативное построение интерфейсов в SwiftUI: State, Binding и ObservableObject",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой property wrapper в SwiftUI используется для создания локального изменяемого состояния внутри View?",
+              "correct_answer": "@State для хранения приватного состояния View"
+            },
+            {
+              "level": "Middle",
+              "question": "В мобильном приложении банка форма перевода состоит из нескольких дочерних компонентов. Как передать возможность изменять сумму перевода из родительского View в дочерний TextField компонент?",
+              "correct_answer": "Использовать @Binding в дочернем View с передачей $amount"
+            },
+            {
+              "level": "Senior",
+              "question": "В приложении банка список транзакций с ObservableObject медленно обновляется при изменении одной транзакции, перерисовывая весь экран. Как оптимизировать перерисовку для минимизации потребления батареи на устаревших устройствах?",
+              "correct_answer": "Разбить на микро-состояния с @Published, использовать equatable модели и onReceive для селективных обновлений"
+            }
+          ]
+        },
+        {
+          "theme": "Работа с UITableView и UICollectionView: делегаты, источники данных и оптимизация",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой метод протокола UITableViewDataSource обязательно нужно реализовать для отображения ячеек в таблице?",
+              "correct_answer": "tableView(_:cellForRowAt:) и tableView(_:numberOfRowsInSection:)"
+            },
+            {
+              "level": "Middle",
+              "question": "В приложении банка список транзакций загружается постранично. Какой метод UITableViewDelegate использовать для определения момента подгрузки следующей страницы?",
+              "correct_answer": "tableView(_:willDisplay:forRowAt:) проверяя приближение к последней ячейке"
+            },
+            {
+              "level": "Senior",
+              "question": "В списке операций банка 10000+ транзакций с разными типами ячеек. Как оптимизировать UITableView чтобы избежать лагов при быстром скролле?",
+              "correct_answer": "Использовать prefetching, кешировать высоты ячеек, оптимизировать dequeueReusableCell с несколькими идентификаторами, избегать autolayout в ячейках"
+            }
+          ]
+        },
+        {
+          "theme": "Интеграция UIKit и SwiftUI: UIViewRepresentable, UIHostingController и миграция компонентов",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой протокол нужно реализовать, чтобы встроить UIKit view в SwiftUI интерфейс мобильного банка?",
+              "correct_answer": "UIViewRepresentable с методами makeUIView и updateUIView"
+            },
+            {
+              "level": "Middle",
+              "question": "В каком случае использовать UIHostingController вместо UIViewRepresentable при миграции экрана оплаты услуг с UIKit на SwiftUI?",
+              "correct_answer": "Когда нужно встроить SwiftUI view в существующий UIKit navigation stack"
+            },
+            {
+              "level": "Senior",
+              "question": "Как предотвратить излишние вызовы updateUIView при изменении @State в SwiftUI-обертке для UIKit графика курсов валют?",
+              "correct_answer": "Использовать Equatable для сравнения изменений и условную логику в updateUIView"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "competency": "Навыки работы с Xcode",
+      "type": "DAILY",
+      "importance": 70,
+      "themes": [
+        {
+          "theme": "Работа с Interface Builder и Storyboards: создание и настройка UI элементов, Auto Layout constraints",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой инструмент в Interface Builder используется для создания связей между constraints элементов UI при адаптации под разные размеры экранов?",
+              "correct_answer": "Auto Layout с помощью Add New Constraints панели"
+            },
+            {
+              "level": "Middle",
+              "question": "В приложении банка экран авторизации должен поддерживать iPad и iPhone. Когда следует использовать Size Classes вместо фиксированных constraints для адаптации layout?",
+              "correct_answer": "Когда требуется разная компоновка элементов для компактных и регулярных размеров"
+            },
+            {
+              "level": "Senior",
+              "question": "В банковском приложении storyboard с 40+ экранами вызывает конфликты при слиянии веток в Git и долгую загрузку Xcode. Какое архитектурное решение устранит эти проблемы при сохранении визуального проектирования?",
+              "correct_answer": "Разделить на несколько storyboards по модулям с использованием Storyboard References"
+            }
+          ]
+        },
+        {
+          "theme": "Отладка приложений: использование breakpoints, lldb команд, View Hierarchy Debugger и Memory Graph",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какая lldb команда позволяет вывести значение переменной userBalance во время остановки на breakpoint?",
+              "correct_answer": "po userBalance или p userBalance"
+            },
+            {
+              "level": "Middle",
+              "question": "В банковском приложении UI элемент не отображается корректно. Какой инструмент Xcode позволит визуально проверить иерархию view и их constraints в runtime?",
+              "correct_answer": "View Hierarchy Debugger в Debug Navigator"
+            },
+            {
+              "level": "Senior",
+              "question": "В продакшене банковского приложения растет memory footprint при работе с списком транзакций. Как через Memory Graph выявить retain cycle между ViewController и замыканием в сетевом запросе?",
+              "correct_answer": "Найти объект ViewController, проверить incoming references, искать strong замыкания без capture list"
+            }
+          ]
+        },
+        {
+          "theme": "Управление зависимостями и конфигурациями проекта: схемы сборки, build configurations, Swift Package Manager",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой файл создается в корне проекта при добавлении первой зависимости через Swift Package Manager?",
+              "correct_answer": "Package.resolved"
+            },
+            {
+              "level": "Middle",
+              "question": "В банковском приложении нужны разные URL для Dev, Stage и Prod окружений. Какой механизм Xcode позволит переключаться между ними при сборке?",
+              "correct_answer": "Build Configurations с User-Defined Settings"
+            },
+            {
+              "level": "Senior",
+              "question": "После обновления SPM-зависимости приложение банка крашится только в Release сборке. Какие шаги troubleshooting предпримете первыми?",
+              "correct_answer": "Проверить Build Settings оптимизации, символы debug/release зависимости, очистить DerivedData"
+            }
+          ]
+        },
+        {
+          "theme": "Инструменты профилирования и оптимизации: Instruments (Time Profiler, Allocations, Leaks), анализ производительности",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой инструмент в Instruments используется для обнаружения утечек памяти в iOS-приложении?",
+              "correct_answer": "Leaks"
+            },
+            {
+              "level": "Middle",
+              "question": "В каком случае следует использовать Time Profiler вместо Allocations при оптимизации банковского приложения с медленной прокруткой списка транзакций?",
+              "correct_answer": "Когда нужно найти методы с высокой загрузкой CPU"
+            },
+            {
+              "level": "Senior",
+              "question": "Приложение банка показывает рост памяти при скролле истории операций, но Leaks не находит утечек. Какой инструмент Instruments поможет найти причину и что искать?",
+              "correct_answer": "Allocations с фильтром All Heap Allocations, искать retain cycles"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

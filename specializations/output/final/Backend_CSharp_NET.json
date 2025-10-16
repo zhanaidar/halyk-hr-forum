@@ -1,0 +1,595 @@
+{
+  "profile": "Backend разработчик",
+  "specialization": "C# / .NET",
+  "file_name": "Backend_CSharp_NET",
+  "competencies": [
+    {
+      "competency": "Знание языка программирования C#",
+      "type": "CORE",
+      "importance": 90,
+      "themes": [
+        {
+          "theme": "Типы данных, операторы и управляющие конструкции в C#",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой тип данных в C# используется для хранения суммы банковского перевода до 79,228,162,514,264,337,593,543,950,335 с точностью до копеек?",
+              "correct_answer": "decimal",
+              "var_1": "long",
+              "var_2": "decimal",
+              "var_3": "double",
+              "var_4": "float",
+              "correct_position": 2
+            },
+            {
+              "level": "Middle",
+              "question": "В системе обработки платежей нужно проверить статус транзакции и вернуть результат одним выражением. Какой оператор позволит избежать NullReferenceException при проверке transaction?.Status == 'completed'?",
+              "correct_answer": "Null-conditional оператор ?. возвращает null если объект null",
+              "var_1": "Null-conditional оператор ?. возвращает null если объект null",
+              "var_2": "Оператор ?? возвращает значение по умолчанию вместо null",
+              "var_3": "Ключевое слово nullable обрабатывает null-ссылки автоматически",
+              "var_4": "Оператор ?[] позволяет безопасно проверять свойства объекта",
+              "correct_position": 1
+            },
+            {
+              "level": "Senior",
+              "question": "В высоконагруженном телеком-биллинге обрабатываются миллионы записей звонков. Почему использование struct вместо class для CallRecord с полями DateTime, int, decimal может ухудшить производительность при boxing/unboxing в коллекциях?",
+              "correct_answer": "Struct копируется по значению, boxing в List<object> создает heap-аллокации и давление на GC",
+              "var_1": "Struct занимает больше памяти в stack, вызывая переполнение стека при массовых операциях",
+              "var_2": "Class требует boxing при передаче в generic-коллекции, struct избегает heap-аллокаций полностью",
+              "var_3": "Struct копируется по значению, boxing в List<object> создает heap-аллокации и давление на GC",
+              "var_4": "Struct передается по ссылке в коллекциях, создавая фрагментацию памяти и увеличивая latency",
+              "correct_position": 3
+            }
+          ]
+        },
+        {
+          "theme": "Объектно-ориентированное программирование: классы, интерфейсы, наследование и полиморфизм",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой модификатор доступа в C# делает член класса доступным только внутри этого класса и производных классов?",
+              "correct_answer": "protected",
+              "var_1": "private",
+              "var_2": "protected internal",
+              "var_3": "protected",
+              "var_4": "internal",
+              "correct_position": 3
+            },
+            {
+              "level": "Middle",
+              "question": "В банковской системе нужно обрабатывать платежи разных типов (карточные, SWIFT, внутренние переводы). Какой принцип ООП позволит обрабатывать их единообразно через общий интерфейс IPayment?",
+              "correct_answer": "Полиморфизм через реализацию интерфейса",
+              "var_1": "Абстракция через базовый класс",
+              "var_2": "Полиморфизм через реализацию интерфейса",
+              "var_3": "Наследование с виртуальными методами",
+              "var_4": "Инкапсуляция в generic-типе",
+              "correct_position": 2
+            },
+            {
+              "level": "Senior",
+              "question": "В телеком-биллинговой системе класс Customer содержит List<Invoice> и List<Contract>. При сериализации через API возникают циклические ссылки. Как спроектировать архитектуру, чтобы избежать этой проблемы без использования атрибутов игнорирования?",
+              "correct_answer": "Использовать DTO паттерн с маппингом и разделением доменных моделей от контрактов API",
+              "var_1": "Применить lazy loading для коллекций и виртуальные свойства с отложенной инициализацией",
+              "var_2": "Использовать DTO паттерн с маппингом и разделением доменных моделей от контрактов API",
+              "var_3": "Использовать weak references для связанных объектов и финализаторы для очистки ссылок",
+              "var_4": "Реализовать ISerializable интерфейс с кастомной логикой сериализации в GetObjectData методе",
+              "correct_position": 2
+            }
+          ]
+        },
+        {
+          "theme": "Обобщения (Generics), делегаты, события и LINQ",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой синтаксис используется для объявления generic-метода, который принимает список любого типа и возвращает первый элемент?",
+              "correct_answer": "public T GetFirst<T>(List<T> items) { return items[0]; }",
+              "var_1": "public T GetFirst(List<object> items) { return (T)items[0]; }",
+              "var_2": "public T GetFirst(List<T> items) where T : class { return items[0]; }",
+              "var_3": "public T GetFirst<T>(List<T> items) { return items[0]; }",
+              "var_4": "public object GetFirst<T>(ArrayList items) { return items[0]; }",
+              "correct_position": 3
+            },
+            {
+              "level": "Middle",
+              "question": "В системе обработки банковских транзакций нужно фильтровать платежи по разным критериям. Какой подход эффективнее: несколько методов с конкретными условиями или делегаты Func/Predicate в LINQ?",
+              "correct_answer": "Делегаты Func/Predicate с LINQ обеспечивают гибкость и переиспользуемость кода.",
+              "var_1": "Делегаты Func/Predicate с LINQ обеспечивают гибкость и переиспользуемость кода.",
+              "var_2": "Expression Trees с IQueryable оптимальны для фильтрации в памяти.",
+              "var_3": "Статические методы расширения для каждого критерия более предсказуемы.",
+              "var_4": "Конкретные методы обеспечивают лучшую производительность и читаемость кода.",
+              "correct_position": 1
+            },
+            {
+              "level": "Senior",
+              "question": "При проектировании event-driven системы уведомлений для телеком-оператора с миллионами подписчиков, какие проблемы возникают при использовании стандартных событий C# и как их решить?",
+              "correct_answer": "Утечки памяти при незакрытых подписках, блокировка потоков. Решение: weak references, async events, event aggregator pattern.",
+              "var_1": "Утечки памяти при незакрытых подписках, блокировка потоков. Решение: weak references, async events, event aggregator pattern.",
+              "var_2": "Переполнение стека вызовов при цепочке событий. Решение: ThreadPool.QueueUserWorkItem для каждого подписчика, ограничение глубины вложенности событий.",
+              "var_3": "Низкая производительность из-за boxing/unboxing. Решение: использовать generic EventHandler<T> и constraint на struct типы для событий.",
+              "var_4": "Проблемы многопоточности при raise события. Решение: lock на всех подписчиках, синхронный вызов через Interlocked.CompareExchange для делегата.",
+              "correct_position": 1
+            }
+          ]
+        },
+        {
+          "theme": "Асинхронное программирование: async/await, Task и многопоточность",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Что возвращает async метод, который выполняет асинхронную операцию и не возвращает результат?",
+              "correct_answer": "Task",
+              "var_1": "AsyncResult",
+              "var_2": "Task",
+              "var_3": "void",
+              "var_4": "Task<void>",
+              "correct_position": 2
+            },
+            {
+              "level": "Middle",
+              "question": "В чем разница между Task.Run() и Task.Factory.StartNew() при обработке запросов в банковском API?",
+              "correct_answer": "Task.Run использует TaskScheduler.Default, StartNew позволяет настроить планировщик и параметры выполнения.",
+              "var_1": "Task.Run поддерживает CancellationToken автоматически, StartNew требует явной передачи TaskCreationOptions.LongRunning для отмены.",
+              "var_2": "Task.Run выполняется синхронно, StartNew создает отдельный поток для каждой операции.",
+              "var_3": "Task.Factory.StartNew использует ThreadPool.QueueUserWorkItem, Task.Run работает через SynchronizationContext текущего потока.",
+              "var_4": "Task.Run использует TaskScheduler.Default, StartNew позволяет настроить планировщик и параметры выполнения.",
+              "correct_position": 4
+            },
+            {
+              "level": "Senior",
+              "question": "Почему в высоконагруженном платежном шлюзе не следует использовать Task.Result или .Wait() для ожидания асинхронных операций?",
+              "correct_answer": "Блокируют поток, вызывают deadlock при SynchronizationContext, снижают пропускную способность и масштабируемость системы.",
+              "var_1": "Блокируют поток, вызывают deadlock при SynchronizationContext, снижают пропускную способность и масштабируемость системы.",
+              "var_2": "Создают race condition при конкурентном доступе к shared state в многопоточной среде.",
+              "var_3": "Увеличивают потребление памяти из-за создания дополнительных Task объектов в Thread Pool.",
+              "var_4": "Вызывают утечки памяти из-за незавершенных continuation и накопления Task в очереди.",
+              "correct_position": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "competency": "Знание платформы .NET Core / .NET Framework",
+      "type": "CORE",
+      "importance": 90,
+      "themes": [
+        {
+          "theme": "Архитектура и жизненный цикл .NET приложений: CLR, JIT-компиляция, сборка мусора и управление памятью",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Что такое CLR в платформе .NET и какую основную функцию он выполняет?",
+              "correct_answer": "Common Language Runtime — среда выполнения, управляющая исполнением .NET кода",
+              "var_1": "Cross-Language Runtime — компилятор для преобразования C# кода в машинный код",
+              "var_2": "Component Library Repository — хранилище готовых компонентов для повторного использования в проектах",
+              "var_3": "Common Language Runtime — среда выполнения, управляющая исполнением .NET кода",
+              "var_4": "Code Level Resolver — механизм разрешения зависимостей между сборками при компиляции",
+              "correct_position": 3
+            },
+            {
+              "level": "Middle",
+              "question": "В чем разница между Server GC и Workstation GC, и когда следует использовать Server GC для высоконагруженного банковского API?",
+              "correct_answer": "Server GC использует отдельные потоки для каждого ядра, оптимален для высокопроизводительных серверных приложений",
+              "var_1": "Server GC выполняет фоновую сборку между запросами, уменьшая паузы при обработке платежных транзакций",
+              "var_2": "Server GC использует отдельные потоки для каждого ядра, оптимален для высокопроизводительных серверных приложений",
+              "var_3": "Server GC компактирует память после каждой Generation 0, подходит для длительных API-запросов банка",
+              "var_4": "Server GC использует единый поток для всех ядер, снижая latency для транзакционных операций",
+              "correct_position": 2
+            },
+            {
+              "level": "Senior",
+              "question": "Почему в процессинговом сервисе транзакций с требованием низкой latency следует использовать Span<T> вместо byte[] массивов, и как это влияет на работу GC?",
+              "correct_answer": "Span<T> выделяется в стеке, избегает аллокаций в куче и давления на GC, снижая паузы сборки мусора",
+              "var_1": "Span<T> использует специальный GC.SuppressFinalize режим, блокирующий Gen2 коллекции во время обработки критичных транзакций",
+              "var_2": "Span<T> переносит массивы в LOH с пинингом, предотвращая фрагментацию памяти при частых операциях с буферами",
+              "var_3": "Span<T> активирует Server GC режим автоматически, распределяя данные по NUMA-нодам для параллельной обработки платежей",
+              "var_4": "Span<T> выделяется в стеке, избегает аллокаций в куче и давления на GC, снижая паузы сборки мусора",
+              "correct_position": 4
+            }
+          ]
+        },
+        {
+          "theme": "Dependency Injection и встроенный IoC-контейнер: регистрация сервисов, время жизни (Singleton, Scoped, Transient)",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой метод используется для регистрации сервиса с временем жизни Transient в ASP.NET Core?",
+              "correct_answer": "services.AddTransient<TService, TImplementation>()",
+              "var_1": "services.AddScoped<TService, TImplementation>()",
+              "var_2": "container.Resolve<TService>(ServiceLifetime.Transient)",
+              "var_3": "services.AddTransient<TService, TImplementation>()",
+              "var_4": "services.RegisterTransient<TService>()",
+              "correct_position": 3
+            },
+            {
+              "level": "Middle",
+              "question": "Какое время жизни сервиса выбрать для DbContext при разработке банковского API с высокой нагрузкой?",
+              "correct_answer": "Scoped, чтобы использовать один контекст на HTTP-запрос",
+              "var_1": "Singleton, чтобы переиспользовать подключение к базе данных",
+              "var_2": "Scoped с AddDbContextPool для пула соединений",
+              "var_3": "Scoped, чтобы использовать один контекст на HTTP-запрос",
+              "var_4": "Transient, чтобы каждый сервис получал изолированный контекст",
+              "correct_position": 3
+            },
+            {
+              "level": "Senior",
+              "question": "Почему регистрация Scoped-сервиса как зависимости в Singleton может привести к Captive Dependency и как это предотвратить?",
+              "correct_answer": "Singleton живет весь lifetime приложения и удерживает Scoped, используйте IServiceScopeFactory для создания scope вручную",
+              "var_1": "Контейнер автоматически повышает lifetime до Singleton, используйте ValidateScopes в Development для обнаружения проблем",
+              "var_2": "Singleton живет весь lifetime приложения и удерживает Scoped, используйте IServiceScopeFactory для создания scope вручную",
+              "var_3": "Scoped-сервис пересоздается при каждом запросе, используйте AddSingleton с lazy initialization для оптимизации",
+              "var_4": "Singleton блокирует Scoped до завершения scope, регистрируйте зависимость через ServiceLifetime.Transient вместо Scoped",
+              "correct_position": 2
+            }
+          ]
+        },
+        {
+          "theme": "Middleware pipeline и обработка HTTP-запросов в ASP.NET Core: порядок выполнения, создание кастомных middleware",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой метод используется для регистрации middleware в ASP.NET Core в методе Configure класса Startup?",
+              "correct_answer": "app.Use, app.UseMiddleware или app.Run",
+              "var_1": "app.MapMiddleware и app.RegisterMiddleware",
+              "var_2": "builder.UseComponent или app.AddPipeline",
+              "var_3": "app.Use, app.UseMiddleware или app.Run",
+              "var_4": "services.AddMiddleware или ConfigureServices",
+              "correct_position": 3
+            },
+            {
+              "level": "Middle",
+              "question": "В чем разница между app.Use() и app.Run() при регистрации middleware в pipeline ASP.NET Core?",
+              "correct_answer": "app.Use вызывает следующий middleware через next(), app.Run завершает pipeline",
+              "var_1": "app.Use добавляет middleware в DI-контейнер, app.Run регистрирует в pipeline",
+              "var_2": "app.Use вызывает следующий middleware через next(), app.Run завершает pipeline",
+              "var_3": "app.Run обрабатывает запросы параллельно, app.Use последовательно через очередь",
+              "var_4": "app.Use регистрирует middleware синхронно, app.Run выполняет асинхронно",
+              "correct_position": 2
+            },
+            {
+              "level": "Senior",
+              "question": "Какие проблемы возникнут при добавлении app.UseRouting() после app.UseAuthorization() в middleware pipeline банковского API, и как это повлияет на атрибуты [Authorize]?",
+              "correct_answer": "Authorization выполнится до роутинга, endpoint будет null, авторизация всегда будет падать",
+              "var_1": "Routing обработает запрос дважды, авторизация применится к обоим проходам через pipeline",
+              "var_2": "Атрибуты [Authorize] применятся к контроллерам глобально, игнорируя роли и политики",
+              "var_3": "Authorization middleware выбросит исключение InvalidOperationException при инициализации приложения",
+              "var_4": "Authorization выполнится до роутинга, endpoint будет null, авторизация всегда будет падать",
+              "correct_position": 4
+            }
+          ]
+        },
+        {
+          "theme": "Асинхронное программирование: async/await, Task Parallel Library, ConfigureAwait и управление контекстом синхронизации",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какое ключевое слово используется для пометки метода как асинхронного в C#?",
+              "correct_answer": "async",
+              "var_1": "task",
+              "var_2": "async",
+              "var_3": "asyncmethod",
+              "var_4": "await",
+              "correct_position": 2
+            },
+            {
+              "level": "Middle",
+              "question": "В чем разница между ConfigureAwait(false) и ConfigureAwait(true) при обработке запросов к банковской БД?",
+              "correct_answer": "ConfigureAwait(false) не возвращает выполнение в исходный контекст синхронизации",
+              "var_1": "ConfigureAwait(true) повышает приоритет потока для обработки результатов запроса",
+              "var_2": "ConfigureAwait(false) отключает параллельное выполнение асинхронных запросов к БД",
+              "var_3": "ConfigureAwait(false) не возвращает выполнение в исходный контекст синхронизации",
+              "var_4": "ConfigureAwait(false) использует отдельный пул потоков для операций БД",
+              "correct_position": 3
+            },
+            {
+              "level": "Senior",
+              "question": "Почему в высоконагруженном API платежного шлюза возникает thread pool starvation при блокирующих вызовах Task.Result вместо await?",
+              "correct_answer": "Task.Result блокирует поток, исчерпывая пул потоков и препятствуя обработке новых запросов",
+              "var_1": "Task.Result создает дополнительные Task объекты, увеличивая нагрузку на garbage collector",
+              "var_2": "Task.Result вызывает deadlock из-за захвата SynchronizationContext в ASP.NET Core",
+              "var_3": "Синхронный ожидание результата приводит к избыточному созданию потоков в ThreadPool",
+              "var_4": "Task.Result блокирует поток, исчерпывая пул потоков и препятствуя обработке новых запросов",
+              "correct_position": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "competency": "Работа с базами данных (MS SQL, PostgreSQL, Oracle)",
+      "type": "CORE",
+      "importance": 85,
+      "themes": [
+        {
+          "theme": "Проектирование схем баз данных: нормализация, индексы, ограничения целостности",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Что такое первичный ключ (Primary Key) в таблице базы данных?",
+              "correct_answer": "Уникальный идентификатор записи, не допускающий NULL значения.",
+              "var_1": "Поле для связи с другими таблицами через Foreign Key.",
+              "var_2": "Уникальное ограничение, допускающее одно NULL значение на таблицу.",
+              "var_3": "Индекс для ускорения поиска по основному полю таблицы.",
+              "var_4": "Уникальный идентификатор записи, не допускающий NULL значения.",
+              "correct_position": 4
+            },
+            {
+              "level": "Middle",
+              "question": "В таблице транзакций банка 50 млн записей. Запросы по customer_id и transaction_date медленные. Какой тип индекса оптимален для частых диапазонных запросов по дате с фильтром по клиенту?",
+              "correct_answer": "Составной кластерный индекс на (customer_id, transaction_date).",
+              "var_1": "Два отдельных некластерных индекса на каждое поле",
+              "var_2": "Полнотекстовый индекс на transaction_date с включением customer_id",
+              "var_3": "Хеш-индекс на составной ключ (customer_id, transaction_date)",
+              "var_4": "Составной кластерный индекс на (customer_id, transaction_date).",
+              "correct_position": 4
+            },
+            {
+              "level": "Senior",
+              "question": "Проектируете схему хранения тарифных планов телеком-оператора с историей изменений и валидацией периодов действия. Как обеспечить целостность данных при наложении периодов для одного клиента без race conditions?",
+              "correct_answer": "Использовать temporal таблицы с CHECK constraint на период и SERIALIZABLE isolation level для проверки пересечений.",
+              "var_1": "Применить UNIQUE constraint на клиента с триггером для проверки дат и READ COMMITTED изоляцией транзакций.",
+              "var_2": "Использовать temporal таблицы с CHECK constraint на период и SERIALIZABLE isolation level для проверки пересечений.",
+              "var_3": "Создать составной индекс по клиенту и датам с FOREIGN KEY на справочник периодов и REPEATABLE READ уровнем.",
+              "var_4": "Использовать партицирование таблицы по датам с CHECK constraint на клиента и application-level блокировками через SELECT FOR UPDATE.",
+              "correct_position": 2
+            }
+          ]
+        },
+        {
+          "theme": "Оптимизация SQL-запросов и анализ планов выполнения (Execution Plans)",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой оператор в MS SQL Server используется для просмотра плана выполнения запроса без его фактического выполнения?",
+              "correct_answer": "SET SHOWPLAN_ALL ON или SET STATISTICS PROFILE ON",
+              "var_1": "USE EXPLAIN ANALYZE без выполнения запроса",
+              "var_2": "EXEC sp_executesql с параметром @ShowPlan = 1",
+              "var_3": "SET QUERY_PLAN_CACHE ON или DBCC SHOW_EXECUTION",
+              "var_4": "SET SHOWPLAN_ALL ON или SET STATISTICS PROFILE ON",
+              "correct_position": 4
+            },
+            {
+              "level": "Middle",
+              "question": "В плане выполнения запроса к таблице транзакций банка вы видите Table Scan вместо Index Seek. Какие два основных способа оптимизации этого запроса?",
+              "correct_answer": "Создать подходящий индекс на столбцы из WHERE и обновить статистику таблицы",
+              "var_1": "Использовать OPTION (RECOMPILE) и настроить параметр max degree of parallelism",
+              "var_2": "Создать подходящий индекс на столбцы из WHERE и обновить статистику таблицы",
+              "var_3": "Применить партицирование таблицы по дате и включить READ_COMMITTED_SNAPSHOT",
+              "var_4": "Увеличить значение MAXDOP и добавить WITH (NOLOCK) hint к запросу",
+              "correct_position": 2
+            },
+            {
+              "level": "Senior",
+              "question": "В телеком-системе запрос JOIN трех таблиц (абоненты 50M записей, тарифы, платежи) показывает Hash Match вместо Nested Loops. Почему оптимизатор выбрал Hash Match и в каких случаях это оптимально?",
+              "correct_answer": "Hash Match эффективен для больших объемов данных без подходящих индексов, когда стоимость сортировки ниже множественных Index Seek операций",
+              "var_1": "Hash Match выбирается при отсутствии статистики по таблицам, после UPDATE STATISTICS оптимизатор переключится на Merge Join",
+              "var_2": "Hash Match эффективен для больших объемов данных без подходящих индексов, когда стоимость сортировки ниже множественных Index Seek операций",
+              "var_3": "Nested Loops требует больше памяти для больших таблиц, Hash Match использует меньше RAM и подходит для OLTP-нагрузки",
+              "var_4": "Оптимизатор выбирает Hash Match при параллельном выполнении запроса, для однопоточного режима будет использоваться Index Scan с Nested Loops",
+              "correct_position": 2
+            }
+          ]
+        },
+        {
+          "theme": "Транзакции, уровни изоляции и управление конкурентным доступом",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой уровень изоляции транзакций в SQL Server используется по умолчанию?",
+              "correct_answer": "Read Committed",
+              "var_1": "Read Uncommitted",
+              "var_2": "Read Committed",
+              "var_3": "Repeatable Read",
+              "var_4": "Serializable",
+              "correct_position": 2
+            },
+            {
+              "level": "Middle",
+              "question": "В банковской системе при одновременном списании с одного счета возникают дублирующие транзакции. Какой уровень изоляции в PostgreSQL предотвратит это без блокировок на чтение?",
+              "correct_answer": "Serializable с retry logic на serialization failure",
+              "var_1": "Repeatable Read с advisory locks на уровне приложения",
+              "var_2": "Read Committed с SELECT FOR UPDATE NOWAIT",
+              "var_3": "Serializable с retry logic на serialization failure",
+              "var_4": "Snapshot Isolation с MVCC и деферрируемыми ограничениями",
+              "correct_position": 3
+            },
+            {
+              "level": "Senior",
+              "question": "В высоконагруженном биллинге телеком-оператора на MS SQL возникают deadlock'и при UPDATE балансов абонентов. Как спроектировать архитектуру доступа к данным для минимизации блокировок при сохранении консистентности?",
+              "correct_answer": "Упорядоченный доступ к записям по ID, применение UPDLOCK hint, разделение операций на read-модификация-write с оптимистичной блокировкой через rowversion",
+              "var_1": "Упорядоченный доступ к записям по ID, применение UPDLOCK hint, разделение операций на read-модификация-write с оптимистичной блокировкой через rowversion",
+              "var_2": "Вынос балансов в Redis с записью через Lua-скрипты, периодическая синхронизация с MS SQL через bulk insert, использование distributed locks",
+              "var_3": "Применение NOLOCK hint для чтения балансов, использование уровня изоляции SERIALIZABLE, внедрение retry logic с экспоненциальной задержкой при deadlock",
+              "var_4": "Использование READ_COMMITTED_SNAPSHOT на уровне базы, партиционирование таблицы балансов по диапазонам ID, async/await для параллельной обработки транзакций",
+              "correct_position": 1
+            }
+          ]
+        },
+        {
+          "theme": "Работа с базами данных в .NET: ADO.NET, Dapper, Entity Framework Core",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой класс ADO.NET используется для выполнения SQL-команд и возврата результата в виде потока данных?",
+              "correct_answer": "SqlDataReader для чтения данных в режиме forward-only.",
+              "var_1": "SqlCommand с методом ExecuteScalar для получения результата.",
+              "var_2": "SqlDataAdapter для заполнения DataSet и обновления данных.",
+              "var_3": "SqlDataReader для чтения данных в режиме forward-only.",
+              "var_4": "DataTable для загрузки и кэширования результатов запроса.",
+              "correct_position": 3
+            },
+            {
+              "level": "Middle",
+              "question": "В чем ключевое различие между подходами Database First и Code First в Entity Framework Core при интеграции с legacy-системами банка?",
+              "correct_answer": "Database First генерирует модели из существующей БД, Code First создает схему из кода.",
+              "var_1": "Database First генерирует модели из существующей БД, Code First создает схему из кода.",
+              "var_2": "Database First использует миграции для версионирования, Code First работает напрямую с БД.",
+              "var_3": "Database First оптимизирован для PostgreSQL, Code First для MS SQL и Oracle.",
+              "var_4": "Database First применяет lazy loading по умолчанию, Code First требует eager loading.",
+              "correct_position": 1
+            },
+            {
+              "level": "Senior",
+              "question": "Как спроектировать оптимальную стратегию работы с большими объемами транзакций (50+ млн записей) при использовании EF Core и обеспечить производительность запросов аналитики?",
+              "correct_answer": "AsNoTracking для чтения, SqlBulkCopy для вставок, индексированные представления, разделение на горячие и холодные данные.",
+              "var_1": "Lazy Loading прокси, батчинг запросов через AddRange, материализованные представления с автообновлением.",
+              "var_2": "AsNoTracking для чтения, SqlBulkCopy для вставок, индексированные представления, разделение на горячие и холодные данные.",
+              "var_3": "Tracked entities для аудита, EF Core migrations для партиционирования, compiled queries с параметризацией.",
+              "var_4": "Eager Loading с Include, транзакции SERIALIZABLE, кэширование результатов в памяти с MemoryCache.",
+              "correct_position": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "competency": "Проектирование и архитектура",
+      "type": "CORE",
+      "importance": 80,
+      "themes": [
+        {
+          "theme": "SOLID принципы и паттерны проектирования в .NET приложениях",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой SOLID принцип нарушается, если класс BankAccount одновременно работает с балансом, логирует операции и отправляет SMS-уведомления?",
+              "correct_answer": "Single Responsibility Principle - класс имеет множественные причины для изменения",
+              "var_1": "Open/Closed Principle - класс требует изменений для добавления функциональности",
+              "var_2": "Dependency Inversion Principle - класс зависит от конкретных реализаций",
+              "var_3": "Interface Segregation Principle - класс реализует слишком широкий интерфейс",
+              "var_4": "Single Responsibility Principle - класс имеет множественные причины для изменения",
+              "correct_position": 4
+            },
+            {
+              "level": "Middle",
+              "question": "В банковском приложении нужно поддержать несколько способов аутентификации (SMS, биометрия, токен). Какой паттерн проектирования лучше использовать и почему?",
+              "correct_answer": "Strategy pattern - позволяет инкапсулировать алгоритмы и переключаться между ними динамически",
+              "var_1": "Singleton pattern - гарантирует единственный экземпляр сервиса аутентификации в приложении",
+              "var_2": "Observer pattern - уведомляет компоненты системы об изменении статуса аутентификации",
+              "var_3": "Factory Method - создает объекты аутентификации без указания конкретного класса",
+              "var_4": "Strategy pattern - позволяет инкапсулировать алгоритмы и переключаться между ними динамически",
+              "correct_position": 4
+            },
+            {
+              "level": "Senior",
+              "question": "Вы проектируете систему обработки платежей для телеком-оператора с интеграцией 15+ платёжных провайдеров. Как спроектировать архитектуру, чтобы соблюсти Open/Closed Principle и минимизировать изменения при добавлении новых провайдеров?",
+              "correct_answer": "Использовать абстракцию IPaymentProvider с фабрикой или стратегией, регистрировать провайдеры через DI контейнер",
+              "var_1": "Создать базовый класс PaymentProviderBase с виртуальными методами, наследовать конкретные провайдеры от него",
+              "var_2": "Использовать switch-case по типу провайдера с централизованной фабрикой для создания экземпляров",
+              "var_3": "Применить Singleton для каждого провайдера с lazy initialization и регистрацией в статическом реестре",
+              "var_4": "Использовать абстракцию IPaymentProvider с фабрикой или стратегией, регистрировать провайдеры через DI контейнер",
+              "correct_position": 4
+            }
+          ]
+        },
+        {
+          "theme": "Архитектурные стили и подходы: монолит, микросервисы, Clean Architecture, DDD",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Что такое монолитная архитектура в контексте разработки банковского приложения на .NET?",
+              "correct_answer": "Единое приложение, где все модули развернуты и работают в одном процессе.",
+              "var_1": "Архитектура, где каждый модуль развернут как отдельный сервис с собственной базой данных.",
+              "var_2": "Система из множества слабосвязанных сервисов, общающихся через REST API и события.",
+              "var_3": "Приложение, разделенное на независимые компоненты с взаимодействием через message broker.",
+              "var_4": "Единое приложение, где все модули развернуты и работают в одном процессе.",
+              "correct_position": 4
+            },
+            {
+              "level": "Middle",
+              "question": "Когда следует выбрать микросервисную архитектуру вместо монолита для системы мобильного оператора с 10 млн абонентов?",
+              "correct_answer": "Когда нужно независимое масштабирование модулей, разные команды и частые релизы.",
+              "var_1": "Когда требуется единая база данных для всех модулей системы.",
+              "var_2": "Когда проект начинается с нуля и есть готовая инфраструктура.",
+              "var_3": "Когда количество абонентов превышает 5 миллионов пользователей в системе.",
+              "var_4": "Когда нужно независимое масштабирование модулей, разные команды и частые релизы.",
+              "correct_position": 4
+            },
+            {
+              "level": "Senior",
+              "question": "Как спроектировать границы Bounded Context в DDD для core-banking системы с платежами, кредитами и депозитами, чтобы минимизировать связанность?",
+              "correct_answer": "Выделить контексты по бизнес-доменам с собственными моделями, общаться через события или API.",
+              "var_1": "Определить контексты по техническим слоям: presentation, business logic, data access для каждого модуля.",
+              "var_2": "Создать единую доменную модель с shared kernel для переиспользования бизнес-логики между модулями.",
+              "var_3": "Использовать общую базу данных с разделением на схемы для платежей, кредитов и депозитов.",
+              "var_4": "Выделить контексты по бизнес-доменам с собственными моделями, общаться через события или API.",
+              "correct_position": 4
+            }
+          ]
+        },
+        {
+          "theme": "Проектирование слоев приложения и управление зависимостями (DI/IoC контейнеры)",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Что такое Dependency Injection и какую проблему он решает в .NET приложениях?",
+              "correct_answer": "Паттерн внедрения зависимостей через конструктор, устраняет жесткую связанность классов.",
+              "var_1": "Паттерн внедрения зависимостей через конструктор, устраняет жесткую связанность классов.",
+              "var_2": "Singleton паттерн с lazy initialization, обеспечивает глобальный доступ к сервисам.",
+              "var_3": "Механизм автоматической сборки мусора для управления временем жизни объектов.",
+              "var_4": "Инверсия управления через сервис-локатор, уменьшает количество интерфейсов в проекте.",
+              "correct_position": 1
+            },
+            {
+              "level": "Middle",
+              "question": "В банковском API нужно регистрировать сервис для работы с транзакциями. Когда использовать Scoped вместо Singleton lifetime?",
+              "correct_answer": "Scoped для сервисов с состоянием на запрос, включая DbContext и транзакционную логику.",
+              "var_1": "Scoped для минимизации нагрузки на GC и повторного использования объектов сервиса.",
+              "var_2": "Singleton для кэширования состояния транзакций между запросами в памяти приложения.",
+              "var_3": "Scoped для сервисов с состоянием на запрос, включая DbContext и транзакционную логику.",
+              "var_4": "Transient для изоляции каждой операции и предотвращения конфликтов параллельных транзакций.",
+              "correct_position": 3
+            },
+            {
+              "level": "Senior",
+              "question": "Как спроектировать слоистую архитектуру для процессинга платежей, чтобы Domain слой не зависел от Infrastructure, но использовал репозитории?",
+              "correct_answer": "Определить интерфейсы репозиториев в Domain, реализацию в Infrastructure, регистрировать через DI контейнер.",
+              "var_1": "Создать Abstract Factory в Domain, фабрику репозиториев реализовать в Infrastructure, передавать через конструктор.",
+              "var_2": "Использовать Service Locator в Domain для получения репозиториев, зарегистрированных в Infrastructure слое.",
+              "var_3": "Создать базовый класс Repository в Domain, наследовать конкретные репозитории в Infrastructure слое.",
+              "var_4": "Определить интерфейсы репозиториев в Domain, реализацию в Infrastructure, регистрировать через DI контейнер.",
+              "correct_position": 4
+            }
+          ]
+        },
+        {
+          "theme": "Масштабируемость и производительность: кэширование, асинхронность, оптимизация баз данных",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой встроенный интерфейс в .NET используется для реализации in-memory кэширования?",
+              "correct_answer": "IMemoryCache из пространства имён Microsoft.Extensions.Caching.Memory",
+              "var_1": "MemoryStream из пространства имён System.IO",
+              "var_2": "IDistributedCache из Microsoft.Extensions.Caching.Abstractions",
+              "var_3": "ICacheManager из System.Runtime.Caching",
+              "var_4": "IMemoryCache из пространства имён Microsoft.Extensions.Caching.Memory",
+              "correct_position": 4
+            },
+            {
+              "level": "Middle",
+              "question": "В банковской системе нужно кэшировать справочники валют и курсы обмена. Какую стратегию инвалидации выбрать для каждого типа данных?",
+              "correct_answer": "Справочники - абсолютное время истечения, курсы - скользящее время с коротким TTL",
+              "var_1": "Оба типа данных - инвалидация через Redis Pub/Sub при обновлении источника",
+              "var_2": "Справочники - LRU eviction policy, курсы - абсолютное время истечения раз в сутки",
+              "var_3": "Справочники - абсолютное время истечения, курсы - скользящее время с коротким TTL",
+              "var_4": "Справочники - скользящее время, курсы - абсолютное время с длинным TTL",
+              "correct_position": 3
+            },
+            {
+              "level": "Senior",
+              "question": "Как спроектировать кэширование для высоконагруженного API телеком-оператора с 10000 RPS, учитывая персонализированные данные абонентов и требование eventual consistency до 5 секунд?",
+              "correct_answer": "Двухуровневое кэширование: Redis с шардингом по абоненту плюс локальный IMemoryCache с pub/sub инвалидацией",
+              "var_1": "Распределённый Memcached с консистентным хешированием и TTL 5 секунд для автоматической инвалидации данных",
+              "var_2": "Redis Cluster с репликацией read-slaves и HTTP-polling клиентами для проверки актуальности кэша каждые 5 секунд",
+              "var_3": "In-memory кэш на каждом API-сервере с периодической синхронизацией через background job каждые 3-5 секунд",
+              "var_4": "Двухуровневое кэширование: Redis с шардингом по абоненту плюс локальный IMemoryCache с pub/sub инвалидацией",
+              "correct_position": 4
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "profile": "DevOps Engineer",
+  "file_name": "DevOps_Engineer",
+  "specialization": "DevOps",
+  "competencies": [
+    "Контейнеризация и оркестрация (Docker, Kubernetes) [CORE 90%]",
+    "CI/CD пайплайны (GitLab CI, Jenkins, GitHub Actions) [CORE 90%]",
+    "Инфраструктура как код (Terraform, Ansible) [CORE 85%]",
+    "Мониторинг и логирование (Prometheus, Grafana, ELK) [CORE 85%]",
+    "Облачные платформы (AWS, Azure, GCP) [CORE 80%]"
+  ]
+}

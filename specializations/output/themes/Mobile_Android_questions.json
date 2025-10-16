@@ -1,0 +1,442 @@
+{
+  "profile": "Mobile разработчик",
+  "specialization": "Android",
+  "file_name": "Mobile_Android",
+  "competencies": [
+    {
+      "competency": "Знание языка программирования Java",
+      "type": "CORE",
+      "importance": 85,
+      "themes": [
+        {
+          "theme": "ООП в Java: классы, интерфейсы, наследование и полиморфизм",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой модификатор доступа нужно использовать для поля класса TransactionData, чтобы оно было доступно только внутри класса?",
+              "correct_answer": "private"
+            },
+            {
+              "level": "Middle",
+              "question": "В чем разница между абстрактным классом BasePaymentProcessor и интерфейсом PaymentGateway при реализации платежной системы мобильного банка?",
+              "correct_answer": "Абстрактный класс содержит общую реализацию, интерфейс определяет только контракт без реализации."
+            },
+            {
+              "level": "Senior",
+              "question": "Почему в архитектуре банковского Android-приложения следует предпочесть композицию наследованию при проектировании классов обработки различных типов транзакций?",
+              "correct_answer": "Композиция обеспечивает гибкость, избегает проблем множественного наследования и упрощает тестирование компонентов."
+            }
+          ]
+        },
+        {
+          "theme": "Многопоточность и concurrency: Thread, Executor, synchronized, volatile",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какое ключевое слово в Java используется для обозначения переменной, которая может изменяться разными потоками и должна читаться из основной памяти?",
+              "correct_answer": "volatile"
+            },
+            {
+              "level": "Middle",
+              "question": "В банковском Android-приложении нужно выполнять периодическую синхронизацию данных транзакций. Какой Executor лучше использовать для задач с фиксированным расписанием?",
+              "correct_answer": "ScheduledExecutorService с методом scheduleAtFixedRate или scheduleWithFixedDelay"
+            },
+            {
+              "level": "Senior",
+              "question": "В приложении телеком-оператора при synchronized доступе к HashMap из множества потоков возникают deadlock'и. Как архитектурно решить проблему без потери thread-safety?",
+              "correct_answer": "Использовать ConcurrentHashMap с lock striping или разделить критические секции"
+            }
+          ]
+        },
+        {
+          "theme": "Коллекции Java: List, Set, Map, их реализации и применение",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какая коллекция в Java гарантирует уникальность элементов и не допускает дубликатов при хранении ID клиентов банка?",
+              "correct_answer": "Set интерфейс и его реализации HashSet или LinkedHashSet"
+            },
+            {
+              "level": "Middle",
+              "question": "В приложении банка нужно хранить историю транзакций с сохранением порядка и быстрым доступом по индексу. ArrayList или LinkedList выбрать и почему?",
+              "correct_answer": "ArrayList, так как обеспечивает O(1) доступ по индексу для чтения"
+            },
+            {
+              "level": "Senior",
+              "question": "В Android-приложении телеком-оператора HashMap с 50000+ абонентов вызывает ANR при инициализации. Как оптимизировать архитектуру хранения для главного потока?",
+              "correct_answer": "Использовать SparseArray для integer ключей, инициализировать асинхронно, применить пагинацию или LruCache"
+            }
+          ]
+        },
+        {
+          "theme": "Generics, аннотации и рефлексия в Java",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой синтаксис используется для создания generic класса List, параметризованного типом Transaction в Android приложении банка?",
+              "correct_answer": "class List<T> или List<Transaction> для использования"
+            },
+            {
+              "level": "Middle",
+              "question": "В чем разница между аннотациями @Retention(RetentionPolicy.RUNTIME) и @Retention(RetentionPolicy.CLASS) при разработке custom аннотаций для логирования банковских операций?",
+              "correct_answer": "RUNTIME доступна через рефлексию, CLASS только при компиляции"
+            },
+            {
+              "level": "Senior",
+              "question": "Почему использование wildcard <?> вместо <? extends Object> не решает проблему type erasure при сериализации generic DTO платежей, и как архитектурно обойти это ограничение?",
+              "correct_answer": "Type erasure стирает оба варианта, решение через TypeToken или реификацию"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "competency": "Знание языка программирования Kotlin",
+      "type": "CORE",
+      "importance": 90,
+      "themes": [
+        {
+          "theme": "Основы синтаксиса Kotlin: типы данных, null-safety, функции и лямбда-выражения",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой оператор в Kotlin используется для безопасного вызова методов у nullable типов?",
+              "correct_answer": "Оператор безопасного вызова ?. (safe call operator)"
+            },
+            {
+              "level": "Middle",
+              "question": "В приложении банка нужно обработать nullable результат API. В чем разница между операторами ?: и !!?",
+              "correct_answer": "?: возвращает значение по умолчанию, !! выбрасывает NPE при null"
+            },
+            {
+              "level": "Senior",
+              "question": "Почему использование inline функций с лямбдами критично для производительности в списках транзакций на 10000+ элементов?",
+              "correct_answer": "Inline устраняет overhead создания объектов Function, избегает boxing и лишних аллокаций"
+            }
+          ]
+        },
+        {
+          "theme": "Объектно-ориентированное программирование в Kotlin: классы, наследование, интерфейсы и data classes",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какое ключевое слово используется в Kotlin для создания неизменяемого data class свойства?",
+              "correct_answer": "val"
+            },
+            {
+              "level": "Middle",
+              "question": "В мобильном банкинге нужно хранить данные клиента с автогенерацией copy, equals, hashCode. Какой тип класса выбрать: обычный class, data class или sealed class?",
+              "correct_answer": "data class для автоматической генерации методов"
+            },
+            {
+              "level": "Senior",
+              "question": "В банковском приложении есть иерархия классов для транзакций с sealed class. Почему использование sealed class предпочтительнее open class для обработки типов платежей в when-выражении?",
+              "correct_answer": "Sealed class гарантирует exhaustive проверку всех подтипов без else-ветки"
+            }
+          ]
+        },
+        {
+          "theme": "Корутины и асинхронное программирование: suspend функции, scope, dispatchers и flow",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какое ключевое слово используется в Kotlin для объявления функции, которая может приостанавливать выполнение без блокировки потока?",
+              "correct_answer": "suspend"
+            },
+            {
+              "level": "Middle",
+              "question": "Какой Dispatcher следует использовать для выполнения операций чтения/записи файлов транзакций в банковском приложении для минимизации задержек UI?",
+              "correct_answer": "Dispatchers.IO для блокирующих операций ввода-вывода"
+            },
+            {
+              "level": "Senior",
+              "question": "Как правильно спроектировать обработку Flow для стрима платежных транзакций, чтобы избежать backpressure при пиковых нагрузках и гарантировать доставку всех событий?",
+              "correct_answer": "Использовать buffer с conflate или collectLatest, плюс retry с exponential backoff"
+            }
+          ]
+        },
+        {
+          "theme": "Продвинутые возможности Kotlin: extension functions, sealed classes, generics и delegation",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой синтаксис используется для объявления extension function в Kotlin для класса String?",
+              "correct_answer": "fun String.имяФункции() с указанием типа получателя перед точкой"
+            },
+            {
+              "level": "Middle",
+              "question": "В мобильном банкинге нужно моделировать состояния транзакции (успех, ошибка, загрузка). Почему sealed class лучше enum для этой задачи?",
+              "correct_answer": "Sealed class позволяет каждому состоянию хранить разные данные и параметры"
+            },
+            {
+              "level": "Senior",
+              "question": "При проектировании SDK для банковских операций вы используете delegation pattern с by. Какие проблемы возникнут при Unit-тестировании делегированных свойств и как их решить?",
+              "correct_answer": "Сложность мокирования делегатов, решается внедрением зависимостей через конструктор вместо прямой инициализации"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "competency": "Знание Android SDK, Jetpack Compose",
+      "type": "CORE",
+      "importance": 90,
+      "themes": [
+        {
+          "theme": "Lifecycle и State Management в Jetpack Compose",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой модификатор Jetpack Compose автоматически сохраняет состояние при изменении конфигурации устройства?",
+              "correct_answer": "rememberSaveable для сохранения состояния через Bundle"
+            },
+            {
+              "level": "Middle",
+              "question": "В банковском приложении экран списка транзакций перерисовывается при каждом изменении баланса. Какой механизм State Management использовать для оптимизации?",
+              "correct_answer": "derivedStateOf для вычисляемого состояния без лишних рекомпозиций"
+            },
+            {
+              "level": "Senior",
+              "question": "В приложении телеком-оператора форма пополнения счета теряет данные при backgrounding из-за process death. Как спроектировать State Management для критичных данных с учетом SavedStateHandle?",
+              "correct_answer": "ViewModel с SavedStateHandle, сохранение в onCleared, восстановление через savedStateHandle.get"
+            }
+          ]
+        },
+        {
+          "theme": "Архитектура компонентов Android Jetpack (ViewModel, LiveData, Navigation)",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой компонент Android Jetpack используется для хранения UI-данных, которые переживают изменения конфигурации экрана?",
+              "correct_answer": "ViewModel сохраняет данные при пересоздании Activity"
+            },
+            {
+              "level": "Middle",
+              "question": "В банковском приложении нужно обновлять баланс карты в реальном времени. Почему StateFlow предпочтительнее LiveData для Jetpack Compose?",
+              "correct_answer": "StateFlow нативно интегрируется с Compose и поддерживает coroutines"
+            },
+            {
+              "level": "Senior",
+              "question": "В телеком-приложении с множеством экранов тарифов Navigation Component вызывает memory leak при передаче больших Parcelable объектов через arguments. Как оптимизировать архитектуру навигации?",
+              "correct_answer": "Использовать shared ViewModel с передачей только ID через arguments"
+            }
+          ]
+        },
+        {
+          "theme": "Работа с UI в Compose: Modifiers, Layout и Custom Components",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой Modifier используется для установки фиксированного размера компонента в Jetpack Compose?",
+              "correct_answer": "Modifier.size() устанавливает фиксированную ширину и высоту компонента"
+            },
+            {
+              "level": "Middle",
+              "question": "В мобильном банкинге нужно разместить карточки в прокручиваемом списке с разными типами элементов. Когда использовать LazyColumn вместо Column с verticalScroll?",
+              "correct_answer": "LazyColumn компонует элементы лениво, отображая только видимые на экране"
+            },
+            {
+              "level": "Senior",
+              "question": "В приложении банка список транзакций с Custom Layout тормозит при скролле. Как оптимизировать многократные перекомпозиции через архитектуру Modifier chain?",
+              "correct_answer": "Вынести стабильные Modifiers в remember, использовать derivedStateOf для вычисляемых значений"
+            }
+          ]
+        },
+        {
+          "theme": "Интеграция Jetpack Compose с существующим View-based кодом и работа с Side Effects",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой Composable используется для встраивания традиционных Android View в Jetpack Compose UI?",
+              "correct_answer": "AndroidView с factory параметром для создания View"
+            },
+            {
+              "level": "Middle",
+              "question": "В мобильном банкинге нужно показать существующий CustomChartView внутри Compose экрана. Какой Side Effect использовать для подписки на LiveData из ViewModel и обновления View?",
+              "correct_answer": "DisposableEffect для подписки с cleanup в onDispose"
+            },
+            {
+              "level": "Senior",
+              "question": "При интеграции Compose в legacy экран банковских переводов возникают множественные рекомпозиции при обновлении баланса. Как оптимизировать взаимодействие View и Compose для минимизации recomposition?",
+              "correct_answer": "Использовать derivedStateOf, remember с ключами, стабильные типы данных и Snapshot.withMutableSnapshot"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "competency": "Знание Android Guidelines, Material Design",
+      "type": "DAILY",
+      "importance": 70,
+      "themes": [
+        {
+          "theme": "Основные принципы Material Design 3: цветовые схемы, типографика и adaptive layouts",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой класс Material Design 3 используется для определения цветовой схемы приложения на основе Dynamic Color?",
+              "correct_answer": "DynamicColorScheme или MaterialTheme с dynamicColorScheme параметром"
+            },
+            {
+              "level": "Middle",
+              "question": "В банковском приложении нужно отображать баланс на разных устройствах. Какой подход Material Design 3 следует использовать для адаптации типографики между компактными и широкими экранами?",
+              "correct_answer": "WindowSizeClass с adaptive typography scale используя displayLarge/bodyMedium"
+            },
+            {
+              "level": "Senior",
+              "question": "При внедрении Material Design 3 в банковское приложение пользователи жалуются на низкий контраст цветов в Dynamic Color scheme на некоторых устройствах. Как решить проблему сохраняя брендинг?",
+              "correct_answer": "Использовать custom ColorScheme с фиксированными accent цветами, переопределяя tonalElevation"
+            }
+          ]
+        },
+        {
+          "theme": "Компоненты навигации: Navigation Drawer, Bottom Navigation, Top App Bar и их правильное применение",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой компонент Material Design используется для создания выдвигающегося бокового меню в Android приложении банка?",
+              "correct_answer": "NavigationView внутри DrawerLayout"
+            },
+            {
+              "level": "Middle",
+              "question": "В мобильном приложении банка есть 5 основных разделов. Какой компонент навигации следует выбрать согласно Material Design Guidelines и почему?",
+              "correct_answer": "Navigation Drawer, так как Bottom Navigation поддерживает максимум 3-5 элементов равной важности"
+            },
+            {
+              "level": "Senior",
+              "question": "В банковском приложении пользователи жалуются, что Navigation Drawer открывается случайно при свайпах в списках транзакций. Как решить проблему без удаления drawer?",
+              "correct_answer": "Ограничить DrawerLayout.setDrawerLockMode(LOCK_MODE_LOCKED_CLOSED) на экранах со скроллируемым контентом или уменьшить edge size"
+            }
+          ]
+        },
+        {
+          "theme": "Адаптивный дизайн и responsive layouts: breakpoints, window size classes и поддержка различных форм-факторов",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой класс в Jetpack Compose используется для определения текущего размера окна приложения согласно Material Design 3?",
+              "correct_answer": "WindowSizeClass из androidx.compose.material3.windowsizeclass"
+            },
+            {
+              "level": "Middle",
+              "question": "В мобильном банкинге нужно отобразить список транзакций и детали выбранной операции. Какой layout pattern Material Design следует использовать для планшетов в landscape-ориентации?",
+              "correct_answer": "List-detail pattern с использованием SlidingPaneLayout или двухпанельного layout"
+            },
+            {
+              "level": "Senior",
+              "question": "В банковском приложении на складных устройствах (foldables) NavigationRail перекрывает контент при развороте экрана. Как диагностировать и исправить проблему с breakpoints?",
+              "correct_answer": "Проверить WindowMetrics, использовать WindowSizeClass.widthSizeClass, учесть hinge position через WindowLayoutInfo"
+            }
+          ]
+        },
+        {
+          "theme": "Motion design и анимации: transitions, shared element transitions и правила использования duration и easing",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какая стандартная duration анимации рекомендуется в Material Design для простых переходов между экранами?",
+              "correct_answer": "300 миллисекунд для entering и exiting transitions"
+            },
+            {
+              "level": "Middle",
+              "question": "В банковском приложении нужно анимировать переход от списка карт к детальной информации карты. Когда следует использовать Shared Element Transition вместо обычного Activity Transition?",
+              "correct_answer": "Когда есть общий визуальный элемент между экранами для continuity"
+            },
+            {
+              "level": "Senior",
+              "question": "В приложении банка Shared Element Transition между списком транзакций и детализацией тормозит на устройствах с Android 7. Какая наиболее вероятная причина и решение?",
+              "correct_answer": "Hardware acceleration отключен или сложные view hierarchy, использовать postponeEnterTransition и упростить layouts"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "competency": "Навыки работы с Android Studio",
+      "type": "DAILY",
+      "importance": 65,
+      "themes": [
+        {
+          "theme": "Настройка и оптимизация сборки проекта (Gradle, Build Variants, Build Types)",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой файл в Android Studio используется для настройки зависимостей и конфигурации сборки проекта?",
+              "correct_answer": "build.gradle или build.gradle.kts"
+            },
+            {
+              "level": "Middle",
+              "question": "В чем разница между buildTypes и productFlavors при настройке сборки мобильного банкинга для разных банков Казахстана?",
+              "correct_answer": "buildTypes для конфигураций debug/release, productFlavors для разных версий продукта"
+            },
+            {
+              "level": "Senior",
+              "question": "Приложение банка после обновления Gradle начало падать с OutOfMemoryError при сборке. Какие параметры в gradle.properties оптимизируете первыми?",
+              "correct_answer": "org.gradle.jvmargs увеличить heap, включить org.gradle.parallel и org.gradle.caching"
+            }
+          ]
+        },
+        {
+          "theme": "Работа с инструментами отладки и профилирования (Debugger, Profiler, Logcat)",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой инструмент Android Studio используется для просмотра системных логов и сообщений приложения в реальном времени?",
+              "correct_answer": "Logcat"
+            },
+            {
+              "level": "Middle",
+              "question": "В банковском приложении пользователи жалуются на замедление при скролле списка транзакций. Какой инструмент Profiler нужно использовать для диагностики проблемы?",
+              "correct_answer": "CPU Profiler для анализа методов и времени их выполнения"
+            },
+            {
+              "level": "Senior",
+              "question": "При отладке телеком-приложения с шифрованием данных Debugger показывает не все переменные. Почему это происходит и как решить?",
+              "correct_answer": "ProGuard/R8 обфускация в debug-сборке, отключить minifyEnabled или добавить keep-правила"
+            }
+          ]
+        },
+        {
+          "theme": "Использование Layout Inspector и Navigation Editor для разработки UI",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какой инструмент Android Studio позволяет в реальном времени просматривать иерархию View на запущенном устройстве или эмуляторе?",
+              "correct_answer": "Layout Inspector"
+            },
+            {
+              "level": "Middle",
+              "question": "В Navigation Editor для банковского приложения нужно передать зашифрованные данные карты между фрагментами. Какой тип аргумента Safe Args следует использовать для передачи сериализованного объекта?",
+              "correct_answer": "Parcelable или Serializable с custom NavType"
+            },
+            {
+              "level": "Senior",
+              "question": "При использовании Layout Inspector в prod-сборке банковского приложения обнаружили утечку чувствительных данных клиента в атрибутах View. Как предотвратить эту проблему на этапе разработки?",
+              "correct_answer": "Отключить Layout Inspector для release builds через manifestPlaceholders и применить ProGuard обфускацию"
+            }
+          ]
+        },
+        {
+          "theme": "Рефакторинг кода и управление зависимостями через Android Studio",
+          "questions": [
+            {
+              "level": "Junior",
+              "question": "Какая комбинация клавиш в Android Studio запускает окно рефакторинга для переименования переменной или класса?",
+              "correct_answer": "Shift + F6"
+            },
+            {
+              "level": "Middle",
+              "question": "В проекте банковского приложения несколько модулей используют разные версии библиотеки Retrofit. Какой механизм Gradle следует применить для централизованного управления версиями зависимостей?",
+              "correct_answer": "Version Catalog или dependencyResolutionManagement с platformBOM"
+            },
+            {
+              "level": "Senior",
+              "question": "После рефакторинга модуля авторизации в банковском приложении билд-время увеличилось на 40%. Проанализировав Build Analyzer, вы видите множество задач :compileDebugKotlin в разных модулях. Какое архитектурное решение устранит проблему?",
+              "correct_answer": "Применить строгую модульность с api/implementation scope и избегать transitive dependencies"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

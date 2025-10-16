@@ -1,0 +1,62 @@
+{
+  "profile": "Data Engineer",
+  "specialization": "Data Engineer",
+  "file_name": "Data_Engineer",
+  "competencies": [
+    {
+      "competency": "SQL и оптимизация запросов",
+      "type": "CORE",
+      "importance": 90,
+      "themes": [
+        "Индексы и их типы: B-tree, Hash, Bitmap индексы, стратегии индексирования",
+        "Планы выполнения запросов: анализ EXPLAIN, оптимизация JOIN операций",
+        "Партиционирование таблиц и шардирование данных для распределенных систем",
+        "Оконные функции и CTE: производительность сложных аналитических запросов"
+      ]
+    },
+    {
+      "competency": "ETL/ELT процессы и data pipelines",
+      "type": "CORE",
+      "importance": 90,
+      "themes": [
+        "Проектирование и оркестрация data pipelines (Apache Airflow, Prefect, Dagster)",
+        "Паттерны incremental loading и CDC (Change Data Capture) для оптимизации ETL",
+        "Обработка ошибок, мониторинг и логирование в data pipelines",
+        "Трансформация данных: ELT vs ETL, использование dbt и SQL-based трансформаций"
+      ]
+    },
+    {
+      "competency": "Работа с Big Data (Hadoop, Spark, Kafka)",
+      "type": "CORE",
+      "importance": 85,
+      "themes": [
+        "Архитектура и компоненты экосистемы Hadoop (HDFS, YARN, MapReduce)",
+        "Обработка потоковых данных в Apache Kafka: топики, партиции, consumer groups",
+        "Оптимизация производительности Apache Spark: RDD, DataFrame API, catalyst optimizer",
+        "Интеграция Big Data компонентов: построение ETL-пайплайнов с Spark, Kafka и HDFS"
+      ]
+    },
+    {
+      "competency": "Облачные платформы для данных (AWS S3, Redshift, Snowflake)",
+      "type": "CORE",
+      "importance": 80,
+      "themes": [
+        "Архитектура хранения данных в AWS S3: типы хранилищ, lifecycle policies и оптимизация затрат",
+        "Проектирование и оптимизация схем данных в Amazon Redshift: distribution styles, sort keys и vacuum операции",
+        "Интеграция и миграция данных между облачными платформами: ETL процессы для AWS, Snowflake и гибридных решений",
+        "Управление производительностью и масштабированием в Snowflake: virtual warehouses, clustering keys и query optimization"
+      ]
+    },
+    {
+      "competency": "Python для обработки данных (pandas, PySpark)",
+      "type": "CORE",
+      "importance": 85,
+      "themes": [
+        "Работа с DataFrame в pandas: индексация, фильтрация, группировка и агрегация данных",
+        "Оптимизация обработки больших данных в PySpark: партиционирование, кеширование и broadcast-переменные",
+        "Трансформация и очистка данных: обработка пропущенных значений, дубликатов и приведение типов",
+        "Объединение датасетов и оконные функции в pandas и PySpark для аналитических задач"
+      ]
+    }
+  ]
+}

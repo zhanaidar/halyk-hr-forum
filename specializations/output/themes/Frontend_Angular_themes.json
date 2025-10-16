@@ -1,0 +1,51 @@
+{
+  "profile": "Frontend разработчик",
+  "specialization": "Angular",
+  "file_name": "Frontend_Angular",
+  "competencies": [
+    {
+      "competency": "Знание языка программирования JavaScript",
+      "type": "CORE",
+      "importance": 85,
+      "themes": [
+        "Типы данных, операторы и области видимости переменных (var, let, const)",
+        "Асинхронное программирование: Promises, async/await и Event Loop",
+        "Прототипное наследование, классы ES6+ и контекст выполнения (this)",
+        "Функции высшего порядка, замыкания и методы массивов (map, filter, reduce)"
+      ]
+    },
+    {
+      "competency": "Знание языка программирования TypeScript",
+      "type": "CORE",
+      "importance": 90,
+      "themes": [
+        "Система типов TypeScript: примитивы, union, intersection, type guards и narrowing",
+        "Generics и продвинутые типы: utility types, mapped types, conditional types",
+        "Декораторы, метаданные и их применение в Angular",
+        "Асинхронное программирование: Promise, async/await, Observable и типизация RxJS"
+      ]
+    },
+    {
+      "competency": "Знание Angular",
+      "type": "CORE",
+      "importance": 90,
+      "themes": [
+        "Компоненты и их жизненный цикл (lifecycle hooks, взаимодействие между компонентами, ViewChild, ContentChild)",
+        "Реактивное программирование с RxJS (Observable, Subject, операторы, управление подписками, async pipe)",
+        "Dependency Injection и сервисы (провайдеры, иерархия инжекторов, singleton-сервисы, InjectionToken)",
+        "Модули и маршрутизация (NgModules, lazy loading, guards, resolvers, preloading strategies)"
+      ]
+    },
+    {
+      "competency": "Знание HTML5, CSS + Tailwind, умение верстки",
+      "type": "CORE",
+      "importance": 80,
+      "themes": [
+        "Семантическая разметка HTML5: использование структурных элементов, форм, атрибутов accessibility и валидация",
+        "CSS Layout и позиционирование: Flexbox, Grid, позиционирование элементов и создание адаптивных макетов",
+        "Tailwind CSS: утилитарные классы, кастомизация конфигурации, responsive design и оптимизация production build",
+        "Продвинутые техники верстки: CSS-переменные, анимации, transitions, псевдоэлементы и кросс-браузерная совместимость"
+      ]
+    }
+  ]
+}
