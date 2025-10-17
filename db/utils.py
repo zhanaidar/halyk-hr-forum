@@ -4,13 +4,12 @@ from db.database import get_db_connection
 
 async def generate_test_topics(user_test_id: int, specialization_id: int):
     """
-    Генерирует 8 случайных тем для теста юзера
+    Генерирует 8 случайных тем для теста юзера (ОПТИМИЗИРОВАННАЯ ВЕРСИЯ)
     
-    Алгоритм:
-    1. Получаем компетенции специализации (сортировка по importance DESC)
-    2. Рассчитываем сколько тем брать из каждой компетенции
-    3. Выбираем случайные темы из каждой компетенции
-    4. Сохраняем в user_test_topics с правильным порядком (группировка по компетенциям)
+    Оптимизации:
+    - 1 запрос вместо N для получения тем
+    - Batch INSERT вместо множества мелких
+    - Итого: 2 запроса вместо 10-15!
     
     Args:
         user_test_id: ID теста юзера
@@ -19,77 +18,88 @@ async def generate_test_topics(user_test_id: int, specialization_id: int):
     async with get_db_connection() as conn:
         async with conn.cursor() as cur:
             
-            # 1. Получаем компетенции (сортировка по важности)
+            # 1. Получаем ВСЁ одним запросом: компетенции + темы
             await cur.execute("""
-                SELECT id, name, importance
-                FROM competencies
-                WHERE specialization_id = %s
-                ORDER BY importance DESC
+                SELECT 
+                    c.id as comp_id,
+                    c.name as comp_name,
+                    c.importance,
+                    t.id as topic_id,
+                    t.name as topic_name
+                FROM competencies c
+                JOIN topics t ON t.competency_id = c.id
+                WHERE c.specialization_id = %s
+                ORDER BY c.importance DESC, RANDOM()
             """, (specialization_id,))
             
-            competencies = await cur.fetchall()
-            num_competencies = len(competencies)
+            rows = await cur.fetchall()
             
-            if num_competencies == 0:
+            if not rows:
                 raise Exception(f"No competencies found for specialization_id={specialization_id}")
             
-            # 2. Рассчитываем распределение тем
+            # 2. Группируем темы по компетенциям (в памяти Python)
+            competencies_topics = {}
+            for comp_id, comp_name, importance, topic_id, topic_name in rows:
+                if comp_id not in competencies_topics:
+                    competencies_topics[comp_id] = {
+                        'name': comp_name,
+                        'importance': importance,
+                        'topics': []
+                    }
+                competencies_topics[comp_id]['topics'].append({
+                    'id': topic_id,
+                    'name': topic_name
+                })
+            
+            # 3. Сортируем компетенции по важности
+            sorted_competencies = sorted(
+                competencies_topics.items(),
+                key=lambda x: x[1]['importance'],
+                reverse=True
+            )
+            
+            num_competencies = len(sorted_competencies)
             topics_distribution = calculate_topics_distribution(num_competencies)
             
             print(f"📊 Competencies: {num_competencies}, Distribution: {topics_distribution}")
             
-            # 3. Генерируем темы для каждой компетенции
+            # 4. Выбираем случайные темы (в памяти)
             topic_order = 1
-            selected_topics = []
+            topics_to_insert = []
             
-            for idx, (comp_id, comp_name, importance) in enumerate(competencies):
+            for idx, (comp_id, comp_data) in enumerate(sorted_competencies):
                 num_topics_needed = topics_distribution[idx]
-                
-                # Получаем все темы этой компетенции
-                await cur.execute("""
-                    SELECT id, name
-                    FROM topics
-                    WHERE competency_id = %s
-                """, (comp_id,))
-                
-                available_topics = await cur.fetchall()
+                available_topics = comp_data['topics']
                 
                 if len(available_topics) < num_topics_needed:
-                    print(f"⚠️ Competency '{comp_name}' has only {len(available_topics)} topics, needed {num_topics_needed}")
+                    print(f"⚠️ Competency '{comp_data['name']}' has only {len(available_topics)} topics, needed {num_topics_needed}")
                     num_topics_needed = len(available_topics)
                 
                 # Выбираем случайные темы
                 chosen_topics = random.sample(available_topics, num_topics_needed)
                 
-                # Добавляем в список с порядком
-                for topic_id, topic_name in chosen_topics:
-                    selected_topics.append({
-                        'topic_id': topic_id,
-                        'competency_id': comp_id,
-                        'topic_order': topic_order,
-                        'topic_name': topic_name,
-                        'comp_name': comp_name
-                    })
+                # Добавляем в список для batch insert
+                for topic in chosen_topics:
+                    topics_to_insert.append((
+                        user_test_id,
+                        topic['id'],
+                        comp_id,
+                        topic_order
+                    ))
+                    print(f"  📌 Order {topic_order}: {topic['name']} (comp: {comp_data['name']})")
                     topic_order += 1
                 
-                print(f"  ✅ Competency '{comp_name}' (importance={importance}): selected {num_topics_needed} topics")
+                print(f"  ✅ Competency '{comp_data['name']}' (importance={comp_data['importance']}): selected {num_topics_needed} topics")
             
-            # 4. Сохраняем в БД
-            for topic_data in selected_topics:
-                await cur.execute("""
+            # 5. ✅ Batch INSERT - ОДИН запрос вместо множества!
+            if topics_to_insert:
+                await cur.executemany("""
                     INSERT INTO user_test_topics 
                     (user_test_id, topic_id, competency_id, topic_order)
                     VALUES (%s, %s, %s, %s)
-                """, (
-                    user_test_id,
-                    topic_data['topic_id'],
-                    topic_data['competency_id'],
-                    topic_data['topic_order']
-                ))
-                
-                print(f"    📌 Order {topic_data['topic_order']}: {topic_data['topic_name']}")
+                """, topics_to_insert)
             
-            print(f"✅ Generated {len(selected_topics)} topics for user_test_id={user_test_id}")
+            print(f"✅ Generated {len(topics_to_insert)} topics for user_test_id={user_test_id}")
 
 
 def calculate_topics_distribution(num_competencies: int) -> list:

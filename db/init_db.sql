@@ -168,6 +168,11 @@ CREATE INDEX idx_test_answers_user_test ON test_answers(user_test_id);
 CREATE INDEX idx_test_answers_question ON test_answers(question_id);
 CREATE INDEX idx_ai_recommendations_user_test ON ai_recommendations(user_test_id);
 
+-- ⭐ НОВЫЕ ИНДЕКСЫ ДЛЯ ОПТИМИЗАЦИИ (добавь эти 3 строки):
+CREATE INDEX IF NOT EXISTS idx_questions_topic_level ON questions(topic_id, level);
+CREATE INDEX IF NOT EXISTS idx_test_answers_test_question ON test_answers(user_test_id, question_id);
+CREATE INDEX IF NOT EXISTS idx_user_test_topics_test_order ON user_test_topics(user_test_id, topic_order);
+
 -- ==========================================
 -- ТЕСТОВЫЕ ДАННЫЕ
 -- ==========================================
