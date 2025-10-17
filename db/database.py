@@ -19,10 +19,10 @@ async def init_db_pool():
     try:
         pool = AsyncConnectionPool(
             conninfo=DATABASE_URL,
-            min_size=2,
-            max_size=10,
+            min_size=30,
+            max_size=150,
             timeout=30,
-            max_waiting=20,
+            max_waiting=200,
             kwargs={"autocommit": True}
         )
         await pool.open()

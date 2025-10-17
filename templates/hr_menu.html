@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR Panel - Меню</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1DB584 0%, #0a7d5a 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 60px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .logo {
+            margin-bottom: 20px;
+        }
+
+        .logo img {
+            max-width: 250px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #1DB584;
+            font-size: 32px;
+            margin-bottom: 40px;
+        }
+
+        .menu-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .menu-btn {
+            padding: 25px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border: 2px solid #e0e0e0;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .menu-btn:hover {
+            background: linear-gradient(135deg, #1DB584 0%, #16a073 100%);
+            border-color: #1DB584;
+            color: white;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(29, 181, 132, 0.3);
+        }
+
+        .menu-icon {
+            font-size: 48px;
+            min-width: 60px;
+        }
+
+        .menu-content {
+            text-align: left;
+            flex: 1;
+        }
+
+        .menu-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .menu-desc {
+            font-size: 14px;
+            opacity: 0.7;
+        }
+
+        .logout-link {
+            margin-top: 30px;
+            color: #dc3545;
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .logout-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <img src="/static/images/Halyk_LogoName.png" alt="Халык банк">
+        </div>
+        <h1>🔐 HR Панель</h1>
+        
+        <div class="menu-buttons">
+            <a href="/hr/dashboard" class="menu-btn">
+                <div class="menu-icon">📊</div>
+                <div class="menu-content">
+                    <div class="menu-title">Дашборд</div>
+                    <div class="menu-desc">Статистика форума и участников</div>
+                </div>
+            </a>
+
+            <a href="/hr/database" class="menu-btn">
+                <div class="menu-icon">🗄️</div>
+                <div class="menu-content">
+                    <div class="menu-title">База данных</div>
+                    <div class="menu-desc">Просмотр таблиц и SQL консоль</div>
+                </div>
+            </a>
+
+            <a href="/hr/monitoring" class="menu-btn">
+                <div class="menu-icon">📈</div>
+                <div class="menu-content">
+                    <div class="menu-title">Мониторинг</div>
+                    <div class="menu-desc">Нагрузка сервера и метрики</div>
+                </div>
+            </a>
+        </div>
+
+        <a href="#" class="logout-link" onclick="logout()">Выйти</a>
+    </div>
+
+    <script>
+        // Проверка токена
+        const token = localStorage.getItem('hr_token');
+        if (!token) {
+            window.location.href = '/hr';
+        }
+
+        function logout() {
+            localStorage.removeItem('hr_token');
+            window.location.href = '/hr';
+        }
+    </script>
+</body>
+</html>

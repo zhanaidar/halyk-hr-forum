@@ -263,12 +263,6 @@ async def results_page():
     """Страница результатов теста"""
     with open('templates/results.html', 'r', encoding='utf-8') as f:
         return HTMLResponse(content=f.read())
-
-@app.get("/dash", response_class=HTMLResponse)
-async def dashboard_page():
-    """Публичный дашборд для форума"""
-    with open('templates/dashboard.html', 'r', encoding='utf-8') as f:
-        return HTMLResponse(content=f.read())
     
 @app.get("/hr", response_class=HTMLResponse)
 async def hr_login_page():
@@ -276,9 +270,13 @@ async def hr_login_page():
     with open('templates/hr_login.html', 'r', encoding='utf-8') as f:
         return HTMLResponse(content=f.read())
 
-@app.get("/hr/panel", response_class=HTMLResponse)
-async def hr_panel_page():
-    """HR панель - главная страница"""
+@app.get("/hr/dashboard", response_class=HTMLResponse)
+async def hr_dashboard_page():
+    with open('templates/dashboard.html', 'r', encoding='utf-8') as f:
+        return HTMLResponse(content=f.read())
+
+@app.get("/hr/database", response_class=HTMLResponse)
+async def hr_database_page():
     with open('templates/hr_panel.html', 'r', encoding='utf-8') as f:
         return HTMLResponse(content=f.read())
 
@@ -976,6 +974,12 @@ async def execute_hr_sql(data: SQLQuery):
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Ошибка SQL: {str(e)}")
 
+
+@app.get("/hr/menu", response_class=HTMLResponse)
+async def hr_menu_page():
+    """HR панель - меню выбора"""
+    with open('templates/hr_menu.html', 'r', encoding='utf-8') as f:
+        return HTMLResponse(content=f.read())
 
 if __name__ == "__main__":
     import uvicorn
