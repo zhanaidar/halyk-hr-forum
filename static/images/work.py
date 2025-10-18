@@ -3,7 +3,7 @@ import os
 
 # Пути к QR кодам
 qr_tests_path = r"C:\Users\everg\halyk-hr-forum\static\images\QR_Tests.jpg"
-qr_vac_path = r"C:\Users\everg\halyk-hr-forum\static\images\QR_Vac.jpg"
+qr_vac_path = r"C:\Users\everg\halyk-hr-forum\static\images\dashboard.png"
 
 def get_image_size(path):
     if os.path.exists(path):
