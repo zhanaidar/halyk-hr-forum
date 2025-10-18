@@ -511,13 +511,7 @@ async def get_test_questions(user_test_id: int, current_user: dict = Depends(get
                     raise HTTPException(status_code=403, detail="Access denied")
                 
                 # Получаем вопросы с группировкой по компетенциям
-                # ✅ ОПТИМИЗИРОВАННЫЙ ЗАПРОС с CTE
                 await cur.execute("""
-                    WITH test_topics AS (
-                        SELECT topic_id, competency_id, topic_order
-                        FROM user_test_topics
-                        WHERE user_test_id = %s
-                    )
                     SELECT 
                         c.id as competency_id,
                         c.name as competency_name,
@@ -529,21 +523,22 @@ async def get_test_questions(user_test_id: int, current_user: dict = Depends(get
                         q.var_3,
                         q.var_4,
                         t.name as topic_name,
-                        tt.topic_order,
+                        utt.topic_order,
                         ta.user_answer,
                         ta.is_correct
-                    FROM test_topics tt
-                    JOIN topics t ON t.id = tt.topic_id
-                    JOIN competencies c ON c.id = tt.competency_id
+                    FROM user_test_topics utt
+                    JOIN topics t ON t.id = utt.topic_id
+                    JOIN competencies c ON c.id = utt.competency_id
                     JOIN questions q ON q.topic_id = t.id
-                    LEFT JOIN test_answers ta ON ta.question_id = q.id AND ta.user_test_id = %s
-                    ORDER BY tt.topic_order, 
-                            CASE q.level 
+                    LEFT JOIN test_answers ta ON ta.question_id = q.id AND ta.user_test_id = utt.user_test_id
+                    WHERE utt.user_test_id = %s
+                    ORDER BY utt.topic_order, 
+                             CASE q.level 
                                 WHEN 'Junior' THEN 1 
                                 WHEN 'Middle' THEN 2 
                                 WHEN 'Senior' THEN 3 
-                            END
-                """, (user_test_id, user_test_id))
+                             END
+                """, (user_test_id,))
                 
                 rows = await cur.fetchall()
         
@@ -580,7 +575,7 @@ async def get_test_questions(user_test_id: int, current_user: dict = Depends(get
         
         return {
             "status": "success",
-            "questions": all_questions,  # Плоский список для фронта
+            "questions": all_questions,
             "competencies": list(competencies_dict.values()),
             "progress": progress
         }
