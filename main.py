@@ -314,7 +314,7 @@ async def login(request: LoginRequest):
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/api/register")
-# @limiter.limit("3/day")
+@limiter.limit("20/hour")
 async def register_user(request: Request, user: UserRegister):
     try:
         async with get_db_connection() as conn:
@@ -692,6 +692,7 @@ HR_PASSWORD = "159753"
 # API - HR LOGIN (ОБНОВЛЕННЫЙ!)
 # =====================================================
 @app.post("/api/hr/login")
+@limiter.limit("5/minute")
 async def hr_login(password: str, response: Response):
     """Вход в HR панель - устанавливает cookie"""
     if password == HR_PASSWORD:
