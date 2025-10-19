@@ -980,6 +980,220 @@ async def hr_menu_page():
     """HR панель - меню выбора"""
     with open('templates/hr_menu.html', 'r', encoding='utf-8') as f:
         return HTMLResponse(content=f.read())
+    
+
+# Monitoring
+# ===== ДОБАВЬ В main.py =====
+
+# 1. Импорты (в начало файла)
+import psutil
+import time
+import statistics
+from datetime import datetime, timedelta
+from collections import defaultdict, deque
+
+# 2. Глобальные переменные для мониторинга (после импортов)
+monitoring_data = {
+    "requests": deque(maxlen=1000),  # Последние 1000 запросов
+    "active_users": {},  # {user_id: last_activity_timestamp}
+    "start_time": time.time()
+}
+
+# 3. Middleware (после создания app)
+@app.middleware("http")
+async def monitor_requests(request: Request, call_next):
+    start_time = time.time()
+    
+    # Извлекаем user_id из токена если есть
+    user_id = None
+    auth_header = request.headers.get("authorization")
+    if auth_header and auth_header.startswith("Bearer "):
+        token = auth_header.replace("Bearer ", "")
+        user_data = verify_token(token)
+        if user_data:
+            user_id = user_data.get("user_id")
+            # Обновляем активность пользователя
+            monitoring_data["active_users"][user_id] = datetime.now()
+    
+    try:
+        response = await call_next(request)
+        
+        # Записываем время ответа
+        response_time = (time.time() - start_time) * 1000  # в миллисекундах
+        
+        monitoring_data["requests"].append({
+            "endpoint": request.url.path,
+            "method": request.method,
+            "response_time": response_time,
+            "timestamp": datetime.now(),
+            "user_id": user_id
+        })
+        
+        return response
+    except Exception as e:
+        raise
+
+# 4. HTML роут
+@app.get("/hr/monitoring", response_class=HTMLResponse)
+async def hr_monitoring_page():
+    """HR мониторинг"""
+    with open('templates/hr_monitoring.html', 'r', encoding='utf-8') as f:
+        return HTMLResponse(content=f.read())
+
+# 5. API эндпоинты
+
+def calculate_percentiles(values):
+    """Вычисляет медиану и 95% перцентиль"""
+    if not values:
+        return {"median": 0, "p95": 0}
+    
+    sorted_values = sorted(values)
+    median = statistics.median(sorted_values)
+    
+    # 95% перцентиль
+    index_95 = int(len(sorted_values) * 0.95)
+    p95 = sorted_values[min(index_95, len(sorted_values) - 1)]
+    
+    return {"median": round(median, 2), "p95": round(p95, 2)}
+
+@app.get("/api/hr/monitoring/overview")
+async def get_monitoring_overview():
+    """Общая информация: онлайн, CPU, RAM"""
+    try:
+        # Онлайн пользователи (активность < 5 минут)
+        now = datetime.now()
+        online_threshold = now - timedelta(minutes=5)
+        online_count = sum(
+            1 for last_activity in monitoring_data["active_users"].values()
+            if last_activity > online_threshold
+        )
+        
+        # CPU и RAM
+        cpu_percent = psutil.cpu_percent(interval=0.1)
+        memory = psutil.virtual_memory()
+        
+        return {
+            "status": "success",
+            "online_users": online_count,
+            "cpu_percent": round(cpu_percent, 1),
+            "ram_percent": round(memory.percent, 1),
+            "timestamp": now.isoformat()
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/hr/monitoring/realtime")
+async def get_realtime_metrics():
+    """Метрики за последние 10 секунд для графика"""
+    try:
+        now = datetime.now()
+        threshold = now - timedelta(seconds=10)
+        
+        # Фильтруем запросы за последние 10 сек
+        recent_requests = [
+            req for req in monitoring_data["requests"]
+            if req["timestamp"] > threshold
+        ]
+        
+        if not recent_requests:
+            return {
+                "status": "success",
+                "median": 0,
+                "p95": 0,
+                "count": 0,
+                "timestamp": now.isoformat()
+            }
+        
+        # Вычисляем перцентили
+        response_times = [req["response_time"] for req in recent_requests]
+        percentiles = calculate_percentiles(response_times)
+        
+        return {
+            "status": "success",
+            "median": percentiles["median"],
+            "p95": percentiles["p95"],
+            "count": len(recent_requests),
+            "timestamp": now.isoformat()
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/hr/monitoring/operations")
+async def get_operations_stats():
+    """Статистика по типам операций за 5 минут"""
+    try:
+        now = datetime.now()
+        threshold = now - timedelta(minutes=5)
+        
+        # Фильтруем запросы за последние 5 мин
+        recent_requests = [
+            req for req in monitoring_data["requests"]
+            if req["timestamp"] > threshold
+        ]
+        
+        # Группируем по типам операций
+        operations = {
+            "submit_answer": {
+                "name": "💬 Ответы на вопросы",
+                "endpoint": "/api/submit-answer",
+                "times": []
+            },
+            "register": {
+                "name": "📝 Регистрация",
+                "endpoint": "/api/register",
+                "times": []
+            },
+            "start_test": {
+                "name": "▶️ Старт теста",
+                "endpoint": "/api/start-test",
+                "times": []
+            },
+            "get_questions": {
+                "name": "📄 Получение вопросов",
+                "endpoint_pattern": "/api/test/",
+                "times": []
+            }
+        }
+        
+        # Собираем времена по операциям
+        for req in recent_requests:
+            endpoint = req["endpoint"]
+            
+            if endpoint == "/api/submit-answer":
+                operations["submit_answer"]["times"].append(req["response_time"])
+            elif endpoint == "/api/register":
+                operations["register"]["times"].append(req["response_time"])
+            elif endpoint == "/api/start-test":
+                operations["start_test"]["times"].append(req["response_time"])
+            elif "/api/test/" in endpoint and "/questions" in endpoint:
+                operations["get_questions"]["times"].append(req["response_time"])
+        
+        # Вычисляем статистику
+        result = []
+        for op_key, op_data in operations.items():
+            if op_data["times"]:
+                percentiles = calculate_percentiles(op_data["times"])
+                result.append({
+                    "name": op_data["name"],
+                    "median": percentiles["median"],
+                    "p95": percentiles["p95"],
+                    "count": len(op_data["times"])
+                })
+            else:
+                result.append({
+                    "name": op_data["name"],
+                    "median": 0,
+                    "p95": 0,
+                    "count": 0
+                })
+        
+        return {
+            "status": "success",
+            "operations": result,
+            "timestamp": now.isoformat()
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":
     import uvicorn
