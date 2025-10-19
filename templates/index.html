@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Halyk HR Forum - Тестирование компетенций</title>
+    <!-- reCAPTCHA -->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -223,6 +225,12 @@
             padding: 40px;
             color: #999;
         }
+        /* Добавь стиль для капчи */
+        .recaptcha-container {
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+        }
     </style>
 </head>
 <body>
@@ -327,13 +335,21 @@
                 }
             };
 
+
             const handleRegister = async (e) => {
                 e.preventDefault();
                 
-                // Валидация телефона в форме регистрации
+                // Валидация телефона
                 const error = validatePhone(formData.phone);
                 if (error) {
                     alert('Некорректный формат телефона: ' + error);
+                    return;
+                }
+                
+                // Проверка капчи
+                const recaptchaResponse = grecaptcha.getResponse();
+                if (!recaptchaResponse) {
+                    alert('Пожалуйста, подтвердите что вы не робот');
                     return;
                 }
                 
@@ -343,10 +359,19 @@
                     const response = await fetch('/api/register', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(formData)
+                        body: JSON.stringify({
+                            ...formData,
+                            recaptcha_token: recaptchaResponse
+                        })
                     });
 
                     const data = await response.json();
+                    
+                    if (response.status === 429) {
+                        alert('Слишком много попыток. Попробуйте позже.');
+                        grecaptcha.reset();
+                        return;
+                    }
                     
                     if (data.status === 'success') {
                         localStorage.setItem('halyk_token', data.token);
@@ -359,6 +384,7 @@
                     }
                 } catch (error) {
                     alert('Ошибка регистрации: ' + error.message);
+                    grecaptcha.reset();
                 } finally {
                     setLoading(false);
                 }
@@ -555,6 +581,11 @@
                                         value={formData.job_title}
                                         onChange={(e) => setFormData({...formData, job_title: e.target.value})}
                                     />
+                                </div>
+
+                                {/* КАПЧА */}
+                                <div className="recaptcha-container">
+                                    <div className="g-recaptcha" data-sitekey="6Lf-r-8rAAAAAMLoY7y4jZWYGogQbQn3WDI1TKw0"></div>
                                 </div>
 
                                 <button type="submit" className="btn" disabled={loading}>

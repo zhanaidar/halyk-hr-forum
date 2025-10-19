@@ -313,12 +313,40 @@ async def login(request: LoginRequest):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+class UserRegister(BaseModel):
+    name: str
+    surname: str
+    phone: Optional[str] = None
+    company: Optional[str] = None
+    job_title: Optional[str] = None
+    recaptcha_token: str  # Добавили капчу
+
 @app.post("/api/register")
-# @limiter.limit("20/hour")
 async def register_user(request: Request, user: UserRegister):
+    # Проверка капчи
+    async with httpx.AsyncClient() as client:
+        recaptcha_response = await client.post(
+            "https://www.google.com/recaptcha/api/siteverify",
+            data={
+                "secret": config.RECAPTCHA_SECRET_KEY,
+                "response": user.recaptcha_token,
+                "remoteip": request.client.host
+            }
+        )
+        
+        recaptcha_result = recaptcha_response.json()
+        
+        if not recaptcha_result.get("success"):
+            raise HTTPException(status_code=400, detail="Капча не пройдена")
+    
+    # Обычная регистрация
     try:
         async with get_db_connection() as conn:
             async with conn.cursor() as cur:
+                await cur.execute("SELECT id FROM users WHERE phone = %s", (user.phone,))
+                if await cur.fetchone():
+                    raise HTTPException(status_code=400, detail="Телефон уже зарегистрирован")
+                
                 await cur.execute(
                     "INSERT INTO users (name, surname, phone, company, job_title) VALUES (%s, %s, %s, %s, %s) RETURNING id",
                     (user.name, user.surname, user.phone, user.company, user.job_title)
@@ -327,8 +355,11 @@ async def register_user(request: Request, user: UserRegister):
         
         token = create_access_token(user_id=user_id, phone=user.phone)
         return {"status": "success", "user_id": user_id, "token": token}
+    
+    except HTTPException:
+        raise
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail="Ошибка регистрации")
 
 # =====================================================
 # API - PROFILES & SPECIALIZATIONS
