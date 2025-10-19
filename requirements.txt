@@ -23,3 +23,5 @@ pydantic==2.9.0
 gunicorn==23.0.0
 
 python-jose[cryptography]==3.3.0
+
+psutil==7.1.0
