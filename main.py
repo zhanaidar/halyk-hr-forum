@@ -7,6 +7,8 @@ from typing import Optional
 import sys
 import os
 
+
+
 # Fix для Windows asyncio
 if sys.platform == 'win32':
     import asyncio
@@ -264,19 +266,37 @@ async def results_page():
     with open('templates/results.html', 'r', encoding='utf-8') as f:
         return HTMLResponse(content=f.read())
     
+
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.util import get_remote_address
+from slowapi.errors import RateLimitExceeded
+
+limiter = Limiter(key_func=get_remote_address, storage_uri="memory://")
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+
+from fastapi.security import HTTPBasic, HTTPBasicCredentials
+
+security = HTTPBasic()
+
+def verify_hr_password(credentials: HTTPBasicCredentials = Depends(security)):
+    correct_password = os.getenv("HR_PASSWORD", "halyk2024")
+    if credentials.password != correct_password:
+        raise HTTPException(status_code=401, detail="Incorrect password", headers={"WWW-Authenticate": "Basic"})
+    return credentials
+
 @app.get("/hr", response_class=HTMLResponse)
-async def hr_login_page():
-    """HR панель - страница входа"""
+async def hr_login_page(credentials: HTTPBasicCredentials = Depends(verify_hr_password)):
     with open('templates/hr_login.html', 'r', encoding='utf-8') as f:
         return HTMLResponse(content=f.read())
 
 @app.get("/hr/dashboard", response_class=HTMLResponse)
-async def hr_dashboard_page():
+async def hr_dashboard_page(credentials: HTTPBasicCredentials = Depends(verify_hr_password)):
     with open('templates/dashboard.html', 'r', encoding='utf-8') as f:
         return HTMLResponse(content=f.read())
 
 @app.get("/hr/database", response_class=HTMLResponse)
-async def hr_database_page():
+async def hr_database_page(credentials: HTTPBasicCredentials = Depends(verify_hr_password)):
     with open('templates/hr_panel.html', 'r', encoding='utf-8') as f:
         return HTMLResponse(content=f.read())
 
@@ -313,6 +333,7 @@ async def login(request: LoginRequest):
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/api/register")
+@limiter.limit("3/day")
 async def register_user(user: UserRegister):
     """Регистрация нового пользователя"""
     try:
@@ -1035,9 +1056,8 @@ async def monitor_requests(request: Request, call_next):
 
 # 4. HTML роут
 @app.get("/hr/monitoring", response_class=HTMLResponse)
-async def hr_monitoring_page():
-    """HR мониторинг"""
-    with open('templates/hr_monitoring.html', 'r', encoding='utf-8') as f:
+async def hr_monitoring_page(credentials: HTTPBasicCredentials = Depends(verify_hr_password)):
+    with open('templates/monitoring.html', 'r', encoding='utf-8') as f:
         return HTMLResponse(content=f.read())
 
 # 5. API эндпоинты

@@ -50,7 +50,7 @@ async def main():
     """Main function"""
     
     # Удалить всех с фамилией Test
-    await delete_test_users('surname', 'Test')
+    await delete_test_users('company', 'Test Company')
 
     # xs = ['kllu', 'uilui', 'фвыа', 'tjtk', '[', 'щщщ', 'ппппп', 'глдд', 'Кет']
     # for x in xs:
