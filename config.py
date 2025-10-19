@@ -19,4 +19,5 @@ ORG_NAME = "Халык банк"
 ORG_LOGO = "/static/images/halyk_logo.png"
 ORG_PRIMARY_COLOR = "#1DB584"
 
-RECAPTCHA_SECRET_KEY = "6Lf-r-8rAAAAAI_2AAYKfUjF2uRqLzgljIaoEYYM"
+RECAPTCHA_SITE_KEY = os.getenv("RECAPTCHA_SITE_KEY", "")
+RECAPTCHA_SECRET_KEY = os.getenv("RECAPTCHA_SECRET_KEY", "")

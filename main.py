@@ -26,6 +26,8 @@ import config
 import anthropic
 import httpx
 
+print(f"RECAPTCHA_SECRET_KEY: {config.RECAPTCHA_SECRET_KEY}")
+
 # Инициализируем Claude client
 http_client = httpx.Client(timeout=30.0)
 claude_client = anthropic.Anthropic(
