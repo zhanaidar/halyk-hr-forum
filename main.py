@@ -334,7 +334,7 @@ async def login(request: LoginRequest):
 
 @app.post("/api/register")
 @limiter.limit("3/day")
-async def register_user(user: UserRegister):
+async def register_user(request: Request, user: UserRegister):
     """Регистрация нового пользователя"""
     try:
         async with get_db_connection() as conn:
