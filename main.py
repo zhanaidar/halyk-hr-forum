@@ -37,16 +37,12 @@ claude_client = anthropic.Anthropic(
 
 from auth import create_access_token, verify_token
 
-# Rate limiting
-from slowapi import Limiter, _rate_limit_exceeded_handler
-from slowapi.util import get_remote_address
-from slowapi.errors import RateLimitExceeded
 
 # =====================================================
 # ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ДЛЯ МОНИТОРИНГА
 # =====================================================
 monitoring_data = {
-    "requests": deque(maxlen=1000),
+    "requests": deque(maxlen=10000),
     "active_users": {},
     "start_time": time.time()
 }
@@ -101,11 +97,6 @@ app = FastAPI(
 
 # Static files
 app.mount("/static", StaticFiles(directory="static"), name="static")
-
-# Rate limiter
-limiter = Limiter(key_func=get_remote_address, storage_uri="memory://")
-app.state.limiter = limiter
-app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 # =====================================================
 # MIDDLEWARE - МОНИТОРИНГ
@@ -725,7 +716,6 @@ HR_PASSWORD = "159753"
 # API - HR LOGIN (ОБНОВЛЕННЫЙ!)
 # =====================================================
 @app.post("/api/hr/login")
-# @limiter.limit("5/minute")
 async def hr_login(request: Request, password: str, response: Response):
     """Вход в HR панель - устанавливает cookie"""
     if password == HR_PASSWORD:
