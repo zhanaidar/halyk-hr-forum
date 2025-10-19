@@ -693,7 +693,7 @@ HR_PASSWORD = "159753"
 # =====================================================
 @app.post("/api/hr/login")
 @limiter.limit("5/minute")
-async def hr_login(password: str, response: Response):
+async def hr_login(request: Request, password: str, response: Response):
     """Вход в HR панель - устанавливает cookie"""
     if password == HR_PASSWORD:
         token = create_access_token(user_id=0, phone="hr_admin")
