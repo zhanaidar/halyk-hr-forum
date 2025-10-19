@@ -268,11 +268,6 @@
     </div>
 
     <script>
-        // Проверка токена
-        const token = localStorage.getItem('hr_token');
-        if (!token) {
-            window.location.href = '/hr';
-        }
 
         let chart = null;
         let monitoringInterval = null;
@@ -461,8 +456,11 @@
             }
         }
 
-        function logout() {
-            localStorage.removeItem('hr_token');
+        async function logout() {
+            await fetch('/api/hr/logout', {
+                method: 'POST',
+                credentials: 'include'
+            });
             window.location.href = '/hr';
         }
 

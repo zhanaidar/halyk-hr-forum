@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request, HTTPException, Header, Depends
+from fastapi import FastAPI, Request, HTTPException, Header, Depends, Response
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
@@ -221,28 +221,67 @@ async def health():
 # =====================================================
 # HTML ROUTES - HR PANEL
 # =====================================================
+# ===== ДОБАВЬ/ЗАМЕНИ ЭТИ ЧАСТИ В main.py =====
+
+from fastapi import Cookie
+from fastapi.responses import RedirectResponse
+
+# =====================================================
+# DEPENDENCY - HR AUTH (НОВОЕ!)
+# =====================================================
+async def verify_hr_cookie(hr_token: Optional[str] = Cookie(None)):
+    """Проверяет HR токен из cookie"""
+    if not hr_token:
+        return None
+    
+    # Проверяем токен
+    user_data = verify_token(hr_token)
+    if user_data and user_data.get("phone") == "hr_admin":
+        return user_data
+    return None
+
+# =====================================================
+# HTML ROUTES - HR PANEL (ОБНОВЛЕННЫЕ!)
+# =====================================================
 @app.get("/hr", response_class=HTMLResponse)
 async def hr_login_page():
+    """Страница логина HR"""
     with open('templates/hr_login.html', 'r', encoding='utf-8') as f:
         return HTMLResponse(content=f.read())
 
 @app.get("/hr/menu", response_class=HTMLResponse)
-async def hr_menu_page():
+async def hr_menu_page(hr_user: dict = Depends(verify_hr_cookie)):
+    """HR меню - защищено"""
+    if not hr_user:
+        return RedirectResponse(url="/hr", status_code=303)
+    
     with open('templates/hr_menu.html', 'r', encoding='utf-8') as f:
         return HTMLResponse(content=f.read())
 
 @app.get("/hr/dashboard", response_class=HTMLResponse)
-async def hr_dashboard_page():
+async def hr_dashboard_page(hr_user: dict = Depends(verify_hr_cookie)):
+    """HR дашборд - защищено"""
+    if not hr_user:
+        return RedirectResponse(url="/hr", status_code=303)
+    
     with open('templates/dashboard.html', 'r', encoding='utf-8') as f:
         return HTMLResponse(content=f.read())
 
 @app.get("/hr/database", response_class=HTMLResponse)
-async def hr_database_page():
+async def hr_database_page(hr_user: dict = Depends(verify_hr_cookie)):
+    """HR база данных - защищено"""
+    if not hr_user:
+        return RedirectResponse(url="/hr", status_code=303)
+    
     with open('templates/hr_panel.html', 'r', encoding='utf-8') as f:
         return HTMLResponse(content=f.read())
 
 @app.get("/hr/monitoring", response_class=HTMLResponse)
-async def hr_monitoring_page():
+async def hr_monitoring_page(hr_user: dict = Depends(verify_hr_cookie)):
+    """HR мониторинг - защищено"""
+    if not hr_user:
+        return RedirectResponse(url="/hr", status_code=303)
+    
     with open('templates/hr_monitoring.html', 'r', encoding='utf-8') as f:
         return HTMLResponse(content=f.read())
 
@@ -649,13 +688,34 @@ async def get_dashboard_stats():
 # =====================================================
 HR_PASSWORD = "159753"
 
+# =====================================================
+# API - HR LOGIN (ОБНОВЛЕННЫЙ!)
+# =====================================================
 @app.post("/api/hr/login")
-async def hr_login(password: str):
+async def hr_login(password: str, response: Response):
+    """Вход в HR панель - устанавливает cookie"""
     if password == HR_PASSWORD:
         token = create_access_token(user_id=0, phone="hr_admin")
-        return {"status": "success", "token": token}
+        
+        # Устанавливаем httpOnly cookie (защита от XSS)
+        response.set_cookie(
+            key="hr_token",
+            value=token,
+            httponly=True,  # Нельзя прочитать через JavaScript
+            secure=True,    # Только через HTTPS
+            samesite="lax", # Защита от CSRF
+            max_age=86400   # 24 часа
+        )
+        
+        return {"status": "success"}
     else:
         raise HTTPException(status_code=401, detail="Неверный пароль")
+
+@app.post("/api/hr/logout")
+async def hr_logout(response: Response):
+    """Выход из HR панели - удаляет cookie"""
+    response.delete_cookie(key="hr_token")
+    return {"status": "success"}
 
 @app.get("/api/hr/tables")
 async def get_hr_tables():

@@ -140,19 +140,25 @@
             </a>
         </div>
 
-        <a href="#" class="logout-link" onclick="logout()">Выйти</a>
+        <a href="#" class="logout-link" onclick="logout(event)">Выйти</a>
     </div>
 
     <script>
-        // Проверка токена
-        const token = localStorage.getItem('hr_token');
-        if (!token) {
-            window.location.href = '/hr';
-        }
-
-        function logout() {
-            localStorage.removeItem('hr_token');
-            window.location.href = '/hr';
+        async function logout(e) {
+            e.preventDefault();
+            
+            try {
+                await fetch('/api/hr/logout', {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+                
+                // Редирект на логин
+                window.location.href = '/hr';
+            } catch (error) {
+                console.error('Ошибка выхода:', error);
+                window.location.href = '/hr';
+            }
         }
     </script>
 </body>
