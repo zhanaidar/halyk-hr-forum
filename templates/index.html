@@ -260,6 +260,20 @@
             const [loading, setLoading] = useState(false);
             const [userName, setUserName] = useState('');
 
+            // ВОТ СЮДА ВСТАВЬ:
+            useEffect(() => {
+                if (step === 'register' && window.recaptchaLoaded && typeof grecaptcha !== 'undefined') {
+                    setTimeout(() => {
+                        const widget = document.getElementById('recaptcha-widget');
+                        if (widget && !widget.hasChildNodes()) {
+                            grecaptcha.render('recaptcha-widget', {
+                                'sitekey': '6Lf-r-8rAAAAAMLoY7y4jZWYGogQbQn3WDI1TKw0'
+                            });
+                        }
+                    }, 100);
+                }
+            }, [step]);
+
             useEffect(() => {
                 const token = localStorage.getItem('halyk_token');
                 if (token) {
@@ -598,7 +612,7 @@
 
                                 {/* КАПЧА */}
                                 <div className="recaptcha-container">
-                                    <div className="g-recaptcha" data-sitekey="6Lf-r-8rAAAAAMLoY7y4jZWYGogQbQn3WDI1TKw0"></div>
+                                    <div id="recaptcha-widget"></div>
                                 </div>
 
                                 <button type="submit" className="btn" disabled={loading}>
