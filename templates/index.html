@@ -5,7 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Halyk HR Forum - Тестирование компетенций</title>
     <!-- reCAPTCHA -->
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script src="https://www.google.com/recaptcha/api.js?onload=onRecaptchaLoad&render=explicit" async defer></script>
+    <script>
+        var recaptchaLoaded = false;
+        function onRecaptchaLoad() {
+            recaptchaLoaded = true;
+            console.log('reCAPTCHA loaded!');
+        }
+    </script>
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -346,6 +353,12 @@
                     return;
                 }
                 
+                // Ждем загрузки капчи
+                if (!window.recaptchaLoaded || typeof grecaptcha === 'undefined') {
+                    alert('Капча загружается, подождите 2 секунды');
+                    return;
+                }
+
                 // Проверка капчи
                 const recaptchaResponse = grecaptcha.getResponse();
                 if (!recaptchaResponse) {
